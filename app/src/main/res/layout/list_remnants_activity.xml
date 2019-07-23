@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ListRemnants">
+
+    <include layout="@layout/app_bar_layout"
+        android:id="@+id/list_remnants_appbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:background="#f5eeed"
+            android:id="@+id/list_remnants_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="330dp"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Remnants Name"
+                android:layout_margin="4dp">
+
+                <EditText
+                    android:maxLines="1"
+                    android:id="@+id/remnants_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Category"
+                android:layout_margin="4dp">
+
+                <EditText
+                    android:maxLines="1"
+                    android:id="@+id/remnants_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

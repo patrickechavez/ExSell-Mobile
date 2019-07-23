@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Login">
+
+    <include
+        layout="@layout/app_bar_layout"
+        android:id="@+id/main_app_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/acc_image"
+                android:layout_width="191dp"
+                android:layout_height="214dp"
+                android:layout_gravity="center"
+                android:src="@drawable/user" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="First Name"
+                android:layout_margin="4dp">
+
+                <EditText
+                    android:maxLines="1"
+                    android:id="@+id/acc_fname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Last Name"
+                android:layout_margin="4dp">
+
+                <EditText
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:id="@+id/acc_lname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:layout_margin="4dp">
+
+                <EditText
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:id="@+id/acc_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/acc_updatebtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UPDATE SETTINGS"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/acc_changepassbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CHANGE PASSWORD"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

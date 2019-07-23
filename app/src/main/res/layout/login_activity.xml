@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Login">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:layout_margin="4dp">
+
+                <EditText
+                    android:maxLines="1"
+                    android:id="@+id/login_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:layout_margin="4dp">
+
+                <EditText
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:id="@+id/login_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_loginbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:text="LOGIN"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_forgotypbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FORGOT YOUR PASSWORD?"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_marginBottom="25dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_registerbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:text="CREATE AN ACCOUNT" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

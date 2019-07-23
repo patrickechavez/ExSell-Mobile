@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Login">
+
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:layout_width="330dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:hint="First Name">
+
+            <EditText
+                android:id="@+id/register_fname"
+                android:maxLines="1"
+                android:inputType="textCapWords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:hint="Last Name">
+
+            <EditText
+                android:id="@+id/register_lname"
+                android:maxLines="1"
+                android:inputType="textCapWords"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:hint="Email">
+
+            <EditText
+                android:id="@+id/register_email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:hint="Password">
+
+            <EditText
+                android:id="@+id/register_password"
+                android:maxLines="1"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/register_registerbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CREATE ACCOUNT" />
+
+        <Button
+        android:id="@+id/register_loginbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:text="ALREADY HAVE AN ACCOUNT?" />
+
+
+
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/chat_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/ic_launcher_round"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First Name"
+        android:id="@+id/chat_fname"
+        android:layout_toRightOf="@id/chat_image"
+        android:layout_toEndOf="@id/chat_image"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Name"
+        android:id="@+id/chat_lname"
+        android:layout_toRightOf="@id/chat_fname"
+        android:layout_toEndOf="@id/chat_fname"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="3dp"
+        android:layout_centerVertical="true"/>
+
+    <ImageView
+        android:id="@+id/image_online"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/online_icon"
+        android:visibility="invisible"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="35dp"/>
+    
+</RelativeLayout>
