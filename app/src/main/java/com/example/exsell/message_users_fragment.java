@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,10 +68,18 @@ public class message_users_fragment extends Fragment{
        // usersAdapter = new UsersAdapter(options);
         usersAdapter = new UsersAdapter(options);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), linearLayoutManager.getOrientation());
+
+
         recyclerView = view.findViewById(R.id.users_recycler_view);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setAdapter(usersAdapter);
+
+
 
         usersAdapter.setOnItemClickListener(new UsersAdapter.OnItemClickListener() {
             @Override

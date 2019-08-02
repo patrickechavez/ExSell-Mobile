@@ -10,39 +10,42 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.exsell.Models.SelectCategoryModel;
 import com.example.exsell.R;
-
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 public class SelectCategoryAdapter extends FirestoreRecyclerAdapter<SelectCategoryModel, SelectCategoryAdapter.SelectCategoryHolder> {
 
 
+
     public SelectCategoryAdapter(@NonNull FirestoreRecyclerOptions<SelectCategoryModel> options) {
         super(options);
+
     }
 
     @Override
     protected void onBindViewHolder(@NonNull SelectCategoryHolder selectCategoryHolder, int i, @NonNull SelectCategoryModel selectCategoryModel) {
-        selectCategoryHolder.textCategory.setText(selectCategoryModel.getCategoryName());
+
+        selectCategoryHolder.textViewCategoryName.setText(selectCategoryModel.getCategoryName());
 
     }
 
     @NonNull
     @Override
     public SelectCategoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_category_layout, parent,false);
+
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_remnants_category_layout_fragment, parent, false);
 
         return new SelectCategoryHolder(v);
     }
 
     class SelectCategoryHolder extends RecyclerView.ViewHolder{
 
-        TextView textCategory;
+        TextView textViewCategoryName;
 
         public SelectCategoryHolder(@NonNull View itemView) {
             super(itemView);
 
-            textCategory = itemView.findViewById(R.id.select_category_textview);
+            textViewCategoryName = itemView.findViewById(R.id.selectCategory_textView);
         }
     }
 }

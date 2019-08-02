@@ -31,17 +31,25 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'android.arch.core:runtime:1.1.1'
-    implementation 'com.google.firebase:firebase-auth:18.0.0'
-    implementation 'com.google.firebase:firebase-core:17.0.0'
-    implementation 'com.google.firebase:firebase-storage:18.0.0'
-    implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
-    implementation 'com.google.firebase:firebase-firestore:20.1.0'
+
     implementation 'com.sangcomz:FishBun:0.9.1'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
+    //FIREBASE
+    implementation 'com.google.firebase:firebase-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-core:17.0.1'
+    implementation 'com.google.firebase:firebase-storage:18.1.0'
+    implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
+    implementation 'com.google.firebase:firebase-firestore:20.1.0'
+
+    //GOOGLE PLACE
+    implementation 'com.google.android.libraries.places:places:2.0.0'
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
+
+
     testImplementation 'junit:junit:4.12'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
+    implementation 'com.google.android.material:material:1.1.0-alpha08'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     androidTestImplementation 'androidx.test:runner:1.2.0'

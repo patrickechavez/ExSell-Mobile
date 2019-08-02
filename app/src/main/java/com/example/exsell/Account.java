@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +55,8 @@ public class Account extends AppCompatActivity implements View.OnClickListener {
     private StorageReference storageReference;
     private FirebaseUser currentUser;
     private DocumentReference docRef;
+    private boolean isChanged = false;
+
 
 
     private static final int GALLERY_PICK = 1;
@@ -78,7 +81,9 @@ public class Account extends AppCompatActivity implements View.OnClickListener {
         changepassbtn = findViewById(R.id.acc_changepassbtn);
         setupImage = findViewById(R.id.acc_image);
 
-        String user_id = mAuth.getCurrentUser().getUid();
+        String user_id = currentUser.getUid();
+
+        Log.d("ID", "ID"+user_id);
 
         docRef = firebaseFirestore.collection("users").document(user_id);
 
@@ -90,9 +95,10 @@ public class Account extends AppCompatActivity implements View.OnClickListener {
 
                 if(task.isSuccessful()){
 
-                    String firstname = task.getResult().getString("firstName");
-                    String lastname = task.getResult().getString("lastName");
-                    String imageUrl = task.getResult().getString("imageUrl");
+                   String firstname = task.getResult().getString("firstName");
+                   String lastname = task.getResult().getString("lastName");
+                   String imageUrl = task.getResult().getString("imageUrl");
+                   mainImageURI = Uri.parse(imageUrl);
 
                     acc_fname.setText(firstname);
                     acc_lname.setText(lastname);
@@ -141,43 +147,42 @@ public class Account extends AppCompatActivity implements View.OnClickListener {
                 final String firstName = acc_fname.getText().toString().trim();
                 final String lastName = acc_lname.getText().toString().trim();
                 final String user_id = mAuth.getCurrentUser().getUid();
-                final StorageReference image_path = storageReference.child("profile_images").child(user_id+ ".jpg");
+
+                if(isChanged) {
+
+                    final StorageReference image_path = storageReference.child("profile_images").child(user_id + ".jpg");
                     UploadTask uploadTask = image_path.putFile(mainImageURI);
 
-                Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
 
-                        if(!task.isSuccessful())
-                        throw task.getException();
+                            if (!task.isSuccessful())
+                                throw task.getException();
 
-                        return image_path.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-
-                        if (task.isSuccessful()) {
-                            Uri downloadUri = task.getResult();
-
-                            firebaseFirestore.collection("users").document(user_id)
-                                    .update("firstName", firstName,
-                                                "lastName", lastName,
-                                                "imageUrl", downloadUri.toString());
-
-
-                            /*mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(user_id);
-                            Map<String, Object> userUpdate = new HashMap<>();
-                            userUpdate.put("firstName", firstName);
-                            userUpdate.put("lastName", lastName);
-                            userUpdate.put("imageUrl", downloadUri.toString());
-
-                            mDatabase.updateChildren(userUpdate);*/
-
-                            Toast.makeText(Account.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
+                            return image_path.getDownloadUrl();
                         }
-                    }
-                });
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+
+                            if (task.isSuccessful()) {
+
+
+                                storeFirestore(task, firstName, lastName, user_id);
+
+                            } else {
+                                String error = task.getException().getMessage();
+                                Toast.makeText(Account.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    });
+
+                }else{
+
+                    storeFirestore(null, firstName, lastName, user_id);
+                }
                 break;
 
             case R.id.acc_image:
@@ -202,6 +207,27 @@ public class Account extends AppCompatActivity implements View.OnClickListener {
 
                 break;
         }
+    }
+
+    private void storeFirestore(@NonNull Task<Uri> task, String firstName, String lastName, String user_id){
+
+        Uri downloadUri;
+
+        if(task != null){
+
+            downloadUri = task.getResult();
+        }else{
+
+            downloadUri = mainImageURI;
+        }
+
+        firebaseFirestore.collection("users").document(user_id)
+                .update("firstName", firstName,
+                        "lastName", lastName,
+                        "imageUrl", downloadUri.toString());
+
+
+        Toast.makeText(Account.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
     }
 
     private void imagePicker() {
