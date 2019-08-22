@@ -8,9 +8,7 @@ public class MessageModel {
     private Date time;
     private boolean seen;
 
-   public MessageModel(){
-
-    }
+   public MessageModel(){ }
 
     public MessageModel(String message, String type, String sender, String receiver, Date time) {
         this.message = message;
@@ -41,7 +39,5 @@ public class MessageModel {
         return time;
     }
 
-    public boolean isSeen() {
-        return seen;
-    }
+
 }

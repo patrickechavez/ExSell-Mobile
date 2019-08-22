@@ -1,6 +1,6 @@
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#f5eeed"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="340dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -23,21 +23,29 @@
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="Format"
-                android:textSize="17sp" />
+                android:layout_margin="8dp"
+                android:textAppearance="?attr/textAppearanceButton"
+                android:text="Format" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="8dp"
+                android:background="@android:color/black"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:orientation="vertical">
 
 
                 <RadioGroup
                     android:id="@+id/radigroup_format"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
                     android:checkedButton="@id/fixedprice_radioBtn">
 
                     <RadioButton
@@ -54,116 +62,156 @@
                         android:text="Auction"
                         android:textSize="17sp" />
                 </RadioGroup>
+
             </LinearLayout>
 
             <!--END OF FORMAT-->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="8dp"
+                android:background="@android:color/black"/>
 
             <!--PRICE-->
 
             <!--FIXED PRICE-->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="10dp"
-                android:text="Price"
-                android:textSize="17sp" />
-
-            <LinearLayout
-                android:id="@+id/linearlayout_price"
                 android:layout_width="match_parent"
+                android:layout_marginTop="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="@android:color/white"
-                android:orientation="vertical">
+                android:textAppearance="?attr/textAppearanceButton"
+                android:text="PRICE" />
 
-                <com.google.android.material.textfield.TextInputLayout
+
+                <LinearLayout
+                    android:id="@+id/linearPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:hint="Breakup Price">
+                    android:padding="8dp"
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:inputType="number"
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="1dp"
+                        android:background="@android:color/black"/>
 
-                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:hint="Quantity">
-
-                    <EditText
-                        android:inputType="number"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        app:startIconDrawable="@drawable/peso_icon"
+                        style="@style/Widget.Shrine.TextInputLayout"
+                        android:hint="Breakup Price">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <EditText
+                            android:id="@+id/breakUpPrice"
+                            android:inputType="numberDecimal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
 
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        style="@style/Widget.Shrine.TextInputLayout"
+                        android:hint="Quantity">
+
+                        <EditText
+                            android:id="@+id/lm2_quantity"
+                            android:inputType="number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black"/>
+
+                </LinearLayout>
+
 
             <!--END OF FIXED PRICE-->
 
             <!--AUCTION-->
             <LinearLayout
-                android:id="@+id/linearlayout_auction"
+                android:id="@+id/linearAuction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:background="@android:color/white"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black"/>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:startIconDrawable="@drawable/peso_icon"
+                    style="@style/Widget.Shrine.TextInputLayout"
                     android:hint="Auction Start Price">
 
                     <EditText
+                        android:id="@+id/lm2_auctionStartPrice"
                         android:inputType="numberDecimal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                       />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:hint="Duration">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:drawableRight="@drawable/dropdown"
-                    android:layout_height="wrap_content" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:hint="End Time">
-
-                    <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:boxStrokeColor="@color/textInputOutlineColor"
+                    app:hintTextColor="@color/textColorPrimary"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:hint="Duration">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/filled_exposed_dropdown"
+                        android:layout_width="match_parent"
+                        android:editable="false"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:hint="End Time">
+
+                    <EditText
+                        android:id="@+id/lm2_auctionEndTime"
+                        android:layout_width="match_parent"
+                        android:editable="false"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black"/>
 
             </LinearLayout>
+
+
             <!--END OF AUCTION-->
 
             <!--END OF PRICE-->
@@ -171,13 +219,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Shrine.TextInputLayout"
                 android:hint="Select Category">
 
                 <EditText
                     android:id="@+id/lm_select_category"
                     android:layout_width="match_parent"
-                    android:drawableRight="@drawable/dropdown"
+                    android:focusableInTouchMode="false"
                     android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -186,14 +234,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-
+                android:focusableInTouchMode="false"
+                style="@style/Widget.Shrine.TextInputLayout"
                 android:hint="Meetup">
 
                 <EditText
+                    android:id="@+id/lm_meetup"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/dropdown"/>
+                    android:focusableInTouchMode="false"
+                    android:layout_height="wrap_content"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -202,10 +251,10 @@
             <Button
                 android:id="@+id/listit_btn"
                 android:layout_marginTop="10dp"
-                android:layout_margin="4dp"
+                android:layout_margin="8dp"
                 android:layout_width="340dp"
+                style="@style/Widget.Shrine.Button"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="LIST IT!"/>
 
         </LinearLayout>

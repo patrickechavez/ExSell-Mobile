@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.exsell.Adapter.MessageAdapter;
 import com.example.exsell.Adapter.UsersAdapter;
@@ -48,6 +49,8 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.example.exsell.R.id.custom_bar_image;
 
 
 public class Chat extends AppCompatActivity {
@@ -164,7 +167,10 @@ public class Chat extends AppCompatActivity {
 
     private void loadMessages() {
 
-        firebaseFirestore.collection("chat").orderBy("time", Query.Direction.DESCENDING)
+        Query query = FirebaseFirestore.getInstance().collection("chat")
+                .orderBy("time", Query.Direction.ASCENDING);
+
+        firebaseFirestore.collection("chat").orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -188,12 +194,11 @@ public class Chat extends AppCompatActivity {
 
                             }
                         }
-                        Collections.reverse(newMessageModel);
+                      //  Collections.reverse(newMessageModel);
                         messageAdapter = new MessageAdapter(newMessageModel);
                         recyclerView.setAdapter(messageAdapter);
-                       /* messageAdapter.notifyDataSetChanged();
-                        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());*/
-                        addMessage.setText("");
+
+                       // addMessage.setText("");
                     }
                 });
     }

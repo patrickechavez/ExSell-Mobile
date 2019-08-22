@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/fixedprice_toolbar"
+            layout="@layout/app_bar_layout"/>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <com.synnapps.carouselview.CarouselView
+                    android:id="@+id/carouselView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:fillColor="#FFFFFFFF"
+                    app:pageColor="#00000000"
+                    app:autoPlay="false"
+                    app:radius="6dp"
+                    app:slideInterval="3000"
+                    app:strokeColor="#FF777777"
+                    app:strokeWidth="1dp"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/fp1_circleImageView"
+                            android:layout_width="40sp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ic_launcher_background"/>
+
+                        <TextView
+                            android:id="@+id/fp1_ownerTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/fp1_circleImageView"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="16dp"
+                            android:text="John Patrick"
+                            android:textSize="16sp"
+                            android:textAppearance="?attr/textAppearanceOverline" />
+
+                        <TextView
+                            android:id="@+id/fp1_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:text="$500"
+                            android:textSize="32sp"
+                            android:layout_gravity="center"
+                            android:textAppearance="?attr/textAppearanceHeadline6"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/fp1_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:text="Flow Shirt Blouse"
+                    android:textSize="32sp"/>
+
+                <TextView
+                    android:id="@+id/fp1_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textSize="16sp"
+                    android:text="@string/quickbrownfox"/>
+
+                <TextView
+                    android:id="@+id/moreDetailsTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="showMoreDetails"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14dp"
+                    android:drawableRight="@drawable/dropdown"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:text="MORE DETAILS"/>
+
+                <View
+                    android:id="@+id/Viewview"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="16dp"
+                    android:background="@android:color/black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                        android:id="@+id/expandableLinearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:ael_expanded="false"
+                        app:ael_duration="300"
+                        app:ael_interpolator="accelerate"
+                        app:ael_orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/backStoryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:textAppearance="?attr/textAppearanceButton"
+                            android:text="Backstory"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"/>
+
+                        <TextView
+                            android:id="@+id/backStoryTextView"
+                            android:layout_below="@+id/backStoryText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:textSize="14dp"
+                            android:layout_marginLeft="16dp"
+                            android:textAppearance="?attr/textAppearanceCaption"
+                            android:text="@string/quickbrownfox"
+                            android:layout_marginTop="8dp"/>
+
+                        <TextView
+                            android:id="@+id/bounceBackText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:textAppearance="?attr/textAppearanceButton"
+                            android:text="Bounce Back Plan"
+                            android:layout_below="@id/backStoryTextView"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"/>
+
+                        <TextView
+                            android:id="@+id/bounceBackTextView"
+                            android:layout_below="@id/bounceBackText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:textSize="14dp"
+                            android:layout_marginLeft="16dp"
+                            android:textAppearance="?attr/textAppearanceCaption"
+                            android:text="@string/quickbrownfox"
+                            android:layout_marginTop="8dp"/>
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_below="@id/bounceBackTextView"
+                            android:textSize="14dp"
+                            android:textAppearance="?attr/textAppearanceCaption"
+                            android:text="kwe"
+                            android:layout_marginTop="8dp"/>
+                        <!--<View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_margin="16dp"
+                            android:layout_below="@+id/bounceBackTextView"
+                            android:background="@android:color/black"/>-->
+
+                    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp">
+
+                    <TextView
+                        android:id="@+id/fp_textViewQuantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:text="Quantity:"/>
+
+                    <TextView
+                        android:id="@+id/fp1_quantity"
+                        android:layout_width ="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        android:layout_toRightOf="@id/fp_textViewQuantity"
+                        android:text="4 available"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/fm_meetupTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Meetup:"
+                        android:textAppearance="?attr/textAppearanceBody2"/>
+
+                    <TextView
+                        android:id="@+id/fp1_meetup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        android:layout_toRightOf="@+id/fm_meetupTextView"
+                        android:text="Cebu City, PH"
+                        />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="16dp"
+                    android:background="@android:color/black"/>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fp1_addtocartbtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginBottom="16dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        style="@style/Widget.Shrine.Button"
+                        app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
+                        android:layout_gravity="center_horizontal"
+                        app:icon="@drawable/add_shopping_cart"
+                        app:iconTint="@android:color/black"
+                        app:iconGravity="textStart"
+                        android:textAppearance="?attr/textAppearanceButton"
+                        android:text="ADD TO CART" />
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+

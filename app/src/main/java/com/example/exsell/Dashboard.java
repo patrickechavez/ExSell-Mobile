@@ -1,55 +1,36 @@
 package com.example.exsell;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.media.Image;
-import android.media.audiofx.DynamicsProcessing;
 import android.os.Bundle;
 
-
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
 import android.view.MenuItem;
 
-import com.example.exsell.Models.UploadPicModel;
 import com.example.exsell.fragment.Dashboard_tabPagerAdapter;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import androidx.viewpager.widget.ViewPager;
-
-import android.view.Menu;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-
-
     private FirebaseAuth mAuth;
-    private DocumentReference docRef;
     private FirebaseFirestore firebaseFirestore;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,19 +38,42 @@ public class Dashboard extends AppCompatActivity
         setContentView(R.layout.dashboard_activity);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        tabLayout = findViewById(R.id.tabs);
+        tabLayout.addTab(tabLayout.newTab().setText("Featured"));
+        tabLayout.addTab(tabLayout.newTab().setText("Remnants"));
+        tabLayout.addTab(tabLayout.newTab().setText("Auction"));
+        tabLayout.addTab(tabLayout.newTab().setText("Blogs"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        viewPager = findViewById(R.id.ViewPager);
+        Dashboard_tabPagerAdapter pagerAdapter = new Dashboard_tabPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
+
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        String user_id = mAuth.getCurrentUser().getUid();
-        docRef = firebaseFirestore.collection("users").document(user_id);
-
-        TabLayout tabLayout = findViewById(R.id.dashboard_tabs);
-        ViewPager Pager = findViewById(R.id.dashboard_viewpager);
-
-        Dashboard_tabPagerAdapter Dashboard_tabPagerAdapter = new Dashboard_tabPagerAdapter(getSupportFragmentManager());
-        Pager.setAdapter(Dashboard_tabPagerAdapter);
-        tabLayout.setupWithViewPager(Pager);
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -78,9 +82,11 @@ public class Dashboard extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
-
     }
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -95,43 +101,54 @@ public class Dashboard extends AppCompatActivity
 
 
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        int id = item.getItemId();
 
-        String user_id = mAuth.getCurrentUser().getUid();
-        switch(item.getItemId()){
+        switch (id){
 
-            case R.id.list_items:
+            case R.id.nav_home:
 
-                Intent listRemnants = new Intent(Dashboard.this, ListRemnants.class);
-                startActivity(listRemnants);
+                Intent i = new Intent(Dashboard.this, Dashboard.class);
+                startActivity(i);
+                break;
+
+            case R.id.nav_listRemnant:
+
+                Intent lm = new Intent(Dashboard.this, ListRemnants.class);
+                startActivity(lm);
+                break;
+
+            case R.id.nav_chat:
+
+                Intent chat = new Intent(Dashboard.this, Dashboard.class);
+                startActivity(chat);
 
                 break;
 
-            case R.id.account:
-                Intent account = new Intent(Dashboard.this, Account.class);
-                startActivity(account);
+            case R.id.nav_notification:
+
 
                 break;
 
-            case R.id.messages:
-                Intent message = new Intent(Dashboard.this, Message.class);
-                startActivity(message);
+            case R.id.nav_profile:
 
+                Intent profile = new Intent(Dashboard.this, Account.class);
+                startActivity(profile);
                 break;
 
-            case R.id.notification:
-                break;
+            case R.id.nav_logout:
 
-            case R.id.logout:
+
 
                 mAuth.signOut();
-                sendToLogin();
-                break;
+                finish();
+                Intent logout = new Intent(Dashboard.this, Login.class);
+                startActivity(logout);
 
+                break;
         }
 
 
@@ -139,38 +156,4 @@ public class Dashboard extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
-    private void sendToLogin() {
-
-        Intent login = new Intent(Dashboard.this, Login.class);
-        startActivity(login);
-        finish();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-
-            sendToLogin();
-        }else{
-
-            docRef.update("online", "true");
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null) {
-            docRef.update("online", "true");
-        }
-    }
-
 }

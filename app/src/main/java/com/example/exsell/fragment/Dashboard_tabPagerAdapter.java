@@ -9,18 +9,14 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 public class Dashboard_tabPagerAdapter extends FragmentStatePagerAdapter {
 
 
-    String[] tabarray = new String[] {"Hot Deals", "Shop","Auction","Stories"};
-    Integer number = 4;
+    int countTab;
 
-    public Dashboard_tabPagerAdapter(@NonNull FragmentManager fm) {
+    public Dashboard_tabPagerAdapter(@NonNull FragmentManager fm, int countTab) {
         super(fm);
+
+        this.countTab = countTab;
     }
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return tabarray[position];
-    }
 
 
 
@@ -35,7 +31,7 @@ public class Dashboard_tabPagerAdapter extends FragmentStatePagerAdapter {
                 return hotdeal;
 
             case 1:
-                dashboard_shop_fragment shop = new dashboard_shop_fragment();
+                dashboard_fixedprice_fragment shop = new dashboard_fixedprice_fragment();
                 return shop;
 
             case 2:
@@ -53,6 +49,6 @@ public class Dashboard_tabPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return number;
+        return countTab;
     }
 }

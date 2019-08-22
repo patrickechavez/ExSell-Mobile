@@ -14,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -23,12 +23,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp" />
 
-
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="2dp"
                 android:background="@drawable/recycler_divider" />
-
 
             <LinearLayout
                 android:layout_gravity="center"
@@ -41,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_margin="4dp"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Shrine.TextInputLayout"
                     android:hint="Remnant Title">
 
                     <EditText
@@ -54,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_margin="4dp"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Shrine.TextInputLayout"
                     android:hint="Remnant Description">
 
 
@@ -72,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_margin="4dp"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Shrine.TextInputLayout"
                     android:hint="Remnants Back Story">
 
 
@@ -90,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_margin="4dp"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Shrine.TextInputLayout"
                     android:hint="What is your bounce back plan?">
 
 
@@ -106,7 +104,7 @@
 
                 <Button
                     android:id="@+id/lm_nextBtn"
-                    style="@style/Widget.MaterialComponents.Button"
+                    style="@style/Widget.Shrine.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"

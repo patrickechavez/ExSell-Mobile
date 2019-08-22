@@ -12,9 +12,10 @@ import com.example.exsell.Models.SelectCategoryModel;
 import com.example.exsell.R;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class SelectCategoryAdapter extends FirestoreRecyclerAdapter<SelectCategoryModel, SelectCategoryAdapter.SelectCategoryHolder> {
-
+    private OnItemClickListener listener;
 
 
     public SelectCategoryAdapter(@NonNull FirestoreRecyclerOptions<SelectCategoryModel> options) {
@@ -46,6 +47,24 @@ public class SelectCategoryAdapter extends FirestoreRecyclerAdapter<SelectCatego
             super(itemView);
 
             textViewCategoryName = itemView.findViewById(R.id.selectCategory_textView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION && listener != null){
+                        listener.onItemClick(getSnapshots().getSnapshot(position), position);
+
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 }

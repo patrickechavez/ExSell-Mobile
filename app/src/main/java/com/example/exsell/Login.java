@@ -1,6 +1,7 @@
 package com.example.exsell;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -38,11 +39,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         login_password = findViewById(R.id.login_password);
         login_loginbtn = findViewById(R.id.login_loginbtn);
         login_registerbtn = findViewById(R.id.login_registerbtn);
-        login_forgotypbtn = findViewById(R.id.login_forgotypbtn);
+        //login_forgotypbtn = findViewById(R.id.login_forgotypbtn);
 
         login_loginbtn.setOnClickListener(this);
         login_registerbtn.setOnClickListener(this);
-        login_forgotypbtn.setOnClickListener(this);
+        //login_forgotypbtn.setOnClickListener(this);
 
     }
 
@@ -80,8 +81,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 startActivity(register);
                 break;
 
-            case R.id.login_forgotypbtn:
-                break;
+            /*case R.id.login_forgotypbtn:
+                break;*/
         }
 
     }
