@@ -7,14 +7,7 @@
     <!--Google Map and places-->
     <string name="google_places_API">AIzaSyBQEzdSi1_nTTrdtirP8rzitPXBxjeKdd8</string>
 
-    <!--DURATION LIST REMNANTS-->
-    <string-array name="duration">
-        <item>3 days</item>
-        <item>5 days</item>
-        <item>7 days</item>
-        <item>12 days</item>
-        <item>15 days</item>
-    </string-array>
+
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

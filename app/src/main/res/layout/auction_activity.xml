@@ -9,10 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/fixedprice_toolbar"
-            layout="@layout/app_bar_layout"/>
-
 
         <ScrollView
             android:layout_width="match_parent"
@@ -23,11 +19,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
                 <com.synnapps.carouselview.CarouselView
-                    android:id="@+id/fixedPricecarouselView"
+                    android:id="@+id/auctionCarouselViews"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_height="300dp"
                     app:fillColor="#FFFFFFFF"
                     app:pageColor="#00000000"
                     app:autoPlay="false"
@@ -50,30 +46,32 @@
                         android:layout_margin="16dp">
 
                         <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/fp1_circleImageView"
+                            android:id="@+id/auction_circleImageView"
                             android:layout_width="40sp"
                             android:layout_height="40dp"
                             android:src="@drawable/ic_launcher_background"/>
 
                         <TextView
-                            android:id="@+id/fp1_ownerTextView"
+                            android:id="@+id/auction_ownerTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/fp1_circleImageView"
+                            android:layout_toRightOf="@id/auction_circleImageView"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="16dp"
+                            android:textColor="#442C2E"
                             android:text="John Patrick"
                             android:textSize="16sp"
                             android:textAppearance="?attr/textAppearanceOverline" />
 
                         <TextView
-                            android:id="@+id/fp1_price"
+                            android:id="@+id/auction_bidPrice"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="end"
                             android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:text="$500"
+                            android:textColor="#442C2E"
                             android:textSize="32sp"
                             android:layout_gravity="center"
                             android:textAppearance="?attr/textAppearanceHeadline6"/>
@@ -83,16 +81,17 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/fp1_title"
+                    android:id="@+id/auction_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:text="Flow Shirt Blouse"
+                    android:textColor="#442C2E"
                     android:textSize="32sp"/>
 
                 <TextView
-                    android:id="@+id/fp1_description"
+                    android:id="@+id/auction_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -101,12 +100,13 @@
                     android:text="@string/quickbrownfox"/>
 
                 <TextView
-                    android:id="@+id/moreDetailsTextView"
+                    android:id="@+id/auction_moreDetailsTextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:onClick="showMoreDetails"
                     android:layout_marginBottom="8dp"
                     android:layout_marginRight="16dp"
+                    android:textColor="#442C2E"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:textSize="14dp"
@@ -115,7 +115,7 @@
                     android:text="MORE DETAILS"/>
 
                 <View
-                    android:id="@+id/Viewview"
+                    android:id="@+id/auction_Viewview"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_margin="16dp"
@@ -128,7 +128,7 @@
 
 
                     <com.github.aakira.expandablelayout.ExpandableRelativeLayout
-                        android:id="@+id/expandableLinearLayout"
+                        android:id="@+id/auction_expandableLinearLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:ael_expanded="false"
@@ -137,7 +137,7 @@
                         app:ael_orientation="vertical">
 
                         <TextView
-                            android:id="@+id/backStoryText"
+                            android:id="@+id/auction_backStoryText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
@@ -148,8 +148,8 @@
                             android:layout_marginTop="16dp"/>
 
                         <TextView
-                            android:id="@+id/backStoryTextView"
-                            android:layout_below="@+id/backStoryText"
+                            android:id="@+id/auction_backStoryTextView"
+                            android:layout_below="@+id/auction_backStoryText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="16dp"
@@ -160,7 +160,7 @@
                             android:layout_marginTop="8dp"/>
 
                         <TextView
-                            android:id="@+id/bounceBackText"
+                            android:id="@+id/auction_bounceBackText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
@@ -172,7 +172,7 @@
                             android:layout_marginTop="16dp"/>
 
                         <TextView
-                            android:id="@+id/bounceBackTextView"
+                            android:id="@+id/auction_bounceBackTextView"
                             android:layout_below="@id/bounceBackText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -183,24 +183,7 @@
                             android:text="@string/quickbrownfox"
                             android:layout_marginTop="8dp"/>
 
-                        <TextView
 
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:layout_below="@id/bounceBackTextView"
-                            android:textSize="14dp"
-                            android:textAppearance="?attr/textAppearanceCaption"
-                            android:text="kwe"
-                            android:layout_marginTop="8dp"/>
-                        <!--<View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_margin="16dp"
-                            android:layout_below="@+id/bounceBackTextView"
-                            android:background="@android:color/black"/>-->
 
                     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -208,28 +191,59 @@
 
 
                 <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp">
 
                     <TextView
-                        android:id="@+id/fp_textViewQuantity"
+                        android:id="@+id/auction_startPriceTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textAppearance="?attr/textAppearanceBody2"
-                        android:text="Quantity:"/>
+                        android:text="Start Price:"/>
 
                     <TextView
-                        android:id="@+id/fp1_quantity"
+                        android:id="@+id/auction_startPrice"
                         android:layout_width ="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:layout_marginLeft="16dp"
                         android:layout_centerVertical="true"
                         android:textAppearance="?attr/textAppearanceBody1"
-                        android:layout_toRightOf="@id/fp_textViewQuantity"
-                        android:text="4 available"
+                        android:layout_toRightOf="@id/auction_startPriceTextView"
+                        android:text="₱ 525.52"
+                        />
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/auction_meetupTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Meetup"
+                        android:textAppearance="?attr/textAppearanceBody2"/>
+
+                    <TextView
+                        android:id="@+id/auction_meetup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        android:layout_toRightOf="@+id/auction_meetupTextView"
+                        android:text="Cebu City, PH"
                         />
                 </RelativeLayout>
 
@@ -242,23 +256,23 @@
                     android:layout_marginBottom="16dp">
 
                     <TextView
-                        android:id="@+id/fm_meetupTextView"
+                        android:id="@+id/auction_endTimeTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:text="Meetup:"
+                        android:text="End Time and Date:"
                         android:textAppearance="?attr/textAppearanceBody2"/>
 
                     <TextView
-                        android:id="@+id/fp1_meetup"
+                        android:id="@+id/auction_endTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:layout_marginLeft="16dp"
                         android:layout_centerVertical="true"
                         android:textAppearance="?attr/textAppearanceBody1"
-                        android:layout_toRightOf="@+id/fm_meetupTextView"
-                        android:text="Cebu City, PH"
+                        android:layout_toRightOf="@+id/auction_endTimeTextView"
+                        android:text="5:42 6-3-63"
                         />
                 </RelativeLayout>
 
@@ -268,26 +282,35 @@
                     android:layout_margin="16dp"
                     android:background="@android:color/black"/>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:layout_margin="4dp"
+                    android:hint="Bid Amount">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/fp1_addtocartbtn"
+                    <EditText
+                        android:id="@+id/auction_bidAmount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPrimaryDark"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginRight="32dp"
-                        android:layout_marginBottom="16dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        style="@style/Widget.Shrine.Button"
-                        app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
-                        android:layout_gravity="center_horizontal"
-                        app:icon="@drawable/add_shopping_cart"
-                        app:iconTint="@android:color/black"
-                        app:iconGravity="textStart"
-                        android:textAppearance="?attr/textAppearanceButton"
-                        android:text="ADD TO CART" />
+                        android:layout_marginLeft="16dp"
+                        android:inputType="number"
+                        android:layout_marginRight="16dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/auction_placeBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
+                    style="@style/Widget.Shrine.Button"
+                    android:backgroundTint="#d3d3d3"
+                    android:text="PLACE BID"
+                    android:enabled="false"
+                    android:layout_marginBottom="8dp"
+                    android:textAppearance="?attr/textAppearanceButton"/>
             </LinearLayout>
         </ScrollView>
 

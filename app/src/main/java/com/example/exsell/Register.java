@@ -98,6 +98,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     userMap.put("firstName", fname);
                     userMap.put("lastName", lname);
                     userMap.put("imageUrl", "default");
+                    userMap.put("wallet", "0");
+                    userMap.put("type", "user");
 
                     firebaseFirestore.collection("users").document(user_id).set(userMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {

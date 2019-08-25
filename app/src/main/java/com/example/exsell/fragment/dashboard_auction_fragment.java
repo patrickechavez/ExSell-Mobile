@@ -1,32 +1,92 @@
 package com.example.exsell.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.exsell.Adapter.AuctionAdapter;
+import com.example.exsell.Adapter.FixedPriceAdapter;
+import com.example.exsell.Auction;
+import com.example.exsell.FixedPrice;
+import com.example.exsell.Models.AuctionModel;
 import com.example.exsell.R;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class dashboard_auction_fragment extends Fragment {
-
-
-    public dashboard_auction_fragment() {
-        // Required empty public constructor
-    }
-
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private AuctionAdapter auctionAdapter;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.dashboard_fragment_auction, container, false);
+        view = inflater.inflate(R.layout.dashboard_fragment_auction, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        setUpRecyclerView();
+        return  view;
     }
 
+
+    private void setUpRecyclerView() {
+
+        Query query = firebaseFirestore.collection("auctionRemnants")
+                .orderBy("timeStamp", Query.Direction.DESCENDING);
+
+
+        FirestoreRecyclerOptions<AuctionModel> options = new FirestoreRecyclerOptions.Builder<AuctionModel>()
+                .setQuery(query, AuctionModel.class)
+                .build();
+
+        auctionAdapter = new AuctionAdapter(options);
+
+        RecyclerView recyclerView = view.findViewById(R.id.auctionRecycleView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        recyclerView.setAdapter(auctionAdapter);
+
+        auctionAdapter.setOnItemClickListener(new FixedPriceAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                // FixedPriceModel fixedPriceModel = documentSnapshot.toObject(FixedPriceModel.class);
+                String id = documentSnapshot.getId();
+                Toast.makeText(getContext(), ""+id, Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getContext(), Auction.class);
+                    i.putExtra("auctionId", id);
+                startActivity(i);
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        auctionAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        auctionAdapter.stopListening();
+    }
 }

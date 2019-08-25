@@ -45,8 +45,6 @@ public class Select_Category extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView_selectCategory);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -59,10 +57,6 @@ public class Select_Category extends AppCompatActivity {
 
                 //Toast.makeText(getContext(), ""+id, Toast.LENGTH_SHORT).show();
                // Intent intent = new Intent(Select_Category.this, )
-
-
-
-
             }
         });
 

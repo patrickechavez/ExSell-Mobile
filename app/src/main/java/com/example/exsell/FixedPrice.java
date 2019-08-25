@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 
 import com.example.exsell.Models.FixedPriceModel;
@@ -38,12 +39,14 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.exsell.R.drawable.toolbar_transparent;
+
 public class FixedPrice extends AppCompatActivity implements View.OnClickListener {
 
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
-    private TextView textViewTitle, textViewDescription,  textViewBackStory, textViewBounceBack, textViewPrice, textViewQuantity,  textViewMeetup, textViewOwner;
+    private TextView textViewTitle, textViewDescription, textViewBackStory, textViewBounceBack, textViewPrice, textViewQuantity,  textViewMeetup, textViewOwner;
     private String remnantId, owner_id, user_id;
     private CircleImageView userCircleImageView;
     private CarouselView carouselView;
@@ -61,7 +64,7 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
 
         Toolbar toolbar = findViewById(R.id.fixedprice_toolbar);
         setSupportActionBar(toolbar);
-      //  toolbar.setBackgroundColor(Color.parseColor());
+
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -77,7 +80,7 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
         textViewMeetup = findViewById(R.id.fp1_meetup);
         userCircleImageView = findViewById(R.id.fp1_circleImageView);
         textViewOwner = findViewById(R.id.fp1_ownerTextView);
-        carouselView = findViewById(R.id.carouselView);
+        carouselView = findViewById(R.id.fixedPricecarouselView);
         fp1addCartButton = findViewById(R.id.fp1_addtocartbtn);
 
         moreDetailsTextView = findViewById(R.id.moreDetailsTextView);
@@ -113,7 +116,7 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                          usersModel = documentSnapshot.toObject(UsersModel.class);
 
-                           textViewOwner.setText(usersModel.getFirstName());
+                       textViewOwner.setText(usersModel.getFirstName());
                         Picasso.get().load(usersModel.getImageUrl()).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background).into(userCircleImageView);
                     }
                 });

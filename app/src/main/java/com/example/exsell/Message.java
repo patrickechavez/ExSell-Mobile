@@ -51,10 +51,7 @@ public class Message extends AppCompatActivity {
 
         mTabLayout = findViewById(R.id.message_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-
     }
-
-
     @Override
     protected void onStart() {
         super.onStart();

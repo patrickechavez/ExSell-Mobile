@@ -105,9 +105,7 @@ public class List_remnants2_fragment extends Fragment {
     private int count = 0;
     private int count2= 0;
 
-
     private View view;
-
     private String imageString;
 
     @Override
@@ -128,9 +126,6 @@ public class List_remnants2_fragment extends Fragment {
         editTextBreakUpPrice = (EditText) view.findViewById(R.id.breakUpPrice);
         editTextBreakUpQuantity = (EditText) view.findViewById(R.id.lm2_quantity);
 
-
-
-        /*Toast.makeText(getContext(), "duration: "+duration, Toast.LENGTH_SHORT).show();*/
 
         //AUCTION
         editTextAuctionPrice = (EditText) view.findViewById(R.id.lm2_auctionStartPrice);
@@ -154,7 +149,6 @@ public class List_remnants2_fragment extends Fragment {
 
                 String durationDays = adapter.getItem(position).toString();
                 switch (durationDays){
-
                     case "3 days":
 
                         cal.add(Calendar.DAY_OF_MONTH, 3);
@@ -182,11 +176,7 @@ public class List_remnants2_fragment extends Fragment {
             }
         });
 
-
-
-
         //GETTNG DATA FROM LIST REMNANTS 1
-
         listOfPic = getArguments().getParcelableArrayList("listOfPic");
         Log.d(TAG,""+listOfPic);
         title = getArguments().getString("title");
@@ -195,13 +185,9 @@ public class List_remnants2_fragment extends Fragment {
         backStory = getArguments().getString("backStory");
         bounceBack = getArguments().getString("bounceBack");
 
-
-
         //INITIALIZE THE SDK
         Places.initialize(getActivity().getApplicationContext(), "AIzaSyCtPPdDFjHfJ0FWCSpm1OBKWq2HA_UtQLg");
         PlacesClient placesClient  = Places.createClient(getActivity());
-
-
 
 
         //SELECT CATEGORY EDITTEXT
@@ -209,7 +195,6 @@ public class List_remnants2_fragment extends Fragment {
         editTextSelectCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 Bundle b = new Bundle();
                 b.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) listOfPic);
@@ -232,7 +217,6 @@ public class List_remnants2_fragment extends Fragment {
             }
         });
 
-
         //DATA FROM SELECT CATEGORY
        if(getArguments()!= null){
 
@@ -246,11 +230,7 @@ public class List_remnants2_fragment extends Fragment {
            editTextBreakUpPrice.setText(getArguments().getString("price"));
            editTextBreakUpQuantity.setText(getArguments().getString("quantity"));
            editTextSelectCategory.setText(getArguments().getString("categoryName"));
-
-
        }
-
-
 
         //MEETUP EDITTEXT
         editTextMeetup = (EditText) view.findViewById(R.id.lm_meetup);
@@ -349,18 +329,33 @@ public class List_remnants2_fragment extends Fragment {
 
                                         if(count2 == listOfPic.size()){
 
-                                            HashMap<String, Object> auctionRemnants = new HashMap<>();
-                                            auctionRemnants.put("remnantsPicUrl", listImageUrl);
-                                            auctionRemnants.put("title", title);
-                                            auctionRemnants.put("description", description);
-                                            auctionRemnants.put("backStory", backStory);
-                                            auctionRemnants.put("bounceBack", bounceBack);
-                                            auctionRemnants.put("price", price);
-                                            auctionRemnants.put("meetup", meetup);
-                                            auctionRemnants.put("timeStamp", FieldValue.serverTimestamp());
-                                            auctionRemnants.put("categoryId", categoryId);
-                                            auctionRemnants.put("userId", user_id);
-                                            auctionRemnants.put("report", 0);
+                                            HashMap<String, Object> fixedPriceRemnants = new HashMap<>();
+                                            fixedPriceRemnants.put("remnantsPicUrl", listImageUrl);
+                                            fixedPriceRemnants.put("title", title);
+                                            fixedPriceRemnants.put("description", description);
+                                            fixedPriceRemnants.put("backStory", backStory);
+                                            fixedPriceRemnants.put("bounceBack", bounceBack);
+                                            fixedPriceRemnants.put("price", price);
+                                            fixedPriceRemnants.put("meetup", meetup);
+                                            fixedPriceRemnants.put("timeStamp", FieldValue.serverTimestamp());
+                                            fixedPriceRemnants.put("categoryId", categoryId);
+                                            fixedPriceRemnants.put("userId", user_id);
+                                            fixedPriceRemnants.put("report", 0);
+                                            fixedPriceRemnants.put("status", "active");
+
+                                            firebaseFirestore.collection("fixedPriceRemnants").add(fixedPriceRemnants)
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                                                            if(task.isSuccessful()){
+
+                                                                Toast.makeText(getContext(), "Fixed Succesfully Added", Toast.LENGTH_SHORT).show();
+                                                                Intent fixedPrice = new Intent(getContext(), Dashboard.class);
+                                                                startActivity(fixedPrice);
+                                                            }
+                                                        }
+                                                    });
 
                                         }
                                     }
@@ -398,7 +393,6 @@ public class List_remnants2_fragment extends Fragment {
 
                                     Log.d(TAG, " HAHAH listURl: "+listImageUrl);
 
-
                                 }
                                 else{
 
@@ -406,11 +400,10 @@ public class List_remnants2_fragment extends Fragment {
                                     Toast.makeText(getActivity(), ""+error, Toast.LENGTH_SHORT).show();
                                 }
 
-
                                 if(count == listOfPic.size()){
 
                                     HashMap<String, Object> auctionRemnants = new HashMap<>();
-                                    auctionRemnants.put("remnantsPicUrl", listImageUrl);
+                                    auctionRemnants.put("auctionImageUrl", listImageUrl);
                                     auctionRemnants.put("title", title);
                                     auctionRemnants.put("description", description);
                                     auctionRemnants.put("backStory", backStory);
@@ -422,6 +415,7 @@ public class List_remnants2_fragment extends Fragment {
                                     auctionRemnants.put("categoryId", categoryId);
                                     auctionRemnants.put("userId", user_id);
                                     auctionRemnants.put("report", 0);
+                                    auctionRemnants.put("active", "active");
 
                                     firebaseFirestore.collection("auctionRemnants").add(auctionRemnants).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
@@ -440,8 +434,7 @@ public class List_remnants2_fragment extends Fragment {
                                             }
                                         }
                                     });
-                                    Intent i = new Intent(getActivity(),Dashboard.class);
-                                    startActivity(i);
+
 
                                 }
                             }
@@ -449,7 +442,6 @@ public class List_remnants2_fragment extends Fragment {
                     }
                 }
             }//END OF ONCLICK
-
         }); //END OF SETONCLICK LISTENER
         return view;
     }

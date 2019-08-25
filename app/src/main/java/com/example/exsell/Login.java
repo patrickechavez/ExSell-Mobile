@@ -44,7 +44,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         login_loginbtn.setOnClickListener(this);
         login_registerbtn.setOnClickListener(this);
         //login_forgotypbtn.setOnClickListener(this);
-
     }
 
     @Override
@@ -64,6 +63,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                    public void onComplete(@NonNull Task<AuthResult> task) {
 
                        if(task.isSuccessful()){
+
 
                            sendToDashboard();
                        }else{
@@ -86,7 +86,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
 
     }
-
     private void sendToDashboard() {
 
         Intent dashboard = new Intent(Login.this, Dashboard.class);
