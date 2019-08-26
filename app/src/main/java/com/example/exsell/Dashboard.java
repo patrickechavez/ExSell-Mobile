@@ -3,19 +3,29 @@ package com.example.exsell;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.exsell.fragment.Dashboard_tabPagerAdapter;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +41,9 @@ public class Dashboard extends AppCompatActivity
     private FirebaseFirestore firebaseFirestore;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private ImageView imageViewDashboard;
+    private TextView textViewFirstName, textViewLastName;
+    private static final String TAG = "DASHBOARD";
 
 
 
@@ -41,6 +54,47 @@ public class Dashboard extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        /*imageViewDashboard = findViewById(R.id.dashboard_imageView);
+        textViewFirstName = findViewById(R.id.dashboard_firstnameTextView);
+        textViewLastName = findViewById(R.id.dashboard_lastnameTextView);
+
+        DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                DocumentSnapshot document = task.getResult();
+
+                if(task.isSuccessful()){
+
+                    String firstname = document.getString("firstName");
+                    String lastname = document.getString("lastName");
+                    String imageUrl = document.getString("imageUrl");
+
+                    Log.d(TAG, "hahah"+ firstname+" "+lastname+" "+imageUrl);
+
+                    Toast.makeText(Dashboard.this, ""+firstname, Toast.LENGTH_SHORT).show();
+
+
+                    textViewFirstName.setText(firstname);
+                    textViewLastName.setText(lastname);
+                    Picasso.get().load(imageUrl)
+                            .placeholder(R.mipmap.ic_launcher_round)
+                            .error(R.mipmap.ic_launcher_round).into(imageViewDashboard);
+                }
+            }
+        });
+*/
+
+
+
+
 
 
         tabLayout = findViewById(R.id.tabs);
@@ -145,9 +199,8 @@ public class Dashboard extends AppCompatActivity
 
             case R.id.nav_chat:
 
-                Intent chat = new Intent(Dashboard.this, Dashboard.class);
-                startActivity(chat);
-
+                Intent message = new Intent(Dashboard.this, Message.class);
+                startActivity(message);
                 break;
 
             case R.id.nav_notification:
@@ -162,9 +215,7 @@ public class Dashboard extends AppCompatActivity
                 break;
 
             case R.id.nav_logout:
-
-
-
+                
                 mAuth.signOut();
                 finish();
                 Intent logout = new Intent(Dashboard.this, Login.class);

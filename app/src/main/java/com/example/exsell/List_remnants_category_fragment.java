@@ -55,9 +55,8 @@ public class List_remnants_category_fragment extends Fragment {
         description = getArguments().getString("description");
         backStory = getArguments().getString("backStory");
         bounceBack = getArguments().getString("bounceBack");
-
-         price = getArguments().getString("price");
-         quantity = getArguments().getString("quantity");
+        price = getArguments().getString("price");
+        quantity = getArguments().getString("quantity");
 
         setUpRecyclerView();
 
@@ -127,4 +126,5 @@ public class List_remnants_category_fragment extends Fragment {
         super.onStop();
         adapter.stopListening();
     }
+
 }

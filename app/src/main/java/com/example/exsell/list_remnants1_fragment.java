@@ -73,6 +73,8 @@ public class list_remnants1_fragment extends Fragment {
                 .textOnNothingSelected("Please select atleast 1")
                 .startAlbum();
 
+
+
         recyclerView = view.findViewById(R.id.list_remnants_recyclerview1);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);

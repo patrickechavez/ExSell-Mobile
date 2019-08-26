@@ -8,13 +8,13 @@
     tools:context=".ListRemnants">
 
     <include
-        android:id="@+id/list_remnants_appbar"
+        android:id="@+id/list_remnants_app_bar"
         layout="@layout/app_bar_layout"/>
 
     <FrameLayout
         android:id="@+id/list_remnants_container"
         android:layout_width="match_parent"
-        android:layout_below="@+id/list_remnants_appbar"
+        android:layout_below="@+id/list_remnants_app_bar"
         android:layout_height="match_parent">
 
     </FrameLayout>

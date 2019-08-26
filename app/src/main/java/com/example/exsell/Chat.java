@@ -75,8 +75,6 @@ public class Chat extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private FirebaseFirestore firebaseFirestore;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,8 +90,6 @@ public class Chat extends AppCompatActivity {
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
-
-
         user_id = getIntent().getStringExtra("receiver_id");
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -158,13 +154,7 @@ public class Chat extends AppCompatActivity {
 
 
         loadMessages();
-
-
-
     }
-
-
-
     private void loadMessages() {
 
         Query query = FirebaseFirestore.getInstance().collection("chat")
@@ -190,15 +180,11 @@ public class Chat extends AppCompatActivity {
                                         doc.getDate("time")
 
                                 ));
-
-
                             }
                         }
-                      //  Collections.reverse(newMessageModel);
+
                         messageAdapter = new MessageAdapter(newMessageModel);
                         recyclerView.setAdapter(messageAdapter);
-
-                       // addMessage.setText("");
                     }
                 });
     }

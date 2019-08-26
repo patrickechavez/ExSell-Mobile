@@ -45,6 +45,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AddressComponents;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
@@ -454,9 +455,12 @@ public class List_remnants2_fragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
 
-                Toast.makeText(getActivity(), ""+place.getName(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getActivity(), ""+place.getName(), Toast.LENGTH_SHORT).show();
                 String meetup = place.getName();
-                editTextMeetup.setText(meetup);
+                //String placeId = place.
+                //editTextMeetup.setText(meetup);
+
+                //Toast.makeText(getContext(), "placeId: "+placeId, Toast.LENGTH_SHORT).show();
 
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // TODO: Handle the error.

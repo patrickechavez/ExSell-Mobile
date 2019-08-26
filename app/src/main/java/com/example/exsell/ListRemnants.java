@@ -15,9 +15,10 @@ public class ListRemnants extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_remnants_activity);
 
-        Toolbar toolbar = findViewById(R.id.list_remnants_appbar);
+        Toolbar toolbar = findViewById(R.id.list_remnants_app_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("List Remnants");
+        getSupportActionBar().setTitle("LIST REMNANTS");
+
 
 
         FragmentManager fm = getSupportFragmentManager();

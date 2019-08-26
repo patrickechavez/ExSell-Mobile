@@ -148,7 +148,6 @@ public class Account extends AppCompatActivity implements View.OnClickListener {
                 final String lastName = acc_lname.getText().toString().trim();
                 final String user_id = mAuth.getCurrentUser().getUid();
 
-                if(isChanged) {
 
                     final StorageReference image_path = storageReference.child("profile_images").child(user_id + ".jpg");
                     UploadTask uploadTask = image_path.putFile(mainImageURI);
@@ -168,8 +167,19 @@ public class Account extends AppCompatActivity implements View.OnClickListener {
 
                             if (task.isSuccessful()) {
 
+                                Uri downloadUri = task.getResult();
+                                String imageUrl = downloadUri.toString();
 
-                                storeFirestore(task, firstName, lastName, user_id);
+                                firebaseFirestore.collection("users").document(user_id)
+                                        .update(
+                                                "firstName", firstName,
+                                    "lastName", lastName,
+                                                  "imageUrl", imageUrl
+                                        );
+
+                                Toast.makeText(Account.this, "Successfully Updated", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(Account.this, Dashboard.class);
+                                startActivity(i);
 
                             } else {
                                 String error = task.getException().getMessage();
@@ -179,10 +189,6 @@ public class Account extends AppCompatActivity implements View.OnClickListener {
                         }
                     });
 
-                }else{
-
-                    storeFirestore(null, firstName, lastName, user_id);
-                }
                 break;
 
             case R.id.acc_image:
@@ -209,26 +215,7 @@ public class Account extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private void storeFirestore(@NonNull Task<Uri> task, String firstName, String lastName, String user_id){
 
-        Uri downloadUri;
-
-        if(task != null){
-
-            downloadUri = task.getResult();
-        }else{
-
-            downloadUri = mainImageURI;
-        }
-
-        firebaseFirestore.collection("users").document(user_id)
-                .update("firstName", firstName,
-                        "lastName", lastName,
-                        "imageUrl", downloadUri.toString());
-
-
-        Toast.makeText(Account.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
-    }
 
     private void imagePicker() {
 

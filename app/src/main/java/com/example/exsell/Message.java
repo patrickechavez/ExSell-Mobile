@@ -64,7 +64,6 @@ public class Message extends AppCompatActivity {
         }
 
     }
-
     @Override
     protected void onStop() {
         super.onStop();
