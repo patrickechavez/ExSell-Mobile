@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -91,25 +92,31 @@ public class List_remnants_category_fragment extends Fragment {
 
 
                 Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) listOfPic);
+                /*bundle.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) listOfPic);
                 bundle.putString("title", title);
                 bundle.putString("description", description);
                 bundle.putString("backStory", backStory);
                 bundle.putString("bounceBack", bounceBack);
 
-                bundle.putString("id", id);
+                bundle.putString("id", id);*/
                 bundle.putString("categoryName", categoryName);
-                bundle.putString("price", price);
+                /*bundle.putString("price", price);
                 bundle.putString("quantity",quantity);
-                //bundle.putString("meetup",meetup);
+                bundle.putString("meetup",meetup);*/
 
-
-                Fragment lm_fragment2  = new List_remnants2_fragment();
+               /* Fragment lm_fragment2  = new List_remnants2_fragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 lm_fragment2.setArguments(bundle);
                 transaction.replace(R.id.list_remnants_container, lm_fragment2);
                 transaction.addToBackStack(null);
-                transaction.commit();
+                transaction.commit();*/
+
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                List_remnants2_fragment lm_fragment2 = new List_remnants2_fragment();
+                lm_fragment2.setArguments(bundle);
+                manager.popBackStack();
+
+
 
             }
         });
@@ -126,5 +133,8 @@ public class List_remnants_category_fragment extends Fragment {
         super.onStop();
         adapter.stopListening();
     }
+
+
+
 
 }

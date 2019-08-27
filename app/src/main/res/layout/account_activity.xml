@@ -34,6 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="First Name"
+                style="@style/Widget.Shrine.TextInputLayout"
                 android:layout_margin="4dp">
 
                 <EditText
@@ -49,6 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Last Name"
+                style="@style/Widget.Shrine.TextInputLayout"
                 android:layout_margin="4dp">
 
                 <EditText
@@ -64,6 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
+                style="@style/Widget.Shrine.TextInputLayout"
                 android:layout_margin="4dp">
 
                 <EditText
@@ -78,12 +81,14 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/acc_updatebtn"
                 android:layout_width="match_parent"
+                style="@style/Widget.Shrine.Button"
                 android:layout_height="wrap_content"
                 android:text="UPDATE SETTINGS"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/acc_changepassbtn"
                 android:layout_width="match_parent"
+                style="@style/Widget.Shrine.Button"
                 android:layout_height="wrap_content"
                 android:text="CHANGE PASSWORD"/>
 

@@ -49,6 +49,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.example.exsell.R.color.buttonDisabled;
 import static com.example.exsell.R.color.colorPrimaryDark;
 import static com.example.exsell.R.drawable.toolbar_transparent;
+import static com.example.exsell.R.drawable.wallet;
 
 public class Auction extends AppCompatActivity implements View.OnClickListener {
 
@@ -252,6 +253,21 @@ public class Auction extends AppCompatActivity implements View.OnClickListener {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+            String wallet = "";
+
+            DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    if(task.isSuccessful()) {
+
+                        DocumentSnapshot document = task.getResult();
+                        String wallet = document.getString("wallet");
+                    }
+                }
+            });
+
             String bidAmount = editTextbidAmount.getText().toString().trim();
             String bidPrice = bidPricePartial.toString().trim();
 
@@ -260,10 +276,12 @@ public class Auction extends AppCompatActivity implements View.OnClickListener {
             try {
 
                // Toast.makeText(Auction.this, "bidPrice:"+Integer.parseInt(bidPrice), Toast.LENGTH_SHORT).show();
-                if (Integer.parseInt(bidAmount) > Integer.parseInt(bidPrice)  && !bidAmount.isEmpty()) {
+                if (Integer.parseInt(bidAmount) > Integer.parseInt(bidPrice)  && !bidAmount.isEmpty() && Integer.parseInt(wallet) > Integer.parseInt(bidPrice)){
 
                     buttonPlaceBid.setEnabled(true);
                     buttonPlaceBid.setBackgroundColor(getResources().getColor(colorPrimaryDark));
+                    editTextbidAmount.setError("Insufficient Balance");
+
                 } else {
                     buttonPlaceBid.setEnabled(false);
                     buttonPlaceBid.setBackgroundColor(getResources().getColor(buttonDisabled));

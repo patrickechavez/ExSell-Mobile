@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Shrine">
-        <activity android:name=".Wallet"></activity>
+        <activity android:name=".WalletDetails"></activity>
+        <activity android:name=".Notification" />
+        <activity android:name=".Wallet">
+
+        </activity>
         <activity android:name=".Cart" />
         <activity android:name=".Auction" />
         <activity
@@ -17,7 +21,6 @@
             android:label="@string/title_activity_dashboard"
             android:theme="@style/Theme.Shrine.NoActionBar" />
         <activity android:name=".FixedPrice" />
-        <activity android:name=".Mycoins" />
         <activity android:name=".ListRemnants" />
         <activity android:name=".Chat" />
         <activity android:name=".Account" />
@@ -38,10 +41,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBQEzdSi1_nTTrdtirP8rzitPXBxjeKdd8" />
     </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

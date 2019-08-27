@@ -58,43 +58,6 @@ public class Dashboard extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        /*imageViewDashboard = findViewById(R.id.dashboard_imageView);
-        textViewFirstName = findViewById(R.id.dashboard_firstnameTextView);
-        textViewLastName = findViewById(R.id.dashboard_lastnameTextView);
-
-        DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-
-
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                DocumentSnapshot document = task.getResult();
-
-                if(task.isSuccessful()){
-
-                    String firstname = document.getString("firstName");
-                    String lastname = document.getString("lastName");
-                    String imageUrl = document.getString("imageUrl");
-
-                    Log.d(TAG, "hahah"+ firstname+" "+lastname+" "+imageUrl);
-
-                    Toast.makeText(Dashboard.this, ""+firstname, Toast.LENGTH_SHORT).show();
-
-
-                    textViewFirstName.setText(firstname);
-                    textViewLastName.setText(lastname);
-                    Picasso.get().load(imageUrl)
-                            .placeholder(R.mipmap.ic_launcher_round)
-                            .error(R.mipmap.ic_launcher_round).into(imageViewDashboard);
-                }
-            }
-        });
-*/
-
-
-
-
 
 
         tabLayout = findViewById(R.id.tabs);
@@ -185,11 +148,6 @@ public class Dashboard extends AppCompatActivity
 
         switch (id){
 
-            case R.id.nav_home:
-
-                Intent i = new Intent(Dashboard.this, Dashboard.class);
-                startActivity(i);
-                break;
 
             case R.id.nav_listRemnant:
 

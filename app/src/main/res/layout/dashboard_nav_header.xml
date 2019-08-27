@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,53 +10,42 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+
     android:theme="@style/Theme.Shrine">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/dashboard_imageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:contentDescription="@string/nav_header_desc"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:src="@mipmap/ic_launcher_round"/>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:weightSum="2">
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:text="Sandra"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-        <TextView
-            android:id="@+id/dashboard_firstnameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:textSize="16sp"
-            android:text="Gerald"
-            android:layout_gravity="center_vertical"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-        <TextView
-            android:id="@+id/dashboard_lastnameTextView"
-            android:layout_width="wrap_content"
-            android:textSize="16sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:layout_toRightOf="@+id/dashboard_firstnameTextView"
-            android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:text="Anderson"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-    </LinearLayout>
-
-    <!--<TextView
+    <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="geraldanderson@gmail.com" />-->
+        android:text="Adams"
+        android:layout_marginLeft="4dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/black"/>
 
 </LinearLayout>

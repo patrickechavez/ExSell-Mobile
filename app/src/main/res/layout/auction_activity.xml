@@ -287,12 +287,14 @@
                     android:layout_height="wrap_content"
                     style="@style/Widget.Shrine.TextInputLayout"
                     android:layout_margin="4dp"
+
                     android:hint="Bid Amount">
 
                     <EditText
                         android:id="@+id/auction_bidAmount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:helperTextEnabled="true"
                         android:layout_marginLeft="16dp"
                         android:inputType="number"
                         android:layout_marginRight="16dp"/>

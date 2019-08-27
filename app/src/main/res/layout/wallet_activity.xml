@@ -1,9 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Wallet">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/wallet_app_bar"
+        layout="@layout/app_bar_layout"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginRight="48dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Balance"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textSize="24dp" />
+
+        <TextView
+            android:id="@+id/wallet_textViewMoneyBalance"
+            android:layout_width="153dp"
+            android:layout_margin="24dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="100.00"
+            android:textAppearance="?attr/textAppearanceHeadline3" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/wallet_cashInButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="CASH IN"
+                style="@style/Widget.Shrine.Button"
+                android:textAppearance="?attr/textAppearanceButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/wallet_cashOutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="CASH OUT"
+                style="@style/Widget.Shrine.Button.TextButton"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="8dp"
+                android:background="@android:color/black"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                app:startIconDrawable="@drawable/peso_icon"
+                style="@style/Widget.Shrine.TextInputLayout"
+                android:hint="Amount">
+
+                <EditText
+                    android:id="@+id/wallet_addMoneyEditText"
+                    android:inputType="numberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/wallet_addMoneyButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
+                style="@style/Widget.Shrine.Button"
+                android:text="ADD MONEY" android:textAppearance="?attr/textAppearanceButton"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

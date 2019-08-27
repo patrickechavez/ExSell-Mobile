@@ -105,6 +105,7 @@ public class List_remnants2_fragment extends Fragment {
     private String radioBtnData = "fixedPriceSelected";
     private int count = 0;
     private int count2= 0;
+    private String categoryNames;
 
     private View view;
     private String imageString;
@@ -181,7 +182,6 @@ public class List_remnants2_fragment extends Fragment {
         listOfPic = getArguments().getParcelableArrayList("listOfPic");
         Log.d(TAG,""+listOfPic);
         title = getArguments().getString("title");
-        Toast.makeText(getActivity(), ""+title, Toast.LENGTH_SHORT).show();
         description = getArguments().getString("description");
         backStory = getArguments().getString("backStory");
         bounceBack = getArguments().getString("bounceBack");
@@ -230,8 +230,17 @@ public class List_remnants2_fragment extends Fragment {
            categoryId = getArguments().getString("id");
            editTextBreakUpPrice.setText(getArguments().getString("price"));
            editTextBreakUpQuantity.setText(getArguments().getString("quantity"));
+            categoryNames = getArguments().getString("categoryName");
            editTextSelectCategory.setText(getArguments().getString("categoryName"));
+           Toast.makeText(getContext(), ""+categoryNames, Toast.LENGTH_SHORT).show();
+       }else{
+
+           Toast.makeText(getContext(), "empty from category", Toast.LENGTH_SHORT).show();
        }
+
+
+
+
 
         //MEETUP EDITTEXT
         editTextMeetup = (EditText) view.findViewById(R.id.lm_meetup);

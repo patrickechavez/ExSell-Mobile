@@ -4,29 +4,30 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Home" />
+
         <item
             android:id="@+id/nav_listRemnant"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/list_remnant"
             android:title="List Remnants" />
         <item
+            android:id="@+id/nav_wallet"
+            android:icon="@drawable/wallet"
+            android:title="My Wallet"/>
+        <item
             android:id="@+id/nav_chat"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/messages"
             android:title="Chat" />
         <item
             android:id="@+id/nav_notification"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/notification"
             android:title="Notification" />
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_menu_share"
-            android:title="My Profile" />
+            android:icon="@drawable/profile"
+            android:title="My Account" />
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/signout"
             android:title="Logout" />
     </group>
 
