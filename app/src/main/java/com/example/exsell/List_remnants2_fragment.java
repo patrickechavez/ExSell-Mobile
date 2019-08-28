@@ -74,7 +74,7 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 
-public class List_remnants2_fragment extends Fragment {
+public class List_remnants2_fragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "remnants2";
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -144,7 +144,6 @@ public class List_remnants2_fragment extends Fragment {
         Calendar cal = Calendar.getInstance();
         String currentTime = df.format(Calendar.getInstance().getTime());
 
-
         editTextFilledExposedDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -193,30 +192,15 @@ public class List_remnants2_fragment extends Fragment {
 
         //SELECT CATEGORY EDITTEXT
         editTextSelectCategory = (EditText) view.findViewById(R.id.lm_select_category);
-        editTextSelectCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        editTextSelectCategory.setOnClickListener(this);
+        //MEETUP EDITTEXT
+        editTextMeetup = (EditText) view.findViewById(R.id.lm_meetup);
+        editTextMeetup.setOnClickListener(this);
+        //LIST THE DATA
+        listitBtn = (Button) view.findViewById(R.id.listit_btn);
+        listitBtn.setOnClickListener(this);
 
-                Bundle b = new Bundle();
-                b.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) listOfPic);
-                b.putString("title", title);
-                b.putString("description", description);
-                b.putString("backStory", backStory);
-                b.putString("bounceBack", bounceBack);
 
-                b.putString("price",editTextBreakUpPrice.getText().toString().trim());
-                b.putString("quantity", editTextBreakUpQuantity.getText().toString().trim());
-                b.putString("meetup", editTextMeetup.getText().toString().trim());
-
-                Fragment lm_category  = new List_remnants_category_fragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                lm_category.setArguments(b);
-                transaction.replace(R.id.list_remnants_container, lm_category);
-                transaction.addToBackStack(null);
-                transaction.commit();
-
-            }
-        });
 
         //DATA FROM SELECT CATEGORY
        if(getArguments()!= null){
@@ -240,33 +224,7 @@ public class List_remnants2_fragment extends Fragment {
 
 
 
-
-
-        //MEETUP EDITTEXT
-        editTextMeetup = (EditText) view.findViewById(R.id.lm_meetup);
-        editTextMeetup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
-
-
-                // Start the autocomplete intent.
-                Intent intent = new Autocomplete.IntentBuilder(
-                        AutocompleteActivityMode.FULLSCREEN, fields)
-                        .setCountry("PH")
-                        .build(getActivity());
-
-
-
-                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-            }
-        });
-
-
         //RADIO BUTTON
-
         radioGroupFormat = (RadioGroup) view.findViewById(R.id.radigroup_format);
         radioBtnFixedPrice = (RadioButton) view.findViewById(R.id.fixedprice_radioBtn);
         radioBtnAuction = (RadioButton) view.findViewById(R.id.auction_radioBtn);
@@ -290,19 +248,99 @@ public class List_remnants2_fragment extends Fragment {
         });
 
 
-        //LIST THE DATA
-        listitBtn = (Button) view.findViewById(R.id.listit_btn);
-        listitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+
+        return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+
+                String meetup = place.getName();
+                editTextMeetup.setText(meetup);
+
+
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+            }
+        }else if(requestCode == 1010){
+
+            if (resultCode == RESULT_OK){
+                String categoryId = data.getStringExtra("categoryId");
+                String categoryName = data.getStringExtra("categoryName");
+
+                editTextSelectCategory.setText(categoryName);
+            }
+        }else{
+
+        }
+
+
+
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+
+            case R.id.lm_select_category:
+
+                Intent categoryIntent = new Intent(getContext(), Select_Category.class);
+                startActivity(categoryIntent);
+
+                startActivityForResult(categoryIntent, 1010);
+
+                /*Bundle b = new Bundle();
+                b.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) listOfPic);
+                b.putString("title", title);
+                b.putString("description", description);
+                b.putString("backStory", backStory);
+                b.putString("bounceBack", bounceBack);
+
+                b.putString("price",editTextBreakUpPrice.getText().toString().trim());
+                b.putString("quantity", editTextBreakUpQuantity.getText().toString().trim());
+                b.putString("meetup", editTextMeetup.getText().toString().trim());
+
+                Fragment lm_category  = new List_remnants_category_fragment();
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                lm_category.setArguments(b);
+                transaction.replace(R.id.list_remnants_container, lm_category);
+                transaction.addToBackStack(null);
+                transaction.commit();*/
+                break;
+
+            case R.id.lm_meetup:
+
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+                // Start the autocomplete intent.
+                Intent intent = new Autocomplete.IntentBuilder(
+                        AutocompleteActivityMode.FULLSCREEN, fields)
+                        .setCountry("PH")
+                        .build(getActivity());
+
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+                break;
+
+            case R.id.listit_btn:
 
                 if(radioBtnData == "fixedPriceSelected"){
 
-                    String price = editTextBreakUpPrice.getText().toString().trim();
-                    String quantity  = editTextBreakUpQuantity.getText().toString().trim();
+                    double price = Double.parseDouble(editTextBreakUpPrice.getText().toString());
+                    double quantity  = Double.parseDouble(editTextBreakUpQuantity.getText().toString());
                     String meetup = editTextMeetup.getText().toString().trim();
 
-                            for(Uri pic: listOfPic) {
+                            /*for(Uri pic: listOfPic) {
 
                                 StorageReference storageReference = firebaseStorage.getReference().child("product_Images").child(pic.toString());
                                 UploadTask uploadTask = (UploadTask) storageReference.putFile(pic);
@@ -370,11 +408,11 @@ public class List_remnants2_fragment extends Fragment {
                                         }
                                     }
                                 });
-                            }
+                            }*/
                 }else{
 
-                    String auctionStartPrice = editTextAuctionPrice.getText().toString().trim();
-                    String auctionEndTime = editTextAuctionEndTime.getText().toString().trim();
+                    double auctionStartPrice = Double.parseDouble(editTextAuctionPrice.getText().toString());
+                    String auctionEndTime = editTextAuctionEndTime.getText().toString();
                     String meetup = editTextMeetup.getText().toString().trim();
 
                     for(Uri pic: listOfPic) {
@@ -444,43 +482,13 @@ public class List_remnants2_fragment extends Fragment {
                                             }
                                         }
                                     });
-
-
                                 }
                             }
                         });
                     }
                 }
-            }//END OF ONCLICK
-        }); //END OF SETONCLICK LISTENER
-        return view;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-
-               // Toast.makeText(getActivity(), ""+place.getName(), Toast.LENGTH_SHORT).show();
-                String meetup = place.getName();
-                //String placeId = place.
-                //editTextMeetup.setText(meetup);
-
-                //Toast.makeText(getContext(), "placeId: "+placeId, Toast.LENGTH_SHORT).show();
-
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Status status = Autocomplete.getStatusFromIntent(data);
-                Log.i(TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
+                break;
         }
+
     }
-
-
-
 }

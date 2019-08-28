@@ -31,6 +31,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -40,6 +41,9 @@ import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +69,10 @@ public class Auction extends AppCompatActivity implements View.OnClickListener {
     private CarouselView auctionCarouselView;
     private EditText editTextbidAmount;
     private Button buttonPlaceBid;
-    private String startPrice , bidPricePartial;
     private static final String TAG = "AUCTION";
+    private double wallet, bidPricePartial;
+    private String firstName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +108,23 @@ public class Auction extends AppCompatActivity implements View.OnClickListener {
 
         buttonPlaceBid.setOnClickListener(this);
 
+
+
+        //GET THE VALUE OF WALLET FROM THE USER
+        DocumentReference docWallet = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
+        docWallet.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if(task.isSuccessful()) {
+
+                    DocumentSnapshot document = task.getResult();
+                     wallet = document.getDouble("wallet");
+                     firstName = document.getString("firstName");
+                }
+            }
+        });
+
         DocumentReference docRef = firebaseFirestore.collection("auctionRemnants").document(auctionId);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -113,15 +136,13 @@ public class Auction extends AppCompatActivity implements View.OnClickListener {
                textViewDescription.setText(auctionModel.getDescription());
                textViewBackStory.setText(auctionModel.getBackStory());
                textViewBounceBack.setText(auctionModel.getBounceBack());
-              // textViewBidPrice.setText("₱ "+auctionModel.getStartPrice());
-               textViewStartPrice.setText("₱ "+auctionModel.getStartPrice());
-               startPrice = auctionModel.getStartPrice();
+                double startPrice = auctionModel.getStartPrice();
+               textViewStartPrice.setText("₱ "+startPrice);
                textViewMeetup.setText(auctionModel.getMeetup());
                 textViewEndtime.setText(auctionModel.getEndTime());
                 owner_id = auctionModel.getUserId();
                stringImageUrl = auctionModel.getAuctionImageUrl();
 
-               Log.d(TAG, "startPrice: "+startPrice);
 
 
                if(user_id.equals(owner_id)){
@@ -145,23 +166,29 @@ public class Auction extends AppCompatActivity implements View.OnClickListener {
 
                                 Log.d(TAG, "success startPrice: "+startPrice);
 
-                                // Log.d(TAG, "haha: false");
+
                         Query query = firebaseFirestore.collection("auctionRemnants").document(auctionId)
                                 .collection("bidders").orderBy("bidAmount").limit(1);
 
-                        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            private static final String TAG = "AUCTION";
 
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        try {
+                            query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                private static final String TAG = "AUCTION";
 
-                                for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+                                @Override
+                                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
-                                    bidPricePartial = queryDocumentSnapshot.getString("bidAmount");
-                                    textViewBidPrice.setText("₱ " + bidPricePartial);
+                                    for (QueryDocumentSnapshot queryDocumentSnapshot : queryDocumentSnapshots) {
+
+                                         bidPricePartial = queryDocumentSnapshot.getDouble("bidAmount");
+                                        textViewBidPrice.setText("₱ " + bidPricePartial);
+                                    }
                                 }
-                            }
-                        });
+                            });
+
+                        }catch (Exception e){
+                            Log.d(TAG, "ERROR: "+e);
+                        }
 
                             }else{
 
@@ -193,9 +220,6 @@ public class Auction extends AppCompatActivity implements View.OnClickListener {
 
             }
         });
-
-
-
     }
 
     public void showMoreDetails(View view){
@@ -203,8 +227,6 @@ public class Auction extends AppCompatActivity implements View.OnClickListener {
         expandableRelativeLayout = findViewById(R.id.auction_expandableLinearLayout);
         expandableRelativeLayout.toggle();
     }
-
-
 
     ImageListener imageListener = new ImageListener() {
         @Override
@@ -219,78 +241,81 @@ public class Auction extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
-        String bidAmount = editTextbidAmount.getText().toString().trim();
-        String bidPrice = textViewBidPrice.getText().toString().trim();
+        double bidAmount = Double.parseDouble(editTextbidAmount.getText().toString());
 
-       /* Toast.makeText(this, "bidAmount: "+bidAmount+ " bidPrice: "+bidPrice, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "bidAmount: "+bidAmount, Toast.LENGTH_SHORT).show();*/
-        Map<String, Object> bidAmountMap = new HashMap<>();
-        bidAmountMap.put("bidAmount", bidAmount);
+        if(wallet < bidAmount){
+
+            editTextbidAmount.setError("Insufficient Balance");
+
+        }else {
+
+            Toast.makeText(this, "Bidding Successful", Toast.LENGTH_SHORT).show();
+            //SEND TO AUCTION REMNANTS BIDDER
+            Map<String, Object> bidAmountMap = new HashMap<>();
+            bidAmountMap.put("bidAmount", bidAmount);
+            firebaseFirestore.collection("auctionRemnants").document(auctionId).collection("bidders")
+                    .document(mAuth.getCurrentUser().getUid()).set(bidAmountMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                            Toast.makeText(Auction.this, "Bidding Successful", Toast.LENGTH_SHORT).show();
+                            editTextbidAmount.setText("");
+                        }
+                    });
 
 
-        firebaseFirestore.collection("auctionRemnants").document(auctionId).collection("bidders")
-                .document(mAuth.getCurrentUser().getUid()).set(bidAmountMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
+            //SEND NOTIFICATION
 
-                        Toast.makeText(Auction.this, "Bidding Successful", Toast.LENGTH_SHORT).show();
-                        editTextbidAmount.setText("");
+            SimpleDateFormat df = new SimpleDateFormat("MMM d");
+            Calendar cal = Calendar.getInstance();
+            String currentTime = df.format(Calendar.getInstance().getTime());
 
-                    }
-                });
+            String message = firstName + " bid ₱" + bidAmount + " to your " + auctionModel.getTitle() + " remnant";
+            Map<String, Object> bidNotification = new HashMap<>();
+            bidNotification.put("message", message);
+            bidNotification.put("sender_id", mAuth.getCurrentUser().getUid());
+            bidNotification.put("receiver_id", owner_id);
+            bidNotification.put("timeStamp", FieldValue.serverTimestamp());
 
+            firebaseFirestore.collection("notification")
+                    .add(bidNotification).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+
+                }
+            });
+        }
     }
-
     private TextWatcher bidTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-
         }
-
         @SuppressLint("ResourceAsColor")
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            String wallet = "";
 
-            DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        try{
+            Double bidAmount = Double.parseDouble(editTextbidAmount.getText().toString());
+            Double bidPricePartial4 = bidPricePartial + 4;
+            Double bidPricePartial21 = bidPricePartial + 21;
 
-                    if(task.isSuccessful()) {
+           // Toast.makeText(Auction.this, ""+bidAmount, Toast.LENGTH_SHORT).show();
 
-                        DocumentSnapshot document = task.getResult();
-                        String wallet = document.getString("wallet");
-                    }
-                }
-            });
-
-            String bidAmount = editTextbidAmount.getText().toString().trim();
-            String bidPrice = bidPricePartial.toString().trim();
-
-
-
-            try {
-
-               // Toast.makeText(Auction.this, "bidPrice:"+Integer.parseInt(bidPrice), Toast.LENGTH_SHORT).show();
-                if (Integer.parseInt(bidAmount) > Integer.parseInt(bidPrice)  && !bidAmount.isEmpty() && Integer.parseInt(wallet) > Integer.parseInt(bidPrice)){
+                if (bidAmount > bidPricePartial && bidAmount != null && bidAmount > bidPricePartial4 && bidAmount < bidPricePartial21){
 
                     buttonPlaceBid.setEnabled(true);
                     buttonPlaceBid.setBackgroundColor(getResources().getColor(colorPrimaryDark));
-                    editTextbidAmount.setError("Insufficient Balance");
-
-                } else {
+                }
+                else{
                     buttonPlaceBid.setEnabled(false);
                     buttonPlaceBid.setBackgroundColor(getResources().getColor(buttonDisabled));
                 }
+
             }catch (NumberFormatException e){
-
-                Toast.makeText(Auction.this, "error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Auction.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
         }
         @Override
         public void afterTextChanged(Editable s) {

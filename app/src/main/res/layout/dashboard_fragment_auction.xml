@@ -11,6 +11,4 @@
         android:layout_height="match_parent"
         android:layout_marginTop="110dp"/>
 
-
-
 </RelativeLayout>

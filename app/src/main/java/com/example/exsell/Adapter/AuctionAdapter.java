@@ -34,7 +34,6 @@ public class AuctionAdapter extends FirestoreRecyclerAdapter<AuctionModel, Aucti
         auctionHolder.textViewBid.setText("₱ "+auctionModel.getStartPrice());
 
 
-
     }
 
     @NonNull

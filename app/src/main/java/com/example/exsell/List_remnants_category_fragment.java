@@ -38,7 +38,7 @@ public class List_remnants_category_fragment extends Fragment {
     private View view;
     private FirebaseFirestore firebaseFirestore;
     private SelectCategoryAdapter adapter;
-    private String price, quantity, title, description, backStory, bounceBack;
+    private String price, quantity, title, description, backStory, bounceBack, meetup;
     private List<Uri> listOfPic;
 
 
@@ -58,6 +58,7 @@ public class List_remnants_category_fragment extends Fragment {
         bounceBack = getArguments().getString("bounceBack");
         price = getArguments().getString("price");
         quantity = getArguments().getString("quantity");
+        meetup = getArguments().getString("meetup");
 
         setUpRecyclerView();
 
@@ -92,29 +93,29 @@ public class List_remnants_category_fragment extends Fragment {
 
 
                 Bundle bundle = new Bundle();
-                /*bundle.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) listOfPic);
+                bundle.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) listOfPic);
                 bundle.putString("title", title);
                 bundle.putString("description", description);
                 bundle.putString("backStory", backStory);
                 bundle.putString("bounceBack", bounceBack);
 
-                bundle.putString("id", id);*/
+                bundle.putString("id", id);
                 bundle.putString("categoryName", categoryName);
-                /*bundle.putString("price", price);
+                bundle.putString("price", price);
                 bundle.putString("quantity",quantity);
-                bundle.putString("meetup",meetup);*/
+                bundle.putString("meetup",meetup);
 
-               /* Fragment lm_fragment2  = new List_remnants2_fragment();
+                Fragment lm_fragment2  = new List_remnants2_fragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 lm_fragment2.setArguments(bundle);
                 transaction.replace(R.id.list_remnants_container, lm_fragment2);
                 transaction.addToBackStack(null);
-                transaction.commit();*/
+                transaction.commit();
 
-                FragmentManager manager = getActivity().getSupportFragmentManager();
+                /*FragmentManager manager = getActivity().getSupportFragmentManager();
                 List_remnants2_fragment lm_fragment2 = new List_remnants2_fragment();
                 lm_fragment2.setArguments(bundle);
-                manager.popBackStack();
+                manager.popBackStack();*/
 
 
 

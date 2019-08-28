@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <ImageView
+            android:id="@+id/notification_layout_imageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/notification_adding_bid" />
+
+        <TextView
+            android:id="@+id/notification_layout_textViewMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/notification_layout_imageView"
+            android:text="John Patrick bid 500.00 of your characters Remnant"
+            android:textAppearance="?attr/textAppearanceBody2"/>
+
+        <TextView
+            android:id="@+id/notification_textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jun 16"
+            android:layout_marginRight="-14dp"
+            android:layout_alignEnd="@+id/notification_layout_textViewMessage"
+            android:layout_below="@+id/notification_layout_textViewMessage"
+            android:textColor="@android:color/holo_blue_light"
+           />
+
+    </RelativeLayout>
+</LinearLayout>

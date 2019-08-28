@@ -50,7 +50,7 @@ import java.math.BigDecimal;
         private Button buttonAddMoney;
         private TextView textViewMoneyBalance;
         private EditText editTextAddMoney;
-        private String amount = "";
+        private String amount;
 
 
         @Override
@@ -86,7 +86,10 @@ import java.math.BigDecimal;
 
                     if (documentSnapshot != null && documentSnapshot.exists()) {
 
-                        textViewMoneyBalance.setText(documentSnapshot.getString("wallet"));
+                        double doubleWallet = documentSnapshot.getDouble("wallet");
+                        String stringWallet = Double.toString(doubleWallet);
+                        textViewMoneyBalance.setText(stringWallet);
+
                       //  Log.d(TAG, "Current data: " + documentSnapshot.getData());
                     } else {
                         Log.d(TAG, "Current data: null");
@@ -121,7 +124,8 @@ import java.math.BigDecimal;
 
         private void processPayment() {
 
-            amount = editTextAddMoney.getText().toString().trim();
+            amount = editTextAddMoney.getText().toString();
+
             PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(amount)), "PHP",
                     "Add money in ExSell", PayPalPayment.PAYMENT_INTENT_SALE);
 
@@ -130,7 +134,7 @@ import java.math.BigDecimal;
             intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
             startActivityForResult(intent, PAYPAL_REQUEST_CODE);
 
-            buttonAddMoney.setText("");
+            editTextAddMoney.setText("");
 
         }
 

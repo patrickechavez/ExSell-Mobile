@@ -40,25 +40,6 @@ public class WalletDetails extends AppCompatActivity {
         textViewAmount = findViewById(R.id.txtAmount);
         textViewStatus = findViewById(R.id.txtStatus);
 
-        /*DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                if(task.isSuccessful()){
-
-                    DocumentSnapshot document = task.getResult();
-
-                    currentAmount = Float.parseFloat(document.getString("wallet"));
-                }
-            }
-        });
-
-        float totalAmount = Float.parseFloat(paymentAmount) + currentAmount;
-        String stringTotalAmount = Float.toString(totalAmount);
-
-        firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid())
-                .update("wallet", stringTotalAmount);*/
 
         Intent intent = getIntent();
 
@@ -72,20 +53,17 @@ public class WalletDetails extends AppCompatActivity {
             Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-
-
-
-
-
     }
 
     private void showDetails(JSONObject jsonDetails, String paymentAmount) {
 
         try {
 
+            double doublePaymentAmount = Double.parseDouble(paymentAmount);
+
             textViewId.setText(jsonDetails.getString("id"));
             textViewStatus.setText(jsonDetails.getString("state"));
-            textViewAmount.setText("₱ "+paymentAmount);
+            textViewAmount.setText("₱ " +doublePaymentAmount);
 
 
             DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
@@ -96,18 +74,17 @@ public class WalletDetails extends AppCompatActivity {
                     if(task.isSuccessful()){
                         DocumentSnapshot document = task.getResult();
 
-                        float totalAmount = Float.valueOf(document.getString("wallet")) + Float.valueOf(paymentAmount);
-                        String stringTotalAmount = String.valueOf(totalAmount);
+                        double totalAmount = document.getDouble("wallet") + doublePaymentAmount;
 
-                        Log.d(TAG, "haha walletAmount: "+ Float.valueOf(document.getString("wallet")));
-                        Log.d(TAG, "haha paymentAmount: "+ Float.valueOf(paymentAmount));
-                        Log.d(TAG, "haha totalAmount: " +stringTotalAmount);
 
+                        Log.d(TAG, "haha walletAmount: "+ document.getDouble("wallet"));
+                        Log.d(TAG, "haha paymentAmount: "+ document.getDouble(paymentAmount));
+                        Log.d(TAG, "haha totalAmount: " + totalAmount);
 
 
 
                         firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid())
-                                .update("wallet", stringTotalAmount);
+                                .update("wallet", totalAmount);
                     }
                 }
             });

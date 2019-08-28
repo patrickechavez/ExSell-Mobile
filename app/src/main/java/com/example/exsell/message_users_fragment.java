@@ -57,10 +57,6 @@ public class message_users_fragment extends Fragment{
     private void setUpRecyclerView() {
         Query query = FirebaseFirestore.getInstance().collection("users");
 
-       /* FirebaseRecyclerOptions<UsersModel> options = new FirebaseRecyclerOptions.Builder<UsersModel>()
-                .setQuery(query, UsersModel.class)
-                .build();*/
-
        FirestoreRecyclerOptions<UsersModel> options = new FirestoreRecyclerOptions.Builder<UsersModel>()
                .setQuery(query, UsersModel.class)
                .build();

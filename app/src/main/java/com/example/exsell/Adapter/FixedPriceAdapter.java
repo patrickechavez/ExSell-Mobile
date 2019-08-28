@@ -64,6 +64,7 @@ public class FixedPriceAdapter extends FirestoreRecyclerAdapter<FixedPriceModel,
                     if(position != RecyclerView.NO_POSITION && listener != null) {
 
                         listener.onItemClick(getSnapshots().getSnapshot(position), position);
+
                     }
 
                 }

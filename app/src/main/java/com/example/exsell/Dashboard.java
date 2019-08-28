@@ -3,35 +3,30 @@ package com.example.exsell;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.exsell.fragment.Dashboard_tabPagerAdapter;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.viewpager.widget.ViewPager;
+
+import java.util.Date;
 
 
 public class Dashboard extends AppCompatActivity
@@ -58,6 +53,7 @@ public class Dashboard extends AppCompatActivity
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+
 
 
         tabLayout = findViewById(R.id.tabs);
@@ -163,12 +159,14 @@ public class Dashboard extends AppCompatActivity
 
             case R.id.nav_notification:
 
+                Intent notification = new Intent(Dashboard.this, Notification.class);
+                startActivity(notification);
 
                 break;
 
             case R.id.nav_profile:
 
-                Intent profile = new Intent(Dashboard.this, Account.class);
+                Intent profile = new Intent(Dashboard.this, Profile.class);
                 startActivity(profile);
                 break;
 

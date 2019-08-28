@@ -41,24 +41,6 @@ public class SelectCategoryAdapter extends FirestoreRecyclerAdapter<SelectCatego
 
         Picasso.get().load(selectCategoryModel.getCategoryImageUrl()).into(selectCategoryHolder.circleImageViewCategoryImage);
         selectCategoryHolder.textViewCategoryName.setText(selectCategoryModel.getCategoryName());
-
-
-        /*firebaseFirestore.collection("category").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
-
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
-                                Log.d(TAG, "ID: "+documentSnapshot.getId());
-                            }
-                        }
-                    }
-                });*/
-
-
-
     }
 
     @NonNull
