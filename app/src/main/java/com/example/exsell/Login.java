@@ -57,22 +57,31 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 final String email = login_email.getText().toString().trim();
                 final String password = login_password.getText().toString().trim();
 
+                if(email.isEmpty()){
 
-               mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                   @Override
-                   public void onComplete(@NonNull Task<AuthResult> task) {
+                    login_email.setError("Email must not be empty");
 
-                       if(task.isSuccessful()){
+                }else if(password.isEmpty()){
+
+                    login_password.setError("Password must not be empty");
+                }else {
+
+                    mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if (task.isSuccessful()) {
 
 
-                           sendToDashboard();
-                       }else{
+                                sendToDashboard();
+                            } else {
 
-                           String error = task.getException().getMessage();
-                           Toast.makeText(Login.this, ""+error, Toast.LENGTH_SHORT).show();
-                       }
-                   }
-               });
+                                String error = task.getException().getMessage();
+                                Toast.makeText(Login.this, "" + error, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
 
                 break;
 

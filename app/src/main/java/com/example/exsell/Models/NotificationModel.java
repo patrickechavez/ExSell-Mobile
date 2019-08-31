@@ -6,20 +6,32 @@ import java.util.Date;
 
 public class NotificationModel {
 
-    private String user_id;
+    private String receiver_id;
+    private String sender_id;
+    private String notificationType;
     private String message;
     private Date timeStamp;
 
     public NotificationModel(){}
 
-    public NotificationModel(String user_id, String message, Date timeStamp) {
-        this.user_id = user_id;
+    public NotificationModel(String receiver_id, String sender_id, String notificationType, String message, Date timeStamp) {
+        this.receiver_id = receiver_id;
+        this.sender_id = sender_id;
+        this.notificationType = notificationType;
         this.message = message;
         this.timeStamp = timeStamp;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getReceiver_id() {
+        return receiver_id;
+    }
+
+    public String getSender_id() {
+        return sender_id;
+    }
+
+    public String getNotificationType() {
+        return notificationType;
     }
 
     public String getMessage() {

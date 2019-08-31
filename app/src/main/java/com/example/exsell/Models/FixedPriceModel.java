@@ -5,23 +5,24 @@ import java.util.List;
 public class FixedPriceModel {
 
     private List<String> remnantsPicUrl;
-    private String title, price, quantity, backStory, bounceBack,categoryId, description, meetup ,userId;
-
+    private String title, backStory, bounceBack,categoryId, description, meetup ,userId;
+    private Double price;
+    private Integer quantity;
 
     public FixedPriceModel(){}
 
 
-    public FixedPriceModel(List<String> remnantsPicUrl, String title, String price, String quantity, String backStory, String bounceBack, String categoryId, String description, String meetup, String owner_id) {
+    public FixedPriceModel(List<String> remnantsPicUrl, String title, String backStory, String bounceBack, String categoryId, String description, String meetup, String userId, Double price, int quantity) {
         this.remnantsPicUrl = remnantsPicUrl;
         this.title = title;
-        this.price = price;
-        this.quantity = quantity;
         this.backStory = backStory;
         this.bounceBack = bounceBack;
         this.categoryId = categoryId;
         this.description = description;
         this.meetup = meetup;
         this.userId = userId;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public List<String> getRemnantsPicUrl() {
@@ -30,14 +31,6 @@ public class FixedPriceModel {
 
     public String getTitle() {
         return title;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public String getQuantity() {
-        return quantity;
     }
 
     public String getBackStory() {
@@ -62,5 +55,13 @@ public class FixedPriceModel {
 
     public String getUserId() {
         return userId;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 }

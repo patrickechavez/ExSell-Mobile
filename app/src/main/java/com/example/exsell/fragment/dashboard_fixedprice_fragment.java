@@ -69,7 +69,7 @@ public class dashboard_fixedprice_fragment extends Fragment {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                // FixedPriceModel fixedPriceModel = documentSnapshot.toObject(FixedPriceModel.class);
                 String id = documentSnapshot.getId();
-                Toast.makeText(getContext(), ""+id, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), ""+id, Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getContext(), FixedPrice.class);
                 i.putExtra("remnantId", id);
                 startActivity(i);

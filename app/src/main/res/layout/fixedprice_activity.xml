@@ -27,7 +27,7 @@
                 <com.synnapps.carouselview.CarouselView
                     android:id="@+id/fixedPricecarouselView"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="300dp"
                     app:fillColor="#FFFFFFFF"
                     app:pageColor="#00000000"
                     app:autoPlay="false"
@@ -278,6 +278,7 @@
                         android:layout_marginRight="32dp"
                         android:layout_marginBottom="16dp"
                         android:paddingTop="12dp"
+                        android:visibility="visible"
                         android:paddingBottom="12dp"
                         style="@style/Widget.Shrine.Button"
                         app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
@@ -287,6 +288,27 @@
                         app:iconGravity="textStart"
                         android:textAppearance="?attr/textAppearanceButton"
                         android:text="ADD TO CART" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fp1_viewOnCart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    style="@style/Widget.Shrine.Button"
+                    app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
+                    android:layout_gravity="center_horizontal"
+                    app:icon="@drawable/view_on_cart"
+                    app:iconTint="@android:color/black"
+                    app:iconGravity="textStart"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:text="VIEW ON CART" />
 
             </LinearLayout>
         </ScrollView>

@@ -1,6 +1,6 @@
 package com.example.exsell;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,37 +13,35 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
 
 import com.example.exsell.Models.FixedPriceModel;
 import com.example.exsell.Models.UsersModel;
-import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
-import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.example.exsell.R.drawable.toolbar_transparent;
 
 public class FixedPrice extends AppCompatActivity implements View.OnClickListener {
 
 
+    private static final String TAG = "FIXED PRICE";
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
     private TextView textViewTitle, textViewDescription, textViewBackStory, textViewBounceBack, textViewPrice, textViewQuantity,  textViewMeetup, textViewOwner;
@@ -55,7 +53,9 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
     private ExpandableRelativeLayout expandableRelativeLayout;
     private FixedPriceModel fixedPriceModel;
     private UsersModel usersModel;
-    private Button fp1addCartButton;
+    private Button fp1addCartButton, fp1viewCartButton;
+    private Double currentTotal , price;
+    //private DecimalFormat df = new DecimalFormat("##.##");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,11 +82,14 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
         textViewOwner = findViewById(R.id.fp1_ownerTextView);
         carouselView = findViewById(R.id.fixedPricecarouselView);
         fp1addCartButton = findViewById(R.id.fp1_addtocartbtn);
+        fp1viewCartButton = findViewById(R.id.fp1_viewOnCart);
+
 
         moreDetailsTextView = findViewById(R.id.moreDetailsTextView);
 
         user_id = mAuth.getCurrentUser().getUid();
 
+        fp1addCartButton.setOnClickListener(this);
         fp1addCartButton.setOnClickListener(this);
 
         DocumentReference docRef = firebaseFirestore.collection("fixedPriceRemnants").document(remnantId);
@@ -100,8 +103,9 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
                 textViewDescription.setText(fixedPriceModel.getDescription());
                 textViewBackStory.setText(fixedPriceModel.getBackStory());
                 textViewBounceBack.setText(fixedPriceModel.getBounceBack());
-                textViewPrice.setText("₱" +fixedPriceModel.getPrice());
-                textViewQuantity.setText(fixedPriceModel.getQuantity());
+                price = fixedPriceModel.getPrice();
+                textViewPrice.setText("₱" +price);
+                textViewQuantity.setText(String.valueOf(fixedPriceModel.getQuantity()));
                 textViewMeetup.setText(fixedPriceModel.getMeetup());
                  owner_id = fixedPriceModel.getUserId();
                  stringImageUrl  = (ArrayList<String>) fixedPriceModel.getRemnantsPicUrl();
@@ -127,6 +131,11 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
 
 
         });
+
+        isThisMyItem();
+        isRemnantExistOnCart();
+        addCurrentTotal();
+
     }
 
     ImageListener imageListener = new ImageListener() {
@@ -145,40 +154,130 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
     }
 
 
+    public void addCurrentTotal(){
+
+        DocumentReference docRef = firebaseFirestore.collection("cart").document(user_id);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    if(task.isSuccessful()){
+
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                            if(!documentSnapshot.exists()){
+
+
+                                currentTotal = Double.valueOf(0);
+
+                            }else{
+
+                                currentTotal =  documentSnapshot.getDouble("total");
+
+                            }
+                    }
+                }
+            });
+    }
+
+
     @Override
     public void onClick(View v) {
 
 
-        if(v.getId() == R.id.fp1_addtocartbtn) {
+        switch (v.getId()){
 
-            String owner = textViewOwner.getText().toString().trim();
-            String title = textViewTitle.getText().toString().trim();
-            String price = textViewPrice.getText().toString().trim();
-            String imageUrl = fixedPriceModel.getRemnantsPicUrl().get(0).toString();
+            case R.id.fp1_addtocartbtn:
+
+                String owner = textViewOwner.getText().toString().trim();
+                String title = textViewTitle.getText().toString().trim();
+                // Double price = Double.parseDouble(textViewPrice.getText().toString());
+
+                HashMap<String, Object> totalData = new HashMap<>();
+                totalData.put("total", price + currentTotal);
 
 
-            HashMap<String, Object> cartData = new HashMap<>();
-            cartData.put("owner", usersModel.getFirstName());
-            cartData.put("title", fixedPriceModel.getTitle());
-            cartData.put("price", fixedPriceModel.getPrice());
-            cartData.put("imageUrl", fixedPriceModel.getRemnantsPicUrl().get(0).toString());
 
-            firebaseFirestore.collection("cart").document(user_id).collection("product").document(remnantId)
-                    .set(cartData)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(FixedPrice.this, "Added to Cart", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+                HashMap<String, Object> cartData = new HashMap<>();
+                cartData.put("owner",owner);
+                cartData.put("title", title);
+                cartData.put("price", price);
+                cartData.put("imageUrl", fixedPriceModel.getRemnantsPicUrl().get(0).toString());
+                cartData.put("quantity", 1);
 
-                            Toast.makeText(FixedPrice.this, "Cart Error: Error wring document", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                firebaseFirestore.collection("cart").document(user_id).set(totalData)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                firebaseFirestore.collection("cart").document(user_id)
+                                        .collection("remnants").document(remnantId)
+                                        .set(cartData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                        Toast.makeText(FixedPrice.this, "Added to Cart", Toast.LENGTH_SHORT).show();
+
+                                        fp1addCartButton.setVisibility(View.GONE);
+                                        fp1viewCartButton.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                            }
+                        });
+
+                break;
+
+            case R.id.fp1_viewOnCart:
+
+                Intent toCart = new Intent(this, Cart.class);
+                startActivity(toCart);
+
+                break;
         }
+
+
+    }
+
+    public void isRemnantExistOnCart(){
+
+        firebaseFirestore.collection("cart").document(user_id).collection("remnants")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if(task.isSuccessful()){
+
+                    for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+
+                        if(remnantId.equals(documentSnapshot.getId())) {
+                            Log.d(TAG, "CURRENT REMNANT ID: " + remnantId + " REMNANT ID: " + documentSnapshot.getId());
+                            fp1addCartButton.setVisibility(View.GONE);
+                            fp1viewCartButton.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public void isThisMyItem(){
+
+
+        firebaseFirestore.collection("fixedPriceRemnants")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                for(QueryDocumentSnapshot documentSnapshot :task.getResult()){
+
+                    if(user_id.equals(documentSnapshot.getString("userId"))){
+
+                        fp1addCartButton.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+        });
+
 
     }
 }

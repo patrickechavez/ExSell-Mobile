@@ -1,25 +1,17 @@
 package com.example.exsell;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
-import android.os.Parcelable;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.text.format.DateFormat;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,25 +22,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.Dash;
-import com.google.android.gms.maps.model.LatLng;
+
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AddressComponents;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -57,8 +42,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -105,10 +89,8 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
     private String radioBtnData = "fixedPriceSelected";
     private int count = 0;
     private int count2= 0;
-    private String categoryNames;
-
+    private ProgressBar progressBar;
     private View view;
-    private String imageString;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,6 +105,9 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
         user_id = mAuth.getCurrentUser().getUid();
         linearPrice = (LinearLayout) view.findViewById(R.id.linearPrice);
         linearAuction = (LinearLayout) view.findViewById(R.id.linearAuction);
+
+        //PROGRESS BAR
+        progressBar = view.findViewById(R.id.lm2_progressBar);
 
         //FIXED PRICE
         editTextBreakUpPrice = (EditText) view.findViewById(R.id.breakUpPrice);
@@ -141,8 +126,8 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
 
         SimpleDateFormat df = new SimpleDateFormat("h:mm a, MMM d yyyy");
-        Calendar cal = Calendar.getInstance();
-        String currentTime = df.format(Calendar.getInstance().getTime());
+
+       // String currentTime = df.format(cal.getTime());
 
         editTextFilledExposedDropdown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -152,26 +137,38 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                 switch (durationDays){
                     case "3 days":
 
-                        cal.add(Calendar.DAY_OF_MONTH, 3);
-                        editTextAuctionEndTime.setText(df.format(cal.getTime()).toString());
+                        Calendar cal3 = Calendar.getInstance();
+                        cal3.add(Calendar.DAY_OF_MONTH, 3);
+                        String currentDate3 = df.format(cal3.getTime());
+
+                        editTextAuctionEndTime.setText(currentDate3);
                         break;
 
                     case "5 days":
 
-                        cal.add(Calendar.DAY_OF_MONTH, 5);
-                        editTextAuctionEndTime.setText(df.format(cal.getTime()).toString());
+                        Calendar cal5 = Calendar.getInstance();
+                        cal5.add(Calendar.DAY_OF_MONTH, 5);
+                        String currentDate5 = df.format(cal5.getTime());
+
+                        editTextAuctionEndTime.setText(currentDate5);
                         break;
 
                     case "7 days":
 
-                        cal.add(Calendar.DAY_OF_MONTH, 7);
-                        editTextAuctionEndTime.setText(df.format(cal.getTime()).toString());
+                        Calendar cal7 = Calendar.getInstance();
+                        cal7.add(Calendar.DAY_OF_MONTH, 7);
+                        String currentDate7 = df.format(cal7.getTime());
+
+                        editTextAuctionEndTime.setText(currentDate7);
                         break;
 
                     case "12 days":
 
-                        cal.add(Calendar.DAY_OF_MONTH, 12);
-                        editTextAuctionEndTime.setText(df.format(cal.getTime()).toString());
+                        Calendar cal12 = Calendar.getInstance();
+                        cal12.add(Calendar.DAY_OF_MONTH, 12);
+                        String currentDate12 = df.format(cal12.getTime());
+                        editTextAuctionEndTime.setText(currentDate12);
+
                         break;
                 }
             }
@@ -189,7 +186,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
         Places.initialize(getActivity().getApplicationContext(), "AIzaSyCtPPdDFjHfJ0FWCSpm1OBKWq2HA_UtQLg");
         PlacesClient placesClient  = Places.createClient(getActivity());
 
-
+        Toast.makeText(getContext(), ""+title, Toast.LENGTH_SHORT).show();
         //SELECT CATEGORY EDITTEXT
         editTextSelectCategory = (EditText) view.findViewById(R.id.lm_select_category);
         editTextSelectCategory.setOnClickListener(this);
@@ -202,25 +199,6 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
 
 
-        //DATA FROM SELECT CATEGORY
-       if(getArguments()!= null){
-
-           listOfPic = getArguments().getParcelableArrayList("listOfPic");
-           title = getArguments().getString("title");
-           description = getArguments().getString("description");
-           backStory = getArguments().getString("backStory");
-           bounceBack = getArguments().getString("bounceBack");
-
-           categoryId = getArguments().getString("id");
-           editTextBreakUpPrice.setText(getArguments().getString("price"));
-           editTextBreakUpQuantity.setText(getArguments().getString("quantity"));
-            categoryNames = getArguments().getString("categoryName");
-           editTextSelectCategory.setText(getArguments().getString("categoryName"));
-           Toast.makeText(getContext(), ""+categoryNames, Toast.LENGTH_SHORT).show();
-       }else{
-
-           Toast.makeText(getContext(), "empty from category", Toast.LENGTH_SHORT).show();
-       }
 
 
 
@@ -288,7 +266,6 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
     }
 
-
     @Override
     public void onClick(View v) {
 
@@ -300,24 +277,6 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                 startActivity(categoryIntent);
 
                 startActivityForResult(categoryIntent, 1010);
-
-                /*Bundle b = new Bundle();
-                b.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) listOfPic);
-                b.putString("title", title);
-                b.putString("description", description);
-                b.putString("backStory", backStory);
-                b.putString("bounceBack", bounceBack);
-
-                b.putString("price",editTextBreakUpPrice.getText().toString().trim());
-                b.putString("quantity", editTextBreakUpQuantity.getText().toString().trim());
-                b.putString("meetup", editTextMeetup.getText().toString().trim());
-
-                Fragment lm_category  = new List_remnants_category_fragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                lm_category.setArguments(b);
-                transaction.replace(R.id.list_remnants_container, lm_category);
-                transaction.addToBackStack(null);
-                transaction.commit();*/
                 break;
 
             case R.id.lm_meetup:
@@ -334,13 +293,15 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
             case R.id.listit_btn:
 
+                progressBar.setVisibility(View.VISIBLE);
+
                 if(radioBtnData == "fixedPriceSelected"){
 
                     double price = Double.parseDouble(editTextBreakUpPrice.getText().toString());
-                    double quantity  = Double.parseDouble(editTextBreakUpQuantity.getText().toString());
+                    int quantity  = Integer.parseInt(editTextBreakUpQuantity.getText().toString());
                     String meetup = editTextMeetup.getText().toString().trim();
 
-                            /*for(Uri pic: listOfPic) {
+                            for(Uri pic: listOfPic) {
 
                                 StorageReference storageReference = firebaseStorage.getReference().child("product_Images").child(pic.toString());
                                 UploadTask uploadTask = (UploadTask) storageReference.putFile(pic);
@@ -384,6 +345,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                             fixedPriceRemnants.put("backStory", backStory);
                                             fixedPriceRemnants.put("bounceBack", bounceBack);
                                             fixedPriceRemnants.put("price", price);
+                                            fixedPriceRemnants.put("quantity", quantity);
                                             fixedPriceRemnants.put("meetup", meetup);
                                             fixedPriceRemnants.put("timeStamp", FieldValue.serverTimestamp());
                                             fixedPriceRemnants.put("categoryId", categoryId);
@@ -398,17 +360,23 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
                                                             if(task.isSuccessful()){
 
-                                                                Toast.makeText(getContext(), "Fixed Succesfully Added", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(getContext(), "Fixed Price Added Successfully", Toast.LENGTH_SHORT).show();
                                                                 Intent fixedPrice = new Intent(getContext(), Dashboard.class);
                                                                 startActivity(fixedPrice);
                                                             }
+                                                            else{
+
+                                                                Toast.makeText(getContext(), "Error fixed PRice", Toast.LENGTH_SHORT).show();
+                                                            }
                                                         }
+
                                                     });
 
+                                            progressBar.setVisibility(View.INVISIBLE);
                                         }
                                     }
                                 });
-                            }*/
+                            }
                 }else{
 
                     double auctionStartPrice = Double.parseDouble(editTextAuctionPrice.getText().toString());
@@ -472,6 +440,8 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                             if (task.isSuccessful()) {
                                                 Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
                                                 Log.d(TAG, "SUCCESSFULLY ADDED");
+
+
                                                 Intent dashboard = new Intent(getContext(), Dashboard.class);
                                                 startActivity(dashboard);
 
@@ -480,6 +450,8 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                                 Toast.makeText(getContext(), "" + error, Toast.LENGTH_SHORT).show();
                                                 Log.d(TAG, "ERROR: "+error);
                                             }
+
+                                            progressBar.setVisibility(View.INVISIBLE);
                                         }
                                     });
                                 }

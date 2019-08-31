@@ -3,22 +3,34 @@ package com.example.exsell;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.exsell.fragment.Dashboard_tabPagerAdapter;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,8 +49,10 @@ public class Dashboard extends AppCompatActivity
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ImageView imageViewDashboard;
+    private double wallet;
     private TextView textViewFirstName, textViewLastName;
     private static final String TAG = "DASHBOARD";
+    private DrawerLayout drawerLayout;
 
 
 
@@ -51,11 +65,7 @@ public class Dashboard extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        mAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-
-
-
+        drawerLayout = findViewById(R.id.drawer_layout);
         tabLayout = findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText("Featured"));
         tabLayout.addTab(tabLayout.newTab().setText("Remnants"));
@@ -64,7 +74,7 @@ public class Dashboard extends AppCompatActivity
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = findViewById(R.id.ViewPager);
-        Dashboard_tabPagerAdapter pagerAdapter = new Dashboard_tabPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        Dashboard_tabPagerAdapter pagerAdapter = new Dashboard_tabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -85,8 +95,6 @@ public class Dashboard extends AppCompatActivity
         });
 
 
-
-
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -97,8 +105,11 @@ public class Dashboard extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-    }
 
+
+        getWalletValue();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -147,8 +158,18 @@ public class Dashboard extends AppCompatActivity
 
             case R.id.nav_listRemnant:
 
-                Intent lm = new Intent(Dashboard.this, ListRemnants.class);
-                startActivity(lm);
+
+
+                if(wallet < 25){
+
+                    Toast.makeText(this, "gamay rang wallet "+wallet, Toast.LENGTH_SHORT).show();
+                    showSnackBar();
+                }else {
+
+                    Toast.makeText(this, "lapas 25 ang wallet "+wallet, Toast.LENGTH_SHORT).show();
+                    Intent lm = new Intent(Dashboard.this   , ListRemnants.class);
+                    startActivity(lm);
+                }
                 break;
 
             case R.id.nav_chat:
@@ -184,5 +205,36 @@ public class Dashboard extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void getWalletValue() {
+
+        final DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
+                docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            return;
+                        }
+
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+
+                            wallet = documentSnapshot.getDouble("wallet");
+                            Log.d(TAG, "Current data: " + documentSnapshot.getData());
+                        } else {
+                            Log.d(TAG, "Current data: null");
+                        }
+
+                    }
+                });
+
+    }
+
+    private void showSnackBar() {
+
+        Snackbar snackbar = Snackbar.make(drawerLayout, "Must have atleast 25 coins in your wallet", Snackbar.LENGTH_SHORT);
+        snackbar.show();
     }
 }

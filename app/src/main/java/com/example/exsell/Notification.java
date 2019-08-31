@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.exsell.Adapter.NotificationAdapter;
 import com.example.exsell.Models.NotificationModel;
@@ -18,10 +19,12 @@ import com.google.firebase.firestore.Query;
 
 public class Notification extends AppCompatActivity {
 
+    private static final String TAG = "NOTIFICATION";
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
     private NotificationAdapter notificationAdapter;
     private String user_id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +46,10 @@ public class Notification extends AppCompatActivity {
     private void setUpRecycleView() {
 
         Query query = firebaseFirestore.collection("notification")
-                .whereEqualTo("receiver_id", user_id)
+                .whereEqualTo("receiver_id", mAuth.getCurrentUser().getUid())
                 .orderBy("timeStamp", Query.Direction.DESCENDING);
+
+
 
         FirestoreRecyclerOptions<NotificationModel> options = new FirestoreRecyclerOptions.Builder<NotificationModel>()
                 .setQuery(query, NotificationModel.class)
@@ -53,9 +58,7 @@ public class Notification extends AppCompatActivity {
         notificationAdapter = new NotificationAdapter(options);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
         DividerItemDecoration itemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
-
 
         RecyclerView recyclerView = findViewById(R.id.notifications_recyclerView);
         recyclerView.setHasFixedSize(true);

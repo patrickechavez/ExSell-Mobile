@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.os.Parcelable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.exsell.R.color.buttonDisabled;
+import static com.example.exsell.R.color.colorPrimaryDark;
 
 
 public class list_remnants1_fragment extends Fragment {
@@ -85,14 +89,14 @@ public class list_remnants1_fragment extends Fragment {
         storage = FirebaseStorage.getInstance();
          user_id = mAuth.getCurrentUser().getUid();
 
+        lm_remnantsTitle =  view.findViewById(R.id.lm_title);
+        lm_remnantDescription =  view.findViewById(R.id.lm_description);
+        lm_backStory =  view.findViewById(R.id.lm_backStory);
+        lm_bounceBack = view.findViewById(R.id.lm_bounceBack);
+        nextBtn =  view.findViewById(R.id.lm_nextBtn);
 
-
-
-        lm_remnantsTitle = (EditText) view.findViewById(R.id.lm_title);
-        lm_remnantDescription = (EditText) view.findViewById(R.id.lm_description);
-        lm_backStory = (EditText) view.findViewById(R.id.lm_backStory);
-        lm_bounceBack = (EditText) view.findViewById(R.id.lm_bounceBack);
-        nextBtn = (Button) view.findViewById(R.id.lm_nextBtn);
+       lm_remnantsTitle.addTextChangedListener(nextWatcher);
+       lm_remnantDescription.addTextChangedListener(nextWatcher);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,13 +124,8 @@ public class list_remnants1_fragment extends Fragment {
                 transaction.addToBackStack(null);
                 transaction.commit();
 
-
             }
         });
-
-
-
-
         return view;
     }
 
@@ -158,34 +157,6 @@ public class list_remnants1_fragment extends Fragment {
                             up.setUpload_image(pathfile);
                             uploadPicModels.add(up);
 
-                           /* StorageReference storageReference = storage.getReference().child("product_Images").child(pathfile.toString());
-                            UploadTask uploadTask = storageReference.putFile(pathfile);
-
-
-                            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                                @Override
-                                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                   if(!task.isSuccessful()){
-                                       throw task.getException();
-                                   }
-                                  return storageReference.getDownloadUrl();
-                                }
-                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-
-                                    if (task.isSuccessful()) {
-
-                                        Log.d(TAG, "imageUrl: "+task.getResult().toString());
-                                        Toast.makeText(getActivity(), ""+task.getResult().toString(), Toast.LENGTH_SHORT).show();
-                                    }else{
-
-                                        String error = task.getException().getMessage();
-                                        Toast.makeText(getActivity(), "Error: "+error, Toast.LENGTH_SHORT).show();
-                                    }
-
-                                }
-                            });*/
                         }
 
                         recyclerView.setAdapter(new UploadPicAdapter(getActivity(), uploadPicModels));
@@ -196,7 +167,32 @@ public class list_remnants1_fragment extends Fragment {
                 }
         }
     }
+    private TextWatcher nextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            String title = lm_remnantsTitle.getText().toString().trim();
+            String description = lm_remnantDescription.getText().toString().trim();
+
+            if(!title.isEmpty() &&!description.isEmpty()){
 
 
+                nextBtn.setEnabled(true);
+                nextBtn.setBackgroundColor(getResources().getColor(colorPrimaryDark));
 
+            }else{
+
+
+                nextBtn.setEnabled(false);
+                nextBtn .setBackgroundColor(getResources().getColor(buttonDisabled));
+            }
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 }

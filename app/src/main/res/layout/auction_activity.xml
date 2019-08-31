@@ -4,11 +4,17 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
+        <include
+            android:id="@+id/auction_app_bar"
+            android:visibility="gone"
+            layout="@layout/app_bar_layout"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -287,7 +293,7 @@
                     android:layout_height="wrap_content"
                     style="@style/Widget.Shrine.TextInputLayout"
                     android:layout_margin="4dp"
-
+                    app:helperTextEnabled="true"
                     android:hint="Bid Amount">
 
                     <EditText
@@ -311,6 +317,19 @@
                     android:backgroundTint="#d3d3d3"
                     android:text="PLACE BID"
                     android:enabled="false"
+                    android:layout_marginBottom="8dp"
+                    android:textAppearance="?attr/textAppearanceButton"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/auction_biddersBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:visibility="gone"
+                    app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
+                    style="@style/Widget.Shrine.Button"
+                    android:text="BIDDERS"
                     android:layout_marginBottom="8dp"
                     android:textAppearance="?attr/textAppearanceButton"/>
             </LinearLayout>
