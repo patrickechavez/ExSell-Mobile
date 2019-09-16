@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.exsell"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -38,10 +38,11 @@ dependencies {
 
     //FIREBASE
     implementation 'com.google.firebase:firebase-auth:19.0.0'
-    implementation 'com.google.firebase:firebase-core:17.1.0'
-    implementation 'com.google.firebase:firebase-storage:19.0.0'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-storage:19.0.1'
     implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
-    implementation 'com.google.firebase:firebase-firestore:21.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.1.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
 
     //EXPANDABLE LAYOUT
     implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
@@ -61,9 +62,11 @@ dependencies {
     //PAYPAL
     implementation 'com.paypal.sdk:paypal-android-sdk:2.15.3'
 
+    //NUMBER PICKER
+    implementation 'com.github.sephiroth74:NumberSlidingPicker:v1.0.3'
 
     testImplementation 'junit:junit:4.12'
-    implementation 'com.google.android.material:material:1.1.0-alpha09'
+    implementation 'com.google.android.material:material:1.1.0-alpha10'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     androidTestImplementation 'androidx.test:runner:1.2.0'

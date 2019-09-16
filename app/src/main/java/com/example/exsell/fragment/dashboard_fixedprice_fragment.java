@@ -3,29 +3,34 @@ package com.example.exsell.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.exsell.Adapter.FixedPriceAdapter;
 import com.example.exsell.FixedPrice;
 import com.example.exsell.Models.FixedPriceModel;
 import com.example.exsell.R;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class dashboard_fixedprice_fragment extends Fragment {
+    private static final String TAG = "DASHBOARD_FIXEDPRICE";
     // TODO: Rename parameter arguments, choose names that match
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -50,8 +55,15 @@ public class dashboard_fixedprice_fragment extends Fragment {
 
     private void setUpRecyclerView() {
 
-        Query query = firebaseFirestore.collection("fixedPriceRemnants")
+
+        Query query = firebaseFirestore.collection("remnants")
+                .whereEqualTo("type","Fixed Price")
+                .whereEqualTo("isDeleted", false)
+                .whereEqualTo("isSoldOut",false)
+                .whereEqualTo("isBanned", false)
+                .whereEqualTo("isActive", true)
                 .orderBy("timeStamp", Query.Direction.DESCENDING);
+
 
         FirestoreRecyclerOptions<FixedPriceModel> options = new FirestoreRecyclerOptions.Builder<FixedPriceModel>()
                 .setQuery(query, FixedPriceModel.class)
@@ -75,7 +87,6 @@ public class dashboard_fixedprice_fragment extends Fragment {
                 startActivity(i);
             }
         });
-
     }
 
     @Override

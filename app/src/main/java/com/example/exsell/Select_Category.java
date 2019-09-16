@@ -32,6 +32,9 @@ public class Select_Category extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.selectCategory_app_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("SELECT CATEGORY");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -67,13 +70,18 @@ public class Select_Category extends AppCompatActivity {
 
                 setResult(RESULT_OK, resultIntent);
                 finish();
-               /* String categoryName = documentSnapshot.get("categoryName").toString();
-                Toast.makeText(Select_Category.this, "category id: "+id, Toast.LENGTH_SHORT).show();*/
             }
         });
 
 
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 
     @Override
     protected void onStart() {

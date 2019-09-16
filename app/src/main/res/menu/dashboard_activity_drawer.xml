@@ -23,6 +23,10 @@
             android:icon="@drawable/profile"
             android:title="Profile" />
         <item
+            android:id="@+id/nav_activity"
+            android:icon="@drawable/my_activity"
+            android:title="My Activity" />
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/signout"
             android:title="Logout" />

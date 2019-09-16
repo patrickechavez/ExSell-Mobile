@@ -11,9 +11,9 @@
         android:id="@+id/profile_app_bar"
         layout="@layout/app_bar_layout"/>
 
-    <ScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent">-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                         android:layout_marginTop="35dp"
                         android:layout_height="120dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/bea_alonzo" />
+                        android:src="@drawable/user" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -80,7 +80,6 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:src="@drawable/coins_icon"/>
-
                     <TextView
                         android:id="@+id/profile_textViewGetCoins"
                         android:layout_width="wrap_content"
@@ -89,14 +88,24 @@
                         android:layout_marginLeft="4dp"
                         android:textAppearance="?attr/textAppearanceButton"
                         android:text="GET COINS"/>
+
+                    <ImageView
+                        android:id="@+id/settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="100dp"
+                        android:src="@drawable/settings" />
+
                 </LinearLayout>
+
+
+
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="100dp"
                 android:orientation="vertical">
 
                 <com.google.android.material.tabs.TabLayout
@@ -118,6 +127,6 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    <!--</ScrollView>-->
 
 </LinearLayout>

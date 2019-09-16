@@ -26,9 +26,5 @@ public class ListRemnants extends AppCompatActivity {
         fragmentTransaction.replace(R.id.list_remnants_container, new list_remnants1_fragment());
         fragmentTransaction.commit();
 
-
     }
-
-
-
 }

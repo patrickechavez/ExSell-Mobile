@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".ReportRemnants">
+
+    <include
+        android:id="@+id/report_remnant_app_bar"
+        layout="@layout/app_bar_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:text="Report This Remnant"
+                android:fontFamily="@font/rubik"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:text="Whats going on?"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+
+                <RadioGroup
+                    android:id="@+id/radioGroup_reportRemnant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:checked="true"
+                        android:id="@+id/radioBtn_Spam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="This is spam"/>
+
+                    <RadioButton
+                        android:id="@+id/radioBtn_notRealItem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="This is not a real item for sale"/>
+
+                    <RadioButton
+                        android:id="@+id/radioBtn_harmfulIllegal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="This post is abusive, harmful or illegal"/>
+
+                    <RadioButton
+                        android:id="@+id/radioBtn_fraudScam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="This is fraud or a scam"/>
+
+                    <RadioButton
+                        android:id="@+id/radioBtn_adultProduct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="It is inappropriate or has adult products"/>
+
+                    <RadioButton
+                        android:id="@+id/radioBtn_others"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Others"/>
+
+                </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/texinputLayoutGone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:visibility="gone"
+                android:fontFamily="@font/rubik"
+                android:hint="Other Reason"
+
+                style="@style/Widget.Shrine.TextInputLayout">
+
+            <EditText
+                android:id="@+id/report_others"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_remnantsButtonSendFeedBack"
+                    style="@style/Widget.Shrine.Button"
+                    android:layout_width="match_parent"
+                    android:layout_margin="8dp"
+                    app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
+                    android:layout_height="wrap_content"
+                    android:text="SEND FEEDBACK" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

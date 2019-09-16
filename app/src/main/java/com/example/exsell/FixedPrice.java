@@ -2,10 +2,15 @@ package com.example.exsell;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,21 +22,28 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.exsell.Models.FixedPriceModel;
 import com.example.exsell.Models.UsersModel;
+import com.example.exsell.fragment.UserProfile_auction_fragment;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +56,7 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
     private static final String TAG = "FIXED PRICE";
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
-    private TextView textViewTitle, textViewDescription, textViewBackStory, textViewBounceBack, textViewPrice, textViewQuantity,  textViewMeetup, textViewOwner;
+    private TextView textViewTitle, textViewDescription, textViewBackStory, textViewBounceBack, textViewPrice, textViewQuantity,  textViewMeetup, textViewOwner, fp_endDurationTextView;
     private String remnantId, owner_id, user_id;
     private CircleImageView userCircleImageView;
     private CarouselView carouselView;
@@ -54,8 +66,9 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
     private FixedPriceModel fixedPriceModel;
     private UsersModel usersModel;
     private Button fp1addCartButton, fp1viewCartButton;
-    private Double currentTotal , price;
-    //private DecimalFormat df = new DecimalFormat("##.##");
+    private Double currentTotal , price, wallet;
+    private RelativeLayout relativeLayoutLayout, featured_relativelayout;
+    private SimpleDateFormat df = new SimpleDateFormat("h:mm a");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +77,10 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
 
         Toolbar toolbar = findViewById(R.id.fixedprice_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -83,16 +100,16 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
         carouselView = findViewById(R.id.fixedPricecarouselView);
         fp1addCartButton = findViewById(R.id.fp1_addtocartbtn);
         fp1viewCartButton = findViewById(R.id.fp1_viewOnCart);
-
-
         moreDetailsTextView = findViewById(R.id.moreDetailsTextView);
 
-        user_id = mAuth.getCurrentUser().getUid();
+        featured_relativelayout = findViewById(R.id.featured_relativelayout);
+        fp_endDurationTextView = findViewById(R.id.fp_endDurationTextView);
 
         fp1addCartButton.setOnClickListener(this);
-        fp1addCartButton.setOnClickListener(this);
+        fp1viewCartButton.setOnClickListener(this);
+        textViewOwner.setOnClickListener(this);
 
-        DocumentReference docRef = firebaseFirestore.collection("fixedPriceRemnants").document(remnantId);
+        DocumentReference docRef = firebaseFirestore.collection("remnants").document(remnantId);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -108,9 +125,8 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
                 textViewQuantity.setText(String.valueOf(fixedPriceModel.getQuantity()));
                 textViewMeetup.setText(fixedPriceModel.getMeetup());
                  owner_id = fixedPriceModel.getUserId();
-                 stringImageUrl  = (ArrayList<String>) fixedPriceModel.getRemnantsPicUrl();
+                 stringImageUrl  = (ArrayList<String>) fixedPriceModel.getImageUrl();
 
-                Log.d("FIXED PRICE", ""+stringImageUrl);
 
 
                  //OWNER OF THE ITEM
@@ -124,19 +140,346 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
                         Picasso.get().load(usersModel.getImageUrl()).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background).into(userCircleImageView);
                     }
                 });
-
                 carouselView.setImageListener(imageListener);
                 carouselView.setPageCount(stringImageUrl.size());
+
+
+                //CHECK THE THE USER BALANCE
+                DocumentReference docRefBalance = firebaseFirestore.collection("users").document(owner_id);
+                docRefBalance.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+
+                            wallet = document.getDouble("wallet");
+
+                            if(wallet < 25){
+
+                                firebaseFirestore.collection("remnants")
+                                        .whereEqualTo("userId", owner_id)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+
+                                                    String remnants_id = documentSnapshot.getId();
+
+                                                    DocumentReference docRefRemnants = firebaseFirestore.collection("remnants").document(remnants_id);
+                                                    docRefRemnants.update("isActive", false);
+                                                }
+                                            }
+                                        });
+                            }else{
+
+                                firebaseFirestore.collection("remnants")
+                                        .whereEqualTo("userId", owner_id)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+
+                                                    String remnants_id = documentSnapshot.getId();
+
+                                                    DocumentReference docRefRemnants = firebaseFirestore.collection("remnants").document(remnants_id);
+                                                    docRefRemnants.update("isActive", true);
+                                                }
+                                            }
+                                        });
+                            }
+
+                        }
+                    }
+                });
+                //CHECK IF THE FEATURE IS STILL EXIST
+
+                if(mAuth.getCurrentUser().getUid().equals(owner_id)){
+
+
+                    Toast.makeText(FixedPrice.this, "OWNER", Toast.LENGTH_SHORT).show();
+
+                    Thread thread = new Thread() {
+                        @Override
+                        public void run() {
+                            while (!isInterrupted()) {
+                                try {
+                                    Thread.sleep(1000);
+
+                                    runOnUiThread(() -> {
+                                       // Log.d(TAG, "sud "+ System.currentTimeMillis() / 1000);
+
+                                        DocumentReference docRef = firebaseFirestore.collection("remnants").document(remnantId);
+                                        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                                if(task.isSuccessful()){
+                                                    DocumentSnapshot document = task.getResult();
+
+
+                                                    if(document.getLong("featuredDuration") != null){
+
+                                                        long featuredDuration = document.getLong("featuredDuration");
+                                                        String featuredDurationMs = df.format(featuredDuration * 1000);
+
+
+                                                        if((System.currentTimeMillis() / 1000) <= featuredDuration){
+
+                                                            featured_relativelayout.setVisibility(View.VISIBLE);
+                                                            fp_endDurationTextView.setText(featuredDurationMs);
+
+
+                                                            Log.d(TAG, "haha currentTime: "+System.currentTimeMillis() / 1000);
+                                                            Log.d(TAG, "HAHA endTime:     " + featuredDuration);
+
+                                                        }else{
+
+                                                            featured_relativelayout.setVisibility(View.GONE);
+                                                            DocumentReference docRef = firebaseFirestore.collection("remnants").document(remnantId);
+                                                            docRef.update("isFeatured", false);
+
+                                                            Log.d(TAG,"haha endTimes : "+featuredDuration);
+                                                        }
+
+                                                    }else{
+
+
+
+                                                    }
+
+                                                }
+
+                                            }
+                                        });
+                                    });
+
+
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    };
+
+                    thread.start();
+
+                }
+
+
+
+                //END CHECK IF THE FEATURE IS STILL EXIST
             }
 
 
         });
 
+        Log.d(TAG, "CURRENT USER: "+mAuth.getCurrentUser().getUid()+ "OWNER ID: "+owner_id);
+
         isThisMyItem();
         isRemnantExistOnCart();
+       // checkIfUserHasBalance();
         addCurrentTotal();
+        checkIfStillFeatured();
+        //showFeaturedEndTime();
 
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+
+    private void checkIfStillFeatured() {
+
+
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        DocumentReference docRef1 = firebaseFirestore.collection("remnants").document(remnantId);
+        docRef1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if(task.isSuccessful()) {
+
+                    DocumentSnapshot documentSnapshot = task.getResult();
+
+                    if(mAuth.getCurrentUser().getUid().equals(documentSnapshot.getString("userId"))){
+
+
+                        inflater.inflate(R.menu.edit_toolbar_menu, menu);
+                       // Log.d(TAG, "haha ID "+documentSnapshot.getString("userId"));
+                    }else{
+
+                        inflater.inflate(R.menu.report_toolbar_menu, menu);
+                    }
+                }
+            }
+        });
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.promote_remnant:
+
+                //Toast.makeText(this, "Promote Remnant", Toast.LENGTH_SHORT).show();
+                Intent promote = new Intent(FixedPrice.this, Featured.class);
+                promote.putExtra("remnantId", remnantId);
+                startActivity(promote);
+                break;
+
+            case R.id.edit_remnant:
+
+                Toast.makeText(this, "Edit Remnant", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.delete_remnant:
+
+                firebaseFirestore.collection("cart").get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                if(task.isSuccessful()){
+
+                                    for(QueryDocumentSnapshot documentSnapshot :task.getResult()){
+
+                                        String user_id = documentSnapshot.getId();
+
+                                        DocumentReference documentReference = firebaseFirestore.collection("cart").document(user_id)
+                                                .collection("remnants").document(remnantId);
+
+                                        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                                DocumentSnapshot documentSnapshot1 = task.getResult();
+                                                if(documentSnapshot1.exists()){
+
+                                                    //FETCH DATA FROM CART -> REMNANT -> REMNANT ID AND SUBTOTAL
+                                                    DocumentReference documentReference1 = firebaseFirestore.collection("cart").document(user_id)
+                                                            .collection("remnants").document(remnantId);
+
+                                                    documentReference1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                                            if(task.isSuccessful()) {
+
+                                                                DocumentSnapshot documentSnapshot2 = task.getResult();
+                                                                Double subTotal = documentSnapshot2.getDouble("subTotal");
+                                                                String buyerId = documentSnapshot2.getString("buyerId");
+
+
+                                                                Log.d(TAG, "subTotal: "+subTotal+ "buyerId: "+buyerId );
+                                                                DocumentReference documentReference2 = firebaseFirestore.collection("cart").document(buyerId);
+                                                                documentReference2.update("total", FieldValue.increment(-subTotal)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+
+                                                                        Log.d(TAG, "haha minus total");
+
+                                                                        //DELETE REMNANT FROM CART
+                                                                        firebaseFirestore.collection("cart").document(user_id)
+                                                                                .collection("remnants").document(remnantId)
+                                                                                .delete()
+                                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onSuccess(Void aVoid) {
+
+                                                                                        Toast.makeText(FixedPrice.this, "delete Remnant", Toast.LENGTH_SHORT).show();
+                                                                                        Log.d(TAG, "haha delete remnant from cart");
+                                                                                    }
+                                                                                });
+
+                                                                        //DELETE REMNANT FROM LIST
+                                                                        DocumentReference docRef1 = firebaseFirestore.collection("remnants").document(remnantId);
+
+                                                                        docRef1.update("isDeleted", true)
+                                                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onSuccess(Void aVoid) {
+
+                                                                                        Toast.makeText(FixedPrice.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                                                                        Intent i = new Intent(FixedPrice.this, Dashboard.class);
+                                                                                        startActivity(i);
+                                                                                    }
+                                                                                });
+
+                                                                    }
+                                                                });
+
+
+                                                            }
+
+                                                        }
+                                                    });
+
+                                                }else{
+
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                }
+                            }
+                        });
+
+                //DELETE REMNANT FROM LIST
+
+                DocumentReference docRef = firebaseFirestore.collection("remnants").document(remnantId);
+
+                docRef.update("isDeleted", true)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                Toast.makeText(FixedPrice.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(FixedPrice.this, Dashboard.class);
+                                startActivity(i);
+                            }
+                        });
+
+                break;
+
+            //REPORT ITEM
+            case R.id.reportRemnant:
+
+               // Toast.makeText(this, "report Remnant", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(FixedPrice.this, ReportRemnants.class);
+                i.putExtra("seller_id", owner_id);
+                i.putExtra("remnant_id", remnantId);
+                startActivity(i);
+
+                Toast.makeText(this, "report Remnant" + remnantId, Toast.LENGTH_SHORT).show();
+
+
+
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     ImageListener imageListener = new ImageListener() {
         @Override
@@ -156,7 +499,7 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
 
     public void addCurrentTotal(){
 
-        DocumentReference docRef = firebaseFirestore.collection("cart").document(user_id);
+        DocumentReference docRef = firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -167,18 +510,16 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
                             if(!documentSnapshot.exists()){
 
 
-                                currentTotal = Double.valueOf(0);
+                                currentTotal = 0.00;
 
                             }else{
 
                                 currentTotal =  documentSnapshot.getDouble("total");
-
                             }
                     }
                 }
             });
     }
-
 
     @Override
     public void onClick(View v) {
@@ -188,58 +529,100 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
 
             case R.id.fp1_addtocartbtn:
 
-                String owner = textViewOwner.getText().toString().trim();
-                String title = textViewTitle.getText().toString().trim();
-                // Double price = Double.parseDouble(textViewPrice.getText().toString());
+               DocumentReference docref10  = firebaseFirestore.collection("remnants").document(remnantId);
+               docref10.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                HashMap<String, Object> totalData = new HashMap<>();
-                totalData.put("total", price + currentTotal);
+                       if(task.isSuccessful()){
+
+                           DocumentSnapshot document = task.getResult();
+
+                           if(document.getBoolean("isActive") == false){
+
+                               Toast.makeText(FixedPrice.this, "The seller has no transaction fee", Toast.LENGTH_SHORT).show();
+
+                           }else{
+
+                               String ownerName = textViewOwner.getText().toString().trim();
+                               String title = textViewTitle.getText().toString().trim();
+
+                               HashMap<String, Object> totalData = new HashMap<>();
+                               totalData.put("total", price + currentTotal);
+                               HashMap<String, Object> cartData = new HashMap<>();
+
+                               cartData.put("ownerName", ownerName);
+                               cartData.put("remnantId", remnantId);
+                               cartData.put("owner_id", owner_id);
+                               cartData.put("title", title);
+                               cartData.put("imageUrl", stringImageUrl.get(0));
+                               cartData.put("quantity", 1);
+                               cartData.put("buyerId", mAuth.getCurrentUser().getUid());
+                               cartData.put("subTotal", fixedPriceModel.getPrice());
+                               cartData.put("maxQuantity", fixedPriceModel.getQuantity());
+                               cartData.put("price", fixedPriceModel.getPrice());
+                               cartData.put("timeStamp", FieldValue.serverTimestamp());
+                               cartData.put("isFeatured", false);
+                               cartData.put("isActive", true);
+
+
+                               firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid()).set(totalData)
+                                       .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                           @Override
+                                           public void onSuccess(Void aVoid) {
+
+                                               firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
+                                                       .collection("remnants").document(remnantId)
+                                                       .set(cartData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                   @Override
+                                                   public void onSuccess(Void aVoid) {
+
+                                                       Toast.makeText(FixedPrice.this, "Added to Cart", Toast.LENGTH_SHORT).show();
+
+                                                       fp1addCartButton.setVisibility(View.GONE);
+                                                       fp1viewCartButton.setVisibility(View.VISIBLE);
+                                                   }
+                                               });
+                                           }
+                                       });
 
 
 
-                HashMap<String, Object> cartData = new HashMap<>();
-                cartData.put("owner",owner);
-                cartData.put("title", title);
-                cartData.put("price", price);
-                cartData.put("imageUrl", fixedPriceModel.getRemnantsPicUrl().get(0).toString());
-                cartData.put("quantity", 1);
 
-                firebaseFirestore.collection("cart").document(user_id).set(totalData)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
 
-                                firebaseFirestore.collection("cart").document(user_id)
-                                        .collection("remnants").document(remnantId)
-                                        .set(cartData).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-
-                                        Toast.makeText(FixedPrice.this, "Added to Cart", Toast.LENGTH_SHORT).show();
-
-                                        fp1addCartButton.setVisibility(View.GONE);
-                                        fp1viewCartButton.setVisibility(View.VISIBLE);
-                                    }
-                                });
-                            }
-                        });
+                           }
+                       }
+                   }
+               });
 
                 break;
 
             case R.id.fp1_viewOnCart:
 
-                Intent toCart = new Intent(this, Cart.class);
+                Intent toCart = new Intent(FixedPrice.this, Cart.class);
                 startActivity(toCart);
+               // Toast.makeText(this, "naa naka sa cart", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.fp1_ownerTextView:
+
+                if(!mAuth.getCurrentUser().getUid().equals(owner_id)) {
+
+                    Intent i = new Intent(FixedPrice.this, UserProfile.class);
+                    i.putExtra("seller_id", owner_id);
+                    // Toast.makeText(this, ""+owner_id, Toast.LENGTH_SHORT).show();
+                    startActivity(i);
+                }
+
 
                 break;
         }
-
 
     }
 
     public void isRemnantExistOnCart(){
 
-        firebaseFirestore.collection("cart").document(user_id).collection("remnants")
+        firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid()).collection("remnants")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -261,23 +644,24 @@ public class FixedPrice extends AppCompatActivity implements View.OnClickListene
 
     public void isThisMyItem(){
 
+       firebaseFirestore.collection("remnants").whereEqualTo(FieldPath.documentId(), remnantId)
+               .get()
+               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-        firebaseFirestore.collection("fixedPriceRemnants")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                       if(task.isSuccessful()){
 
-                for(QueryDocumentSnapshot documentSnapshot :task.getResult()){
+                           for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
 
-                    if(user_id.equals(documentSnapshot.getString("userId"))){
+                               if(mAuth.getCurrentUser().getUid().equals(documentSnapshot.getString("userId"))){
 
-                        fp1addCartButton.setVisibility(View.GONE);
-                    }
-                }
+                                   fp1addCartButton.setVisibility(View.GONE);
+                               }
 
-            }
-        });
-
-
+                           }
+                       }
+                   }
+               });
     }
 }

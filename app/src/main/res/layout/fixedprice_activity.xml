@@ -30,6 +30,7 @@
                     android:layout_height="300dp"
                     app:fillColor="#FFFFFFFF"
                     app:pageColor="#00000000"
+                    android:background="@color/colorPrimaryDark"
                     app:autoPlay="false"
                     app:radius="6dp"
                     app:slideInterval="3000"
@@ -260,6 +261,37 @@
                         android:layout_toRightOf="@+id/fm_meetupTextView"
                         android:text="Cebu City, PH"
                         />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/featured_relativelayout"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/fp_endDurationText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Featured End Time: "
+                        android:textAppearance="?attr/textAppearanceBody2"/>
+
+                    <TextView
+                        android:id="@+id/fp_endDurationTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        android:layout_toRightOf="@+id/fp_endDurationText"
+                        android:text="Cebu City, PH" />
+
                 </RelativeLayout>
 
                 <View

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,13 +19,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "LOGIN";
     private EditText login_email, login_password;
     private Button login_loginbtn, login_forgotypbtn, login_registerbtn;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
 
 
 
@@ -34,16 +42,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.login_activity);
 
         mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         login_email = findViewById(R.id.login_email);
         login_password = findViewById(R.id.login_password);
         login_loginbtn = findViewById(R.id.login_loginbtn);
         login_registerbtn = findViewById(R.id.login_registerbtn);
-        //login_forgotypbtn = findViewById(R.id.login_forgotypbtn);
 
         login_loginbtn.setOnClickListener(this);
         login_registerbtn.setOnClickListener(this);
-        //login_forgotypbtn.setOnClickListener(this);
+
     }
 
     @Override
@@ -66,14 +74,43 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     login_password.setError("Password must not be empty");
                 }else {
 
+
+
                     mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
 
+                                firebaseFirestore.collection("users")
+                                        .whereEqualTo(FieldPath.documentId(), mAuth.getCurrentUser().getUid())
+                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                                sendToDashboard();
+                                        if(task.isSuccessful()){
+
+                                            for(QueryDocumentSnapshot document: task.getResult()){
+
+                                                if(document.getBoolean("isBanned")){
+
+
+                                                    mAuth.signOut();
+                                                    Intent toLogin = new Intent(Login.this, Login.class);
+                                                    startActivity(toLogin);
+
+                                                    Toast.makeText(Login.this, "Your account has been banned because of numerous reports from different users regarding your behaviour and recent activity. You may no longer use nor access your ExSell.", Toast.LENGTH_SHORT).show();
+                                                }else{
+
+                                                    sendToDashboard();
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
+
+
                             } else {
 
                                 String error = task.getException().getMessage();

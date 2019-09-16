@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/promote_remnant"
-        android:title="Promote"
+        android:title="Boost"
         app:showAsAction="never"/>
 
     <item android:id="@+id/edit_remnant"

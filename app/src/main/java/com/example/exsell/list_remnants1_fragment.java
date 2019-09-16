@@ -73,6 +73,7 @@ public class list_remnants1_fragment extends Fragment {
                 .setImageAdapter(new GlideAdapter())
                 .setMaxCount(10)
                 .setMinCount(1)
+                .setButtonInAlbumActivity(true)
                 .setCamera(true)
                 .textOnNothingSelected("Please select atleast 1")
                 .startAlbum();
@@ -83,6 +84,7 @@ public class list_remnants1_fragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
+
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -98,33 +100,29 @@ public class list_remnants1_fragment extends Fragment {
        lm_remnantsTitle.addTextChangedListener(nextWatcher);
        lm_remnantDescription.addTextChangedListener(nextWatcher);
 
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        nextBtn.setOnClickListener(v -> {
 
 
-                String title = lm_remnantsTitle.getText().toString().trim();
-                String description = lm_remnantDescription.getText().toString().trim();
-                String backStory = lm_backStory.getText().toString().trim();
-                String bounceBack = lm_bounceBack.getText().toString().trim();
+            String title = lm_remnantsTitle.getText().toString().trim();
+            String description = lm_remnantDescription.getText().toString().trim();
+            String backStory = lm_backStory.getText().toString().trim();
+            String bounceBack = lm_bounceBack.getText().toString().trim();
 
 
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) pathUri);
-                bundle.putString("title", title);
-                bundle.putString("description", description);
-                bundle.putString("backStory", backStory);
-                bundle.putString("bounceBack", bounceBack);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) pathUri);
+            bundle.putString("title", title);
+            bundle.putString("description", description);
+            bundle.putString("backStory", backStory);
+            bundle.putString("bounceBack", bounceBack);
 
 
-                Fragment lm_fragment2  = new List_remnants2_fragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                lm_fragment2.setArguments(bundle);
-                transaction.replace(R.id.list_remnants_container, lm_fragment2);
-                transaction.addToBackStack(null);
-                transaction.commit();
-
-            }
+            Fragment lm_fragment2  = new List_remnants2_fragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            lm_fragment2.setArguments(bundle);
+            transaction.replace(R.id.list_remnants_container, lm_fragment2);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
         return view;
     }
@@ -184,7 +182,6 @@ public class list_remnants1_fragment extends Fragment {
                 nextBtn.setBackgroundColor(getResources().getColor(colorPrimaryDark));
 
             }else{
-
 
                 nextBtn.setEnabled(false);
                 nextBtn .setBackgroundColor(getResources().getColor(buttonDisabled));

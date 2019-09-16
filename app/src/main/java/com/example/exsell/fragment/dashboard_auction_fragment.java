@@ -50,7 +50,12 @@ public class dashboard_auction_fragment extends Fragment {
 
     private void setUpRecyclerView() {
 
-        Query query = firebaseFirestore.collection("auctionRemnants")
+        Query query = firebaseFirestore.collection("remnants")
+                .whereEqualTo("type", "Auction")
+                .whereEqualTo("isDeleted", false)
+                .whereEqualTo("isSoldOut", false)
+                .whereEqualTo("isBanned", false)
+                .whereEqualTo("isExpired", false)
                 .orderBy("timeStamp", Query.Direction.DESCENDING);
 
 

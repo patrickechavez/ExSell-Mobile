@@ -4,18 +4,17 @@ import java.util.List;
 
 public class AuctionModel {
 
-    private List<String> auctionImageUrl;
-    private String title, startTime, endTime, backStory, bounceBack, categoryId, description, meetup, userId, bidPrice, bidOwnerId;
-    private Double startPrice;
-
+    private List<String> imageUrl;
+    private String title, startTime, backStory, bounceBack, categoryId, description, meetup, userId, bidPrice, bidOwnerId;
+    private Double price;
+    private Long endTime, idleDuration;
 
     public AuctionModel() { }
 
-    public AuctionModel(List<String> auctionImageUrl, String title, String startTime, String endTime, String backStory, String bounceBack, String categoryId, String description, String meetup, String userId, String bidPrice, String bidOwnerId, Double startPrice) {
-        this.auctionImageUrl = auctionImageUrl;
+    public AuctionModel(List<String> imageUrl, String title, String startTime, String backStory, String bounceBack, String categoryId, String description, String meetup, String userId, String bidPrice, String bidOwnerId, Double price, Long endTime, Long idleDuration) {
+        this.imageUrl = imageUrl;
         this.title = title;
         this.startTime = startTime;
-        this.endTime = endTime;
         this.backStory = backStory;
         this.bounceBack = bounceBack;
         this.categoryId = categoryId;
@@ -24,11 +23,13 @@ public class AuctionModel {
         this.userId = userId;
         this.bidPrice = bidPrice;
         this.bidOwnerId = bidOwnerId;
-        this.startPrice = startPrice;
+        this.price = price;
+        this.endTime = endTime;
+        this.idleDuration = idleDuration;
     }
 
-    public List<String> getAuctionImageUrl() {
-        return auctionImageUrl;
+    public List<String> getImageUrl() {
+        return imageUrl;
     }
 
     public String getTitle() {
@@ -37,10 +38,6 @@ public class AuctionModel {
 
     public String getStartTime() {
         return startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
     }
 
     public String getBackStory() {
@@ -75,7 +72,15 @@ public class AuctionModel {
         return bidOwnerId;
     }
 
-    public Double getStartPrice() {
-        return startPrice;
+    public Double getPrice() {
+        return price;
+    }
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public Long getIdleDuration() {
+        return idleDuration;
     }
 }

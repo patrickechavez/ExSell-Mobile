@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Blog">
+
+    <include
+        android:id="@+id/blog_app_bar"
+        layout="@layout/app_bar_layout"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/blog_imageView"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:src="@drawable/image_add_button" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/blog_addRecyclerView"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="200dp" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="16dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:layout_margin="4dp"
+                    android:hint="Title">
+
+                    <EditText
+                        android:id="@+id/blog_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/textInputOutlineColor"
+                    app:hintTextColor="@color/textColorPrimary"
+                    android:layout_margin="4dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:hint="Breakup Stage">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/blog_breakUpStage"
+                        android:layout_width="match_parent"
+                        android:editable="false"
+                        android:textColor="#442C2E"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_margin="4dp"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:hint="The Gist">
+
+
+                    <EditText
+                        android:id="@+id/blog_theGist"
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:layout_weight="1"
+                        android:ems="5"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:hint="The Juice">
+
+
+                    <EditText
+                        android:id="@+id/blog_theJuice"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <Button
+                    android:id="@+id/blog_postBtn"
+                    style="@style/Widget.Shrine.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:text="TELL IT!"
+                    app:iconTint="@android:color/black"
+                    android:backgroundTint="#d3d3d3"
+                    android:enabled="false" />
+
+
+                <!--<com.google.android.material.button.MaterialButton
+                    android:id="@+id/blog_postBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:visibility="visible"
+                    style="@style/Widget.Shrine.Button"
+                    app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
+                    android:layout_gravity="center_horizontal"
+                    app:iconTint="@android:color/black"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:text="TELL IT!" />-->
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

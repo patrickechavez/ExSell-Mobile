@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.dashboard_fixedprice_fragment"
-    android:orientation="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/blog_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="STORIES"
-        android:textSize="48dp"
-        android:gravity="center_horizontal"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="112dp"/>
 
-</LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/blog_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/pen" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,96 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@color/colorAccent"
-    android:layout_height="match_parent"
-    tools:context=".Cart">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:id="@+id/linearlayout_cart1"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_marginLeft="16dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/arrow_down"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="32dp"
-            android:fontFamily="@font/rubik"
-            android:text="CART"
-            style="@style/TextAppearance.Shrine.Toolbar"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="8dp"
-            android:fontFamily="@font/rubik"
-            android:text="2 ITEMS"
-            style="?attr/textAppearanceBody1"/>
-    </LinearLayout>
+    <include
+        android:id="@+id/cart_app_bar"
+        layout="@layout/app_bar_layout" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cart_recyclerView"
-        android:layout_below="@+id/linearlayout_cart1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="500dp"
+        android:layout_below="@+id/cart_app_bar" />
 
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <LinearLayout
-        android:layout_below="@id/cart_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:layout_marginLeft="72dp"
-        android:layout_marginRight="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/rubik"
-            android:text="TOTAL"
-            android:textSize="14sp"
-            android:textAppearance="?attr/textAppearanceOverline" />
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/cart_hiding"
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/cart_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/rubik"
+                    android:text="TOTAL:  ₱0.00"
+                    android:textAppearance="?attr/textAppearanceButton" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/relativelayout_Checkout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimaryDark">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="@font/rubik"
+                    android:text="CHECKOUT"
+                    android:textAppearance="?attr/textAppearanceButton" />
+
+            </RelativeLayout>
+
+
+
+
+        </LinearLayout>
+
+
+        <!--<LinearLayout
+            android:id="@+id/cart_hiding"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/rubik"
-            android:layout_centerHorizontal="true"
-            android:text="$ 330.52"
-            android:layout_alignParentRight="true"
-            android:textAppearance="?attr/textAppearanceHeadline4" />
+            android:orientation="vertical">
 
-        </RelativeLayout>
+            <LinearLayout
+                android:layout_marginTop="32dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="105dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/rubik"
+                    android:text="Transaction Fee"
+                    android:textSize="14sp"
+                    android:textAppearance="?attr/textAppearanceOverline" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik"
+                        android:layout_marginRight="8dp"
+                        android:layout_centerHorizontal="true"
+                        android:text="₱ 25.00"
+                        android:textSize="20dp"
+                        android:layout_alignParentRight="true"
+                        android:textAppearance="?attr/textAppearanceHeadline6" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="32dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="105dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/rubik"
+                    android:text="TOTAL"
+                    android:textSize="14sp"
+                    android:textAppearance="?attr/textAppearanceOverline" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/cart_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik"
+                        android:layout_marginRight="8dp"
+                        android:layout_centerHorizontal="true"
+                        android:text="$ 330.52"
+                        android:layout_alignParentRight="true"
+                        android:textAppearance="?attr/textAppearanceHeadline4" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>-->
+
+
+
+   <!-- <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/cart_proceedCheckOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PROCEED TO CHECKOUT"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="8dp"
+        android:enabled="false"
+        android:padding="0dp"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:layout_anchorGravity="bottom"
+        android:text="CHECKOUT"
         android:textAppearance="?attr/textAppearanceButton"
-        style="@style/Widget.Shrine.Button"
-        app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
-        android:textSize="14dp"/>
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+        app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent" />-->
 
 </RelativeLayout>

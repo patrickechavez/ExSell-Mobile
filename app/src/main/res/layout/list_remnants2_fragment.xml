@@ -170,7 +170,7 @@
                     android:layout_margin="4dp"
                     app:startIconDrawable="@drawable/peso_icon"
                     style="@style/Widget.Shrine.TextInputLayout"
-                    android:hint="Auction Start Price">
+                    android:hint="Starting Price">
 
                     <EditText
                         android:id="@+id/lm2_auctionStartPrice"
@@ -190,13 +190,79 @@
                     android:hint="Duration">
 
                     <AutoCompleteTextView
-                        android:id="@+id/filled_exposed_dropdown"
+                        android:id="@+id/filled_exposed_dropdownDuration"
                         android:layout_width="match_parent"
                         android:editable="false"
                         android:textColor="#442C2E"
                         android:layout_height="wrap_content"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    app:boxStrokeColor="@color/textInputOutlineColor"
+                    app:hintTextColor="@color/textColorPrimary"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:hint="Start Time">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/filled_exposed_dropdownStartTime"
+                        android:layout_width="match_parent"
+                        android:editable="false"
+                        android:text="Start Immediately"
+                        android:textColor="#442C2E"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/linearlayout_startTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:weightSum="2"
+                    android:orientation="horizontal">
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1.2"
+                        app:boxStrokeColor="@color/textInputOutlineColor"
+                        app:hintTextColor="@color/textColorPrimary"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:hint="Idle Duration">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/filled_exposed_dropdownIdleDuration"
+                            android:layout_width="match_parent"
+                            android:editable="false"
+                            android:textColor="#442C2E"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight=".8"
+                        style="@style/Widget.Shrine.TextInputLayout"
+                        android:hint="List Time">
+
+                        <EditText
+                            android:id="@+id/lm2_auctionListTime"
+                            android:layout_width="match_parent"
+                            android:editable="false"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -212,7 +278,6 @@
                         android:layout_height="wrap_content" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
 
                 <View
                     android:layout_width="match_parent"
@@ -266,6 +331,23 @@
                 style="@style/Widget.Shrine.Button"
                 android:layout_height="wrap_content"
                 android:text="LIST IT!"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="8dp"
+                android:background="@android:color/black"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

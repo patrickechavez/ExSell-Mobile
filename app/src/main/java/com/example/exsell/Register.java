@@ -99,7 +99,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     userMap.put("lastName", lname);
                     userMap.put("imageUrl", "default");
                     userMap.put("wallet", 0.00);
-                    userMap.put("type", "user");
+                    userMap.put("isBanned", false);
+                    userMap.put("isUser", true);
                     userMap.put("report", 0);
                     userMap.put("status", "active");
 

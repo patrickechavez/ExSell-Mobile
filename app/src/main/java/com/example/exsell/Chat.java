@@ -56,6 +56,7 @@ import static com.example.exsell.R.id.custom_bar_image;
 public class Chat extends AppCompatActivity {
 
 
+    private static final String TAG = "CHAT";
     private String user_id;
     private Toolbar toolbar;
     private FirebaseAuth mAuth;
@@ -166,6 +167,11 @@ public class Chat extends AppCompatActivity {
                     public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
                         List<MessageModel> newMessageModel = new ArrayList<>();
+
+                        if(e != null){
+                            Log.d(TAG, "Error: "+e.getMessage());
+
+                        }else{}
 
                         for(QueryDocumentSnapshot doc: queryDocumentSnapshots){
 

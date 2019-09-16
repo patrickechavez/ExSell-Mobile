@@ -9,7 +9,7 @@ public class Profile_tabPagerAdapter extends FragmentStatePagerAdapter {
 
     int countTab;
 
-    public Profile_tabPagerAdapter(@NonNull FragmentManager fm, int tabCount) {
+    public Profile_tabPagerAdapter(@NonNull FragmentManager fm, int countTab) {
         super(fm);
 
         this.countTab = countTab;

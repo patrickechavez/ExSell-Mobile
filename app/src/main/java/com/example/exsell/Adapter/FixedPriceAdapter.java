@@ -3,6 +3,8 @@ package com.example.exsell.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
-public class FixedPriceAdapter extends FirestoreRecyclerAdapter<FixedPriceModel, FixedPriceAdapter.FixedPriceHolder> {
+public class FixedPriceAdapter extends FirestoreRecyclerAdapter<FixedPriceModel, FixedPriceAdapter.FixedPriceHolder>{
 
     private OnItemClickListener listener;
 
@@ -29,7 +31,7 @@ public class FixedPriceAdapter extends FirestoreRecyclerAdapter<FixedPriceModel,
     @Override
     protected void onBindViewHolder(@NonNull FixedPriceHolder fixedPriceHolder, int i, @NonNull FixedPriceModel fixedPriceModel) {
 
-        Picasso.get().load(fixedPriceModel.getRemnantsPicUrl().get(0)).into(fixedPriceHolder.imageURL);
+        Picasso.get().load(fixedPriceModel.getImageUrl().get(0)).into(fixedPriceHolder.imageURL);
         fixedPriceHolder.remnantTitle.setText(fixedPriceModel.getTitle());
         fixedPriceHolder.remnantPrice.setText("₱ "+ fixedPriceModel.getPrice());
     }
@@ -42,6 +44,13 @@ public class FixedPriceAdapter extends FirestoreRecyclerAdapter<FixedPriceModel,
 
         return new FixedPriceHolder(view);
     }
+
+
+
+
+
+
+
 
     class FixedPriceHolder extends RecyclerView.ViewHolder{
 

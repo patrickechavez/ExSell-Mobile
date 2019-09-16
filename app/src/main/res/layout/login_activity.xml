@@ -27,16 +27,9 @@
                 android:layout_height="128dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="48dp"
-                android:layout_marginBottom="16dp"
-                android:src="@drawable/logo"/>
+                android:layout_marginBottom="16dp"/>
 
-            <!--<TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="132dp"
-                android:text="EXSELL"
-                android:textAppearance="@style/TextAppearance.Shrine.Title" />-->
+
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -61,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:hint="Password"
+                app:passwordToggleEnabled="true"
                 app:errorEnabled="true">
 
                 <EditText

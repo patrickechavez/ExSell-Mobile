@@ -28,4 +28,12 @@
     <string name="quickbrownfox">
         The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog
     </string>
+
+    <string name="disclaimerNote">
+        Items must be collectors items and relationship remnants
+    </string>
+
+    <string name="accountBan">
+        Your account has been banned because of numerous reports from different users regarding your behaviour and recent activity. You may no longer use nor access your ExSell.
+    </string>
 </resources>

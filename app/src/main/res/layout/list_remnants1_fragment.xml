@@ -19,7 +19,6 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-
                 android:id="@+id/list_remnants_recyclerview1"
                 android:layout_width="match_parent"
                 android:layout_height="200dp" />
@@ -90,7 +89,7 @@
                     android:layout_margin="4dp"
                     android:layout_height="wrap_content"
                     style="@style/Widget.Shrine.TextInputLayout"
-                    android:hint="What is your bounce back plan?">
+                    android:hint="My Bounce Back Plan">
 
 
                     <EditText

@@ -4,6 +4,7 @@ package com.example.exsell.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +27,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class UsersAdapter extends FirestoreRecyclerAdapter<UsersModel, UsersAdapter.UserHolder> {
 
 
 
-    /**
-     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-     * FirestoreRecyclerOptions} for configuration options.
-     *
-     * @param options
-     */
 
     private OnItemClickListener listener;
     public UsersAdapter(@NonNull FirestoreRecyclerOptions<UsersModel> options) {
@@ -71,10 +68,10 @@ public class UsersAdapter extends FirestoreRecyclerAdapter<UsersModel, UsersAdap
 
     class UserHolder extends  RecyclerView.ViewHolder{
 
-        public TextView firstName;
-        public TextView lastName;
-        public ImageView profile_image;
-        public ImageView image_online;
+         TextView firstName;
+         TextView lastName;
+         ImageView profile_image;
+         ImageView image_online;
 
         public UserHolder(@NonNull View itemView) {
             super(itemView);

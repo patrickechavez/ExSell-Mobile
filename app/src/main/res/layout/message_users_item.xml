@@ -3,44 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:layout_height="56dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/chat_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/bea_alonzo"/>
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_alignParentLeft="true"
+        android:src="@mipmap/ic_launcher_round"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="First Name"
         android:id="@+id/chat_fname"
+        android:fontFamily="@font/rubik"
+        android:layout_marginLeft="16dp"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
         android:layout_toRightOf="@id/chat_image"
         android:layout_toEndOf="@id/chat_image"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
         android:layout_centerVertical="true"/>
 
     <TextView
+        android:id="@+id/chat_lname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Last Name"
-        android:id="@+id/chat_lname"
+        android:layout_marginLeft="4dp"
         android:layout_toRightOf="@id/chat_fname"
-        android:layout_toEndOf="@id/chat_fname"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="3dp"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:text="Last Name"
+        android:fontFamily="@font/rubik"
+        android:textAppearance="?attr/textAppearanceSubtitle1" />
 
     <ImageView
         android:id="@+id/image_online"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="42dp"
+        android:layout_marginTop="37dp"
         android:src="@drawable/online_icon"
-        android:visibility="invisible"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="35dp"/>
-    
+        android:visibility="invisible" />
+
 </RelativeLayout>

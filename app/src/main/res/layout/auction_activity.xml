@@ -13,7 +13,6 @@
 
         <include
             android:id="@+id/auction_app_bar"
-            android:visibility="gone"
             layout="@layout/app_bar_layout"/>
 
         <ScrollView
@@ -63,7 +62,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/auction_circleImageView"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="16dp"
+                            android:layout_marginLeft="12dp"
                             android:textColor="#442C2E"
                             android:text="John Patrick"
                             android:textSize="16sp"
@@ -132,7 +131,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-
                     <com.github.aakira.expandablelayout.ExpandableRelativeLayout
                         android:id="@+id/auction_expandableLinearLayout"
                         android:layout_width="match_parent"
@@ -172,14 +170,14 @@
                             android:layout_marginBottom="8dp"
                             android:textAppearance="?attr/textAppearanceButton"
                             android:text="Bounce Back Plan"
-                            android:layout_below="@id/backStoryTextView"
+                            android:layout_below="@id/auction_backStoryTextView"
                             android:layout_marginRight="16dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"/>
 
                         <TextView
                             android:id="@+id/auction_bounceBackTextView"
-                            android:layout_below="@id/bounceBackText"
+                            android:layout_below="@id/auction_bounceBackText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="16dp"
@@ -188,9 +186,6 @@
                             android:textAppearance="?attr/textAppearanceCaption"
                             android:text="@string/quickbrownfox"
                             android:layout_marginTop="8dp"/>
-
-
-
                     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
                 </LinearLayout>
@@ -218,8 +213,7 @@
                         android:layout_centerVertical="true"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:layout_toRightOf="@id/auction_startPriceTextView"
-                        android:text="₱ 525.52"
-                        />
+                        android:text="₱ 525.52" />
                 </RelativeLayout>
 
 
@@ -237,7 +231,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:text="Meetup"
+                        android:text="Meetup:"
                         android:textAppearance="?attr/textAppearanceBody2"/>
 
                     <TextView
@@ -254,6 +248,36 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/auction_relativeAvailTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:id="@+id/auction_availTimeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="Available Time"
+                        android:textAppearance="?attr/textAppearanceBody2"/>
+
+                    <TextView
+                        android:id="@+id/auction_availTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_centerVertical="true"
+                        android:textAppearance="?attr/textAppearanceBody1"
+                        android:layout_toRightOf="@+id/auction_availTimeTextView"
+                        android:text="5:42 6-3-63" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -266,7 +290,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:text="End Time and Date:"
+                        android:text="End Time: "
                         android:textAppearance="?attr/textAppearanceBody2"/>
 
                     <TextView
@@ -278,9 +302,13 @@
                         android:layout_centerVertical="true"
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:layout_toRightOf="@+id/auction_endTimeTextView"
-                        android:text="5:42 6-3-63"
-                        />
+                        android:text="5:42 6-3-63" />
+
+
                 </RelativeLayout>
+
+
+
 
                 <View
                     android:layout_width="match_parent"
@@ -302,7 +330,7 @@
                         android:layout_height="wrap_content"
                         app:helperTextEnabled="true"
                         android:layout_marginLeft="16dp"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:layout_marginRight="16dp"/>
                 </com.google.android.material.textfield.TextInputLayout>
 

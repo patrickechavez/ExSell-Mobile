@@ -64,6 +64,12 @@ import java.math.BigDecimal;
             super.onCreate(savedInstanceState);
             setContentView(R.layout.wallet_activity);
 
+            Toolbar toolbar = findViewById(R.id.wallet_app_bar);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setTitle("MY WALLET");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
             textViewMoneyBalance = findViewById(R.id.wallet_textViewMoneyBalance);
 
@@ -103,23 +109,9 @@ import java.math.BigDecimal;
             intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
             startService(intent);
 
-
-            Toolbar toolbar = findViewById(R.id.wallet_app_bar);
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("My Wallet");
-
             editTextAddMoney = findViewById(R.id.wallet_addMoneyEditText);
             buttonAddMoney = findViewById(R.id.wallet_addMoneyButton);
-
-            buttonAddMoney.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    processPayment();
-
-                }
-            });
-
+            buttonAddMoney.setOnClickListener(v -> processPayment());
         }
 
         private void processPayment() {
@@ -175,6 +167,12 @@ import java.math.BigDecimal;
                 Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
 
             }
+        }
+
+        @Override
+        public boolean onSupportNavigateUp() {
+            onBackPressed();
+            return true;
         }
 
     }
