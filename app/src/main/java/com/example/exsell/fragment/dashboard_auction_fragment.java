@@ -70,16 +70,13 @@ public class dashboard_auction_fragment extends Fragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
         recyclerView.setAdapter(auctionAdapter);
 
-        auctionAdapter.setOnItemClickListener(new FixedPriceAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                // FixedPriceModel fixedPriceModel = documentSnapshot.toObject(FixedPriceModel.class);
-                String id = documentSnapshot.getId();
-                Toast.makeText(getContext(), ""+id, Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(getContext(), Auction.class);
-                    i.putExtra("auctionId", id);
-                startActivity(i);
-            }
+        auctionAdapter.setOnItemClickListener((documentSnapshot, position) -> {
+            // FixedPriceModel fixedPriceModel = documentSnapshot.toObject(FixedPriceModel.class);
+            String id = documentSnapshot.getId();
+            // Toast.makeText(getContext(), ""+id, Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(getContext(), Auction.class);
+                i.putExtra("auctionId", id);
+            startActivity(i);
         });
     }
 

@@ -4,6 +4,10 @@ public class SelectSubCategoryModel {
 
     private String subCategoryName;
 
+    public SelectSubCategoryModel(){
+
+    }
+
     public SelectSubCategoryModel(String subCategoryName) {
         this.subCategoryName = subCategoryName;
     }

@@ -214,8 +214,8 @@
                         android:textAppearance="?attr/textAppearanceBody1"
                         android:layout_toRightOf="@id/auction_startPriceTextView"
                         android:text="₱ 525.52" />
-                </RelativeLayout>
 
+                </RelativeLayout>
 
 
                 <RelativeLayout
@@ -253,6 +253,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginLeft="16dp"
+                    android:visibility="visible"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp">
 

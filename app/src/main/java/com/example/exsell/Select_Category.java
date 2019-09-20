@@ -62,20 +62,24 @@ public class Select_Category extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 SelectCategoryModel selectCategoryModel = documentSnapshot.toObject(SelectCategoryModel.class);
                 String id = documentSnapshot.getId();
-                String categoryName = documentSnapshot.get("categoryName").toString();
+                String subCategoryName = documentSnapshot.get("categoryName").toString();
+
+
+                /*Intent selectSub = new Intent(Select_Category.this, Select_Subcategory.class);
+                selectSub.putExtra("categoryId", id);
+                selectSub.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+                startActivity(selectSub);*/
 
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("categoryId", id);
-                resultIntent.putExtra("categoryName", categoryName);
+                resultIntent.putExtra("subCategoryId", id);
+                resultIntent.putExtra("subCategoryName", subCategoryName);
 
                 setResult(RESULT_OK, resultIntent);
                 finish();
+               // List_remnants2_fragment.
             }
         });
-
-
     }
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

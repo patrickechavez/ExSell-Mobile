@@ -179,7 +179,6 @@ public class Cart extends AppCompatActivity {
 
                                                                         //
 
-
                                                                         //SEND NOTIFICATION TO SELLER
                                                                         String message = currentUserFirstName+" "+currentUserLastName+" want to buy your "+title;
                                                                         String message2 = "Quantity: "+quantity;
@@ -196,74 +195,71 @@ public class Cart extends AppCompatActivity {
 
 
                                                                         firebaseFirestore.collection("notification").add(notifications)
-                                                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                                                    @Override
-                                                                                    public void onSuccess(DocumentReference documentReference) {
+                                                                                .addOnSuccessListener(documentReference -> {
 
-                                                                                        Log.d(TAG, "hahaho SUD SA NA NOTIFICATION");
+                                                                                    Log.d(TAG, "hahaho SUD SA NA NOTIFICATION");
 
-                                                                                        //UPDATE QUANTITY
-                                                                                        DocumentReference documentReference1 = firebaseFirestore.collection("remnants").document(remnantId);
-                                                                                        documentReference1.update("quantity", FieldValue.increment(-quantity)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                            @Override
-                                                                                            public void onSuccess(Void aVoid) {
+                                                                                    //UPDATE QUANTITY
+                                                                                    DocumentReference documentReference1 = firebaseFirestore.collection("remnants").document(remnantId);
+                                                                                    documentReference1.update("quantity", FieldValue.increment(-quantity)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onSuccess(Void aVoid) {
 
-                                                                                                Log.d(TAG, "hahaho MINUS QUANTITY");
+                                                                                            Log.d(TAG, "hahaho MINUS QUANTITY");
 
 
-                                                                                                //DELETE REMNANT CART
-                                                                                                firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
-                                                                                                        .collection("remnants").document(remnantId)
-                                                                                                        .delete()
-                                                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                            @Override
-                                                                                                            public void onSuccess(Void aVoid) {
+                                                                                            //DELETE REMNANT CART
+                                                                                            firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
+                                                                                                    .collection("remnants").document(remnantId)
+                                                                                                    .delete()
+                                                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                        @Override
+                                                                                                        public void onSuccess(Void aVoid) {
 
-                                                                                                                Log.d(TAG, "hahaho DELETE USER REMNANT CART");
-                                                                                                            }
-                                                                                                        });
+                                                                                                            Log.d(TAG, "hahaho DELETE USER REMNANT CART");
+                                                                                                        }
+                                                                                                    });
 
-                                                                                                //DELETE USER ID CART
-                                                                                                firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
-                                                                                                        .delete()
-                                                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                            @Override
-                                                                                                            public void onSuccess(Void aVoid) {
+                                                                                            //DELETE USER ID CART
+                                                                                            firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
+                                                                                                    .delete()
+                                                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                        @Override
+                                                                                                        public void onSuccess(Void aVoid) {
 
-                                                                                                                Log.d(TAG, "hahaho DELETE USER ID CART");
-                                                                                                            }
-                                                                                                        });
-
-
-                                                                                                //UPDATE THE 0 QUANTITY TO ISSOLD
-                                                                                                DocumentReference docRef1 = firebaseFirestore.collection("remnants").document(remnantId);
-                                                                                                docRef1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                                                    @Override
-                                                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                                                                                                        if(task.isSuccessful()){
-
-                                                                                                            DocumentSnapshot documentSnapshot1 = task.getResult();
-                                                                                                            if(documentSnapshot1.getLong("quantity").intValue() == 0){
+                                                                                                            Log.d(TAG, "hahaho DELETE USER ID CART");
+                                                                                                        }
+                                                                                                    });
 
 
-                                                                                                                DocumentReference docref2 = firebaseFirestore.collection("remnants").document(remnantId);
-                                                                                                                docref2.update("isSoldOut", true)
-                                                                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                                            @Override
-                                                                                                                            public void onSuccess(Void aVoid) {
+                                                                                            //UPDATE THE 0 QUANTITY TO ISSOLD
+                                                                                            DocumentReference docRef1 = firebaseFirestore.collection("remnants").document(remnantId);
+                                                                                            docRef1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task1) {
 
-                                                                                                                                Log.d(TAG, "hahaho 0 QUANTITY UPDATE");
-                                                                                                                            }
-                                                                                                                        });
-                                                                                                            }
+                                                                                                    if(task1.isSuccessful()){
+
+                                                                                                        DocumentSnapshot documentSnapshot1 = task1.getResult();
+                                                                                                        if(documentSnapshot1.getLong("quantity").intValue() == 0){
+
+
+                                                                                                            DocumentReference docref2 = firebaseFirestore.collection("remnants").document(remnantId);
+                                                                                                            docref2.update("isSoldOut", true)
+                                                                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                                        @Override
+                                                                                                                        public void onSuccess(Void aVoid) {
+
+                                                                                                                            Log.d(TAG, "hahaho 0 QUANTITY UPDATE");
+                                                                                                                        }
+                                                                                                                    });
                                                                                                         }
                                                                                                     }
-                                                                                                });
-                                                                                            }
-                                                                                        });
+                                                                                                }
+                                                                                            });
+                                                                                        }
+                                                                                    });
 
-                                                                                    }
                                                                                 });
 
                                                                         Intent i = new Intent(Cart.this, Message.class);
@@ -288,57 +284,52 @@ public class Cart extends AppCompatActivity {
                                 firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
                                         .collection("remnants")
                                         .orderBy("owner_id")
-                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task.isSuccessful()){
+                                        .get().addOnCompleteListener(task12 -> {
+                                            if(task12.isSuccessful()){
 
-                                            for(QueryDocumentSnapshot queryDocumentSnapshot :task.getResult()){
+                                                for(QueryDocumentSnapshot queryDocumentSnapshot : task12.getResult()){
 
-                                                if(str.equals("")) {
+                                                    if(str.equals("")) {
 
-                                                    str.add(queryDocumentSnapshot.getString("owner_id"));
+                                                        str.add(queryDocumentSnapshot.getString("owner_id"));
 
-                                                }else if(!str.contains(queryDocumentSnapshot.getString("owner_id"))){
+                                                    }else if(!str.contains(queryDocumentSnapshot.getString("owner_id"))){
 
-                                                    str.add(queryDocumentSnapshot.getString("owner_id"));
+                                                        str.add(queryDocumentSnapshot.getString("owner_id"));
+
+                                                    }
+
+                                                    Log.d(TAG, "OWNER_ID: "+str);
 
                                                 }
 
-                                                Log.d(TAG, "OWNER_ID: "+str);
+                                                for(String owner_ids: str){
 
+
+                                                    Log.d(TAG, "USER_ID"+ owner_ids);
+                                                    DocumentReference docRef2 = firebaseFirestore.collection("users").document(owner_ids);
+                                                    docRef2.update("wallet", FieldValue.increment(-25));
+
+
+                                                    //SEND 25 GENERATE REPORT
+                                                    Map<String, Object> gReport = new HashMap<>();
+                                                    gReport.put("senderUser_id", owner_ids);
+                                                    gReport.put("transactionFee", 25);
+                                                    gReport.put("type", "cartFee");
+                                                    gReport.put("timeStamp", FieldValue.serverTimestamp());
+
+                                                    firebaseFirestore.collection("generateReport")
+                                                            .add(gReport)
+                                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                @Override
+                                                                public void onSuccess(DocumentReference documentReference) {
+
+                                                                    Log.d(TAG,"hahaho cartFee from Seller ID Successful ID:" + str);
+                                                                }
+                                                            });
+                                                }
                                             }
-
-                                            for(String owner_ids: str){
-
-
-                                                Log.d(TAG, "USER_ID"+ owner_ids);
-                                                DocumentReference docRef2 = firebaseFirestore.collection("users").document(owner_ids);
-                                                docRef2.update("wallet", FieldValue.increment(-25));
-
-
-
-
-
-                                                //SEND 25 GENERATE REPORT
-                                                Map<String, Object> gReport = new HashMap<>();
-                                                gReport.put("senderUser_id", owner_ids);
-                                                gReport.put("transactionFee", 25);
-                                                gReport.put("type", "cartFee");
-
-                                                firebaseFirestore.collection("generateReport")
-                                                        .add(gReport)
-                                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                            @Override
-                                                            public void onSuccess(DocumentReference documentReference) {
-
-                                                                Log.d(TAG,"hahaho cartFee from Seller ID Successful ID:" + str);
-                                                            }
-                                                        });
-                                            }
-                                        }
-                                    }
-                                });
+                                        });
                                 //END OF -25 WALLET USER
 
                                 //SEND 25 PESOS TO GENERAL REPORT FOR CURRENT USER
@@ -349,13 +340,7 @@ public class Cart extends AppCompatActivity {
 
                                 firebaseFirestore.collection("generateReport")
                                         .add(gReport)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-
-                                                Log.d(TAG,"hahaho cartFee from Buyer ID Successful");
-                                            }
-                                        });
+                                        .addOnSuccessListener(documentReference -> Log.d(TAG,"hahaho cartFee from Buyer ID Successful"));
 
                                 // END OF SEND 25 PESOS TO GENERAL REPORT FOR CURRENT USER
 

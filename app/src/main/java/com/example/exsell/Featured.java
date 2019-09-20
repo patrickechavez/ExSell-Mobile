@@ -2,6 +2,7 @@ package com.example.exsell;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -55,6 +56,11 @@ public class Featured extends AppCompatActivity implements View.OnClickListener 
 
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        Toolbar toolbar = findViewById(R.id.featuredRemnant_app_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("FEATURED REMNANT");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         remnantId = getIntent().getStringExtra("remnantId");
 
@@ -158,11 +164,11 @@ public class Featured extends AppCompatActivity implements View.OnClickListener 
                         /*Calendar cal1 = Calendar.getInstance();
                         cal1.add(Calendar.MINUTE, 1);
                         String currentDate1 = df.format(cal1.getTime());*/
-                        long minute1 = (System.currentTimeMillis() + 60000) / 1000;
+                        long day1 = System.currentTimeMillis() + 86400000;
 
                         Map<String, Object> data = new HashMap<>();
                         data.put("featuredDay", 1);
-                        data.put("featuredDuration", minute1);
+                        data.put("featuredDuration", day1);
                         data.put("isFeatured", true);
 
                         firebaseFirestore.collection("remnants").document(remnantId).set(data, SetOptions.merge());
@@ -187,14 +193,7 @@ public class Featured extends AppCompatActivity implements View.OnClickListener 
                                         Toast.makeText(Featured.this, "Success", Toast.LENGTH_SHORT).show();
                                     }
                                 })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-
-                                        Toast.makeText(Featured.this, "Failed", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                });
+                                .addOnFailureListener(e -> Toast.makeText(Featured.this, "Failed", Toast.LENGTH_SHORT).show());
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -212,63 +211,64 @@ public class Featured extends AppCompatActivity implements View.OnClickListener 
 
         new MaterialAlertDialogBuilder(this, R.style.ShapeAppearance_MaterialComponents_LargeComponent)
                 .setTitle("Do you want to proceed?")
-                .setPositiveButton("PROCEED", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton("PROCEED", (dialog, which) -> {
 
 
-                        long minute5 = (System.currentTimeMillis() + (60000 * 5)) / 1000;
+                   // long day1 = (System.currentTimeMillis() + (60000 * 5)) / 1000;
+                    long day3 = System.currentTimeMillis() + 86400000 * 3;
 
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("featuredDay", 5);
-                        data.put("featuredDuration", minute5);
-                        data.put("isFeatured", true);
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("featuredDay", 3);
+                    data.put("featuredDuration", day3);
+                    data.put("isFeatured", true);
 
-                        firebaseFirestore.collection("remnants").document(remnantId).set(data, SetOptions.merge());
+                    firebaseFirestore.collection("remnants").document(remnantId).set(data, SetOptions.merge());
 
-                        DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
-                        docRef.update("wallet", FieldValue.increment(-100));
+                    DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
+                    docRef.update("wallet", FieldValue.increment(-100));
 
 
-                        Map<String, Object> data1 = new HashMap<>();
-                        data1.put("transactionFee", 100);
-                        data1.put("senderUser_id", mAuth.getCurrentUser().getUid());
-                        data1.put("type", "featuredRemnant");
+                    Map<String, Object> data1 = new HashMap<>();
+                    data1.put("transactionFee", 100);
+                    data1.put("senderUser_id", mAuth.getCurrentUser().getUid());
+                    data1.put("type", "featuredRemnant");
 
-                        firebaseFirestore.collection("generateReport").add(data1)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
+                    firebaseFirestore.collection("generateReport").add(data1)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
 
-                                        Intent i = new Intent(Featured.this, Dashboard.class);
-                                        startActivity(i);
+                                    Intent i = new Intent(Featured.this, Dashboard.class);
+                                    startActivity(i);
 
-                                        Toast.makeText(Featured.this, "Success", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(Featured.this, "Success", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
 
-                                        Toast.makeText(Featured.this, "Failed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Featured.this, "Failed", Toast.LENGTH_SHORT).show();
 
-                                    }
-                                });
+                                }
+                            });
 
-                    }
                 })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setNegativeButton("CANCEL", (dialog, which) -> {
 
-                        DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
-                        docRef.update("wallet", FieldValue.increment(-80));
+                   /* DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
+                    docRef.update("wallet", FieldValue.increment(-80));
 
-                        Intent i = new Intent(Featured.this, Dashboard.class);
-                        startActivity(i);
-                    }
+                    Intent i = new Intent(Featured.this, Dashboard.class);
+                    startActivity(i);*/
                 })
                 .show();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 

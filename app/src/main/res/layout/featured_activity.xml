@@ -10,7 +10,7 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/fixedprice_toolbar"
+            android:id="@+id/featuredRemnant_app_bar"
             layout="@layout/app_bar_layout"/>
 
 
@@ -91,7 +91,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1-Minute Boost"
+                        android:text="1-Day Boost"
                         android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/rubik"
@@ -105,8 +105,7 @@
                         android:layout_margin="8dp"
                         app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
                         style="@style/Widget.Shrine.Button"
-                        android:text="40"
-                        app:icon="@drawable/coinsph"
+                        android:text="₱ 40"
                         app:iconGravity="textEnd"
                         app:iconTint="@android:color/black"
                         android:textAppearance="?attr/textAppearanceButton"/>
@@ -125,7 +124,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="5-Minutes Boost"
+                        android:text="3-Days Boost"
                         android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/rubik"
@@ -139,8 +138,7 @@
                         android:layout_margin="8dp"
                         app:shapeAppearance="@style/ShapeAppearance.MyApp.SmallComponent"
                         style="@style/Widget.Shrine.Button"
-                        android:text="100"
-                        app:icon="@drawable/coinsph"
+                        android:text="₱ 100"
                         app:iconGravity="textEnd"
                         app:iconTint="@android:color/black"
                         android:textAppearance="?attr/textAppearanceButton"/>

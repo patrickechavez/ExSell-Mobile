@@ -20,6 +20,8 @@ import com.example.exsell.fragment.Dashboard_tabPagerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -65,6 +67,9 @@ public class Dashboard extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //BADGE
+        BadgeDrawable badgeDrawable = BadgeDrawable.create(this);
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
         tabLayout = findViewById(R.id.tabs);
@@ -109,16 +114,20 @@ public class Dashboard extends AppCompatActivity
 
 
         getWalletValue();
-        sendNotiftoBidWinner();
+
+      //  startService(new Intent(this, MyService.class));
+
+
+       // sendNotiftoBidWinner();
 
 
         DocumentReference user_id = firebaseFirestore.collection("notification").document();
         String user_ids = user_id.getId();
 
+
     }
 
     private void sendNotiftoBidWinner() {
-
 
         Thread t = new Thread(){
 
@@ -128,151 +137,135 @@ public class Dashboard extends AppCompatActivity
 
                     while (!isInterrupted()){
                         Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                        runOnUiThread(() -> firebaseFirestore.collection("remnants")
+                                .whereEqualTo("type", "Auction")
+                                .whereEqualTo("isSoldOut", false)
+                                .whereEqualTo("isDeleted", false)
+                                .whereEqualTo("isActive", true)
+                                .whereEqualTo("isExpired", false)
+                                .get().addOnCompleteListener(task -> {
 
-                                firebaseFirestore.collection("remnants")
-                                        .whereEqualTo("type", "Auction")
-                                        .whereEqualTo("isSoldOut", false)
-                                        .whereEqualTo("isDeleted", false)
-                                        .whereEqualTo("isActive", true)
-                                        .whereEqualTo("isExpired", false)
-                                        .get().addOnCompleteListener(task -> {
+                                    if(task.isSuccessful()){
 
-                                            if(task.isSuccessful()){
+                                        for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
 
-                                                for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
-
-                                                     remnant_id = queryDocumentSnapshot.getId();
-                                                     seller_id = queryDocumentSnapshot.getString("userId");
-                                                     remnantName = queryDocumentSnapshot.getString("title");
-                                                     endTime = queryDocumentSnapshot.getLong("endTime").intValue();
+                                             remnant_id = queryDocumentSnapshot.getId();
+                                             seller_id = queryDocumentSnapshot.getString("userId");
+                                             remnantName = queryDocumentSnapshot.getString("title");
+                                             endTime = queryDocumentSnapshot.getLong("endTime").intValue();
 
 
-                                                    Log.d(TAG, "haha current Time: "+System.currentTimeMillis() / 1000);
-                                                    Log.d(TAG,"haha end Time:     "+endTime);
-
-                                                    String stringEndTime = df.format(endTime * 1000);
-                                                    String currentTime = df.format(System.currentTimeMillis());
-
-                                                     if(stringEndTime.equals(currentTime)){
+                                            Log.d(TAG, "haha current Time: "+System.currentTimeMillis() / 1000);
+                                            Log.d(TAG,"haha end Time:     "+endTime);
 
 
+                                             if(endTime / 1000 == System.currentTimeMillis() / 1000){
 
-                                                         //CHECK IF AUCTION HAS BIDDER
-                                                         firebaseFirestore.collection("remnants").document(remnant_id)
-                                                                 .collection("bidders")
-                                                                 .get()
-                                                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                     @Override
-                                                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                 //CHECK IF AUCTION HAS BIDDER
+                                                 firebaseFirestore.collection("remnants").document(remnant_id)
+                                                         .collection("bidders")
+                                                         .get()
+                                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                             @Override
+                                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                                                                         if(task.isSuccessful()){
+                                                                 if(task.isSuccessful()){
 
-                                                                             if(task.getResult().size() > 0){
+                                                                     if(task.getResult().size() > 0){
 
-                                                                                 Log.d(TAG,"haha naay sud end Time: "+queryDocumentSnapshot.getLong("endTime").intValue());
+                                                                         Log.d(TAG,"haha naay sud end Time: "+queryDocumentSnapshot.getLong("endTime").intValue());
 
-                                                                                 firebaseFirestore.collection("remnants").document(remnant_id)
-                                                                                         .collection("bidders")
-                                                                                         .orderBy("bidAmount", Query.Direction.DESCENDING).limit(1)
-                                                                                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                                     @Override
-                                                                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                         firebaseFirestore.collection("remnants").document(remnant_id)
+                                                                                 .collection("bidders")
+                                                                                 .orderBy("bidAmount", Query.Direction.DESCENDING).limit(1)
+                                                                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                             @Override
+                                                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                                                                                         if(task.isSuccessful()){
+                                                                                 if(task.isSuccessful()){
 
-                                                                                             for(QueryDocumentSnapshot queryDocumentSnapshot1: task.getResult()){
+                                                                                     for(QueryDocumentSnapshot queryDocumentSnapshot1: task.getResult()){
 
-                                                                                                 DocumentReference docRef10 = firebaseFirestore.collection("remnants").document(remnant_id);
-                                                                                                 docRef10.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                                                     @Override
-                                                                                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                                         DocumentReference docRef10 = firebaseFirestore.collection("remnants").document(remnant_id);
+                                                                                         docRef10.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                                             @Override
+                                                                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                                                                                                         if(task.isSuccessful()){
+                                                                                                 if(task.isSuccessful()){
 
-                                                                                                             DocumentSnapshot document = task.getResult();
+                                                                                                     DocumentSnapshot document = task.getResult();
 
-                                                                                                             if(document.getBoolean("isSoldOut") == false){
+                                                                                                     if(!document.getBoolean("isSoldOut")){
+
+                                                                                                         //SEND NOTIFICATION TO WINNER
+                                                                                                         String message = "Congratulations, You are the new owner of "+remnantName;
+                                                                                                         Map<String, Object> notifData = new HashMap<>();
+                                                                                                         notifData.put("receiver_id", queryDocumentSnapshot1.getString("userId"));
+                                                                                                         notifData.put("message",message);
+                                                                                                         notifData.put("imageUrl", "https://i.ibb.co/wYKRnpK/bidItem.png");
+                                                                                                         notifData.put("message2", "");
+                                                                                                         notifData.put("remnants_id", remnant_id);
+                                                                                                         notifData.put("notificationType", "bidWinner");
+                                                                                                         notifData.put("sender_id", seller_id);
+                                                                                                         notifData.put("timeStamp", FieldValue.serverTimestamp());
+
+                                                                                                         firebaseFirestore.collection("notification")
+                                                                                                                 .add(notifData)
+                                                                                                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                                                                     @Override
+                                                                                                                     public void onSuccess(DocumentReference documentReference) {
+
+                                                                                                                         Log.d(TAG,"HAHA NOTIFICATION SENT");
 
 
-                                                                                                                 //SEND NOTIFICATION TO WINNER
-                                                                                                                 String message = "Congratulations, You are the new owner of "+remnantName;
-                                                                                                                 Map<String, Object> notifData = new HashMap<>();
-                                                                                                                 notifData.put("receiver_id", queryDocumentSnapshot1.getString("userId"));
-                                                                                                                 notifData.put("message",message);
-                                                                                                                 notifData.put("imageUrl", "https://i.ibb.co/wYKRnpK/bidItem.png");
-                                                                                                                 notifData.put("message2", "");
-                                                                                                                 notifData.put("remnants_id", remnant_id);
-                                                                                                                 notifData.put("notificationType", "bidWinner");
-                                                                                                                 notifData.put("sender_id", seller_id);
-                                                                                                                 notifData.put("timeStamp", FieldValue.serverTimestamp());
-
-                                                                                                                 firebaseFirestore.collection("notification")
-                                                                                                                         .add(notifData)
-                                                                                                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                                                                         //UPDATE TO SOLD AUCTION AND HAS BIDDER
+                                                                                                                         DocumentReference docRef = firebaseFirestore.collection("remnants").document(queryDocumentSnapshot.getId());
+                                                                                                                         docRef.update("isSoldOut", true).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                                                              @Override
-                                                                                                                             public void onSuccess(DocumentReference documentReference) {
-
-                                                                                                                                 Log.d(TAG,"HAHA NOTIFICATION SENT");
+                                                                                                                             public void onSuccess(Void aVoid) {
 
 
-                                                                                                                                 //UPDATE TO SOLD AUCTION AND HAS BIDDER
-                                                                                                                                 DocumentReference docRef = firebaseFirestore.collection("remnants").document(queryDocumentSnapshot.getId());
-                                                                                                                                 docRef.update("isSoldOut", true).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                                                     @Override
-                                                                                                                                     public void onSuccess(Void aVoid) {
-
-
-                                                                                                                                         Log.d(TAG,"HAHA SOLD AUCTION SUCCESS");
-
-                                                                                                                                     }
-                                                                                                                                 });
-
+                                                                                                                                 Log.d(TAG,"HAHA SOLD AUCTION SUCCESS");
 
                                                                                                                              }
                                                                                                                          });
-                                                                                                             }
-
-                                                                                                         }
+                                                                                                                     }
+                                                                                                                 });
                                                                                                      }
-                                                                                                 });
+                                                                                                 }
                                                                                              }
-                                                                                         }
+                                                                                         });
                                                                                      }
-                                                                                 });
-
-                                                                             }else{
-
-                                                                                 Log.d(TAG,"haha way  sud end Time: "+queryDocumentSnapshot.getLong("endTime").intValue());
-
-                                                                                 //DELETE AUCTION IF NO ONE BID
-                                                                                 DocumentReference docRef = firebaseFirestore.collection("remnants").document(queryDocumentSnapshot.getId());
-                                                                                 docRef.update("isExpired", true).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                     @Override
-                                                                                     public void onSuccess(Void aVoid) {
-
-                                                                                         Log.d(TAG, "HAHA EXPIRED REMNANT SUCCESSFUL");
-                                                                                     }
-                                                                                 });
+                                                                                 }
                                                                              }
-                                                                         }
+                                                                         });
+
+                                                                     }else{
+
+                                                                         Log.d(TAG,"haha way  sud end Time: "+queryDocumentSnapshot.getLong("endTime").intValue());
+
+                                                                         //DELETE AUCTION IF NO ONE BID
+                                                                         DocumentReference docRef = firebaseFirestore.collection("remnants").document(queryDocumentSnapshot.getId());
+                                                                         docRef.update("isExpired", true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                             @Override
+                                                                             public void onSuccess(Void aVoid) {
+
+                                                                                 Log.d(TAG, "HAHA EXPIRED REMNANT SUCCESSFUL");
+                                                                             }
+                                                                         });
                                                                      }
-                                                                 });
-                                                     }
-                                                }
-                                            }
-                                        });
-                            }
-                        });
+                                                                 }
+                                                             }
+                                                         });
+                                             }
+                                        }
+                                    }
+                                }));
                     }
                 }catch (InterruptedException e){}
             }
         };
         t.start();
-
-
     }
 
 

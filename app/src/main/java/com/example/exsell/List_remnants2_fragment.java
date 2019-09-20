@@ -97,7 +97,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
     private RadioGroup radioGroupFormat;
     private RadioButton radioBtnFixedPrice, radioBtnAuction;
     private int radioSelectedId;
-    private String categoryId, categoryName;
+    private String categoryId, categoryName ,subCategoryId, subCategoryName;
     private EditText editTextBreakUpPrice, editTextBreakUpQuantity;
     private EditText editTextAuctionPrice, editTextAuctionDuration, editTextAuctionEndTime, editTextListTime;
     private ArrayList<String> listImageUrl = new ArrayList<>();
@@ -154,7 +154,6 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
         //RELATIVE LAYOUT
         auction_relativeAvailTime = view.findViewById(R.id.auction_relativeAvailTime);
-
 
 
         //IDLE DURATION
@@ -219,9 +218,6 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
 
         });
-
-
-
         //DURATION
         AutoCompleteTextView editTextFilledExposedDropdownDuration = view.findViewById(R.id.filled_exposed_dropdownDuration);
         editTextFilledExposedDropdownDuration.setText("3 days");
@@ -254,7 +250,6 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                     editTextAuctionEndTime.setText(df.format(currentTimeMills));
                     editTextFilledExposedDropdownTime.setText("");
                     editTextListTime.setText("");
-
                     break;
 
                 case "7 days":
@@ -264,7 +259,6 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                     editTextAuctionEndTime.setText(df.format(currentTimeMills));
                     editTextFilledExposedDropdownTime.setText("");
                     editTextListTime.setText("");
-
                     break;
 
                 case "10 days":
@@ -305,7 +299,6 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                     currentTimeMills = 0;
                     currentTimeSeconds = 0;
                     stringStartTime = "Start Immediately";
-
                     break;
 
                 case "Schedule Start Time":
@@ -399,9 +392,14 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
             if (resultCode == RESULT_OK){
 
-                categoryId = data.getStringExtra("categoryId");
+                /*categoryId = data.getStringExtra("categoryId");
                 categoryName = data.getStringExtra("categoryName");
-                editTextSelectCategory.setText(categoryName);
+                editTextSelectCategory.setText(categoryName);*/
+
+                subCategoryId = data.getStringExtra("subCategoryId");
+                subCategoryName = data.getStringExtra("subCategoryName");
+
+                editTextSelectCategory.setText(subCategoryName);
             }
         }else{
 
@@ -418,6 +416,8 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
                 Intent categoryIntent = new Intent(getContext(), Select_Category.class);
                 startActivity(categoryIntent);
+
+                Intent subCategoryIntent = new Intent();
 
                 startActivityForResult(categoryIntent, 1023);
                 break;
@@ -561,7 +561,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                 auctionRemnants.put("backStory", backStory);
                                 auctionRemnants.put("bounceBack", bounceBack);
                                 auctionRemnants.put("price", auctionStartPrice);
-                                auctionRemnants.put("endTime", currentTimeSeconds);
+                                auctionRemnants.put("endTime", currentTimeMills);
                                // auctionRemnants.put("endTime", System.currentTimeMillis());
                                 auctionRemnants.put("meetup", meetup);
                                 auctionRemnants.put("categoryId", categoryId);
@@ -576,7 +576,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                 auctionRemnants.put("isFeatured", false);
                                 auctionRemnants.put("isFeatureDuration", 0);
                                 auctionRemnants.put("isExpired", false);
-                                auctionRemnants.put("idleDuration", idleDurationSeconds);
+                                auctionRemnants.put("idleDuration", idleDurationMills);
                                 auctionRemnants.put("timeStamp", FieldValue.serverTimestamp());
 
                                 DocumentReference remnants = firebaseFirestore.collection("remnants").document();
@@ -584,51 +584,48 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
                                 firebaseFirestore.collection("remnants").document(remnants_id)
                                         .set(auctionRemnants)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
+                                        .addOnSuccessListener(aVoid -> {
 
 
-                                                Intent dashboard = new Intent(getActivity(), Dashboard.class);
-                                                startActivity(dashboard);
+                                            Intent dashboard = new Intent(getActivity(), Dashboard.class);
+                                            startActivity(dashboard);
 
-                                                if(stringStartTime == "Schedule Start Time"){
+                                            if(stringStartTime == "Schedule Start Time"){
 
-                                                    firebaseFirestore.collection("users")
-                                                            .get()
-                                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                firebaseFirestore.collection("users")
+                                                        .get()
+                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task1) {
 
-                                                                    if(task.isSuccessful()){
+                                                                if(task1.isSuccessful()){
 
-                                                                        for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                                                                    for(QueryDocumentSnapshot documentSnapshot: task1.getResult()){
 
-                                                                            if(!documentSnapshot.getId().equals(mAuth.getCurrentUser().getUid())){
+                                                                        if(!documentSnapshot.getId().equals(mAuth.getCurrentUser().getUid())){
 
-                                                                                String message = "There's an upcoming auction";
-                                                                                String message2 = "Check it Now";
+                                                                            String message = "There's an upcoming auction";
+                                                                            String message2 = "Check it Now";
 
-                                                                                HashMap<String, Object> notifData = new HashMap<>();
-                                                                                notifData.put("sender_id", mAuth.getCurrentUser().getUid());
-                                                                                notifData.put("receiver_id", documentSnapshot.getId());
-                                                                                notifData.put("remnants_id", remnants_id);
-                                                                                notifData.put("message", message);
-                                                                                notifData.put("message2", message2);
-                                                                                notifData.put("imageUrl", "https://i.ibb.co/XWLptv0/auction.png");
-                                                                                notifData.put("notificationType", "upcomingBid");
-                                                                                notifData.put("timeStamp", FieldValue.serverTimestamp());
+                                                                            HashMap<String, Object> notifData = new HashMap<>();
+                                                                            notifData.put("sender_id", mAuth.getCurrentUser().getUid());
+                                                                            notifData.put("receiver_id", documentSnapshot.getId());
+                                                                            notifData.put("remnants_id", remnants_id);
+                                                                            notifData.put("message", message);
+                                                                            notifData.put("message2", message2);
+                                                                            notifData.put("imageUrl", "https://i.ibb.co/XWLptv0/auction.png");
+                                                                            notifData.put("notificationType", "upcomingBid");
+                                                                            notifData.put("timeStamp", FieldValue.serverTimestamp());
 
-                                                                                firebaseFirestore.collection("notification")
-                                                                                        .add(notifData)
-                                                                                        .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId()));
-                                                                            }
+                                                                            firebaseFirestore.collection("notification")
+                                                                                    .add(notifData)
+                                                                                    .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId()));
                                                                         }
                                                                     }
                                                                 }
-                                                            });
-                                                }else{
-                                                }
+                                                            }
+                                                        });
+                                            }else{
                                             }
                                         });
                                 progressBar.setVisibility(View.INVISIBLE);
