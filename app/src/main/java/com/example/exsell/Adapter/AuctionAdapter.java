@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.exsell.Models.AuctionModel;
 import com.example.exsell.R;
+import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +28,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+
+import java.math.BigDecimal;
 
 public class AuctionAdapter extends FirestoreRecyclerAdapter<AuctionModel, AuctionAdapter.AuctionHolder> {
 
@@ -44,98 +47,51 @@ public class AuctionAdapter extends FirestoreRecyclerAdapter<AuctionModel, Aucti
     }
 
     @Override
+    public void onChildChanged(@NonNull ChangeEventType type, @NonNull DocumentSnapshot snapshot, int newIndex, int oldIndex) {
+        super.onChildChanged(type, snapshot, newIndex, oldIndex);
+
+        
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull AuctionHolder auctionHolder, int i, @NonNull AuctionModel auctionModel) {
 
         DocumentSnapshot snapshot = getSnapshots().getSnapshot(auctionHolder.getAdapterPosition());
         String id = snapshot.getId();
 
-        firebaseFirestore.collection("remnants").document(id).collection("bidders")
-                .orderBy("bidAmount", Query.Direction.DESCENDING).limit(1)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+        firebaseFirestore.collection("bidders")
+                .whereEqualTo("remnantId", id)
+                .orderBy("bidAmount", Query.Direction.DESCENDING)
+                .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                if(task.getResult().size() > 0){
+                if(task.isSuccessful()){
 
-                    for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                    if(task.getResult().size() > 0){
 
-                        auctionHolder.textViewBid.setText("₱ "+queryDocumentSnapshot.getDouble("bidAmount"));
+                        for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+
+                            BigDecimal bigDecimal1 = new BigDecimal(documentSnapshot.getDouble("bidAmount"));
+                            bigDecimal1 = bigDecimal1.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+                            auctionHolder.textViewBid.setText("₱ "+bigDecimal1);
+                        }
+                    }else{
+
+
+                        BigDecimal bigDecimal = new BigDecimal(auctionModel.getPrice());
+                        bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+                        auctionHolder.textViewBid.setText("₱ "+bigDecimal);
                     }
-
-                }else{
-
-                    auctionHolder.textViewBid.setText("₱ "+auctionModel.getPrice());
                 }
             }
         });
-        /*DocumentReference docRef1 = firebaseFirestore.collection("remnants").document(id);
-        docRef1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
 
-                    if(task.getResult().exists()){
-
-                        DocumentSnapshot document = task.getResult();
-
-                        auctionHolder.textViewBid.setText("₱ "+document.getDouble("bidAmount"));
-
-                    }else{
-
-                        auctionHolder.textViewBid.setText("₱ "+auctionModel.getPrice());
-                    }
-
-                }
-
-            }
-        });*/
-
-       /* firebaseFirestore.collection("remnants")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for(QueryDocumentSnapshot queryDocumentSnapshot :task.getResult()){
-
-                        firebaseFirestore.collection("remnants").document(queryDocumentSnapshot.getId())
-                                .collection("bidders")
-                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                if(task.isSuccessful()){
-                                    if(task.getResult().size() > 0){
-
-                                        firebaseFirestore.collection("remnants").document(queryDocumentSnapshot.getId())
-                                                .collection("bidders").orderBy("bidAmount").limit(1)
-                                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-                                                        for(QueryDocumentSnapshot queryDocumentSnapshot1 : queryDocumentSnapshots){
-
-                                                            auctionHolder.textViewBid.setText("₱ "+queryDocumentSnapshot1.getDouble("bidAmount"));
-                                                        }
-                                                    }
-                                                });
-
-                                    }else{
-
-                                       // auctionHolder.textViewBid.setText("₱ "+auctionModel.getStartPrice());
-                                    }
-                                }
-                            }
-                        });
-
-                    }
-
-                }
-            }
-        });*/
 
         Picasso.get().load(auctionModel.getImageUrl().get(0)).into(auctionHolder.imageURL);
         auctionHolder.textViewTitle.setText(auctionModel.getTitle());
-        auctionHolder.textViewBid.setText("₱ "+auctionModel.getPrice());
+       // auctionHolder.textViewBid.setText("₱ "+auctionModel.getPrice());
 
 
        //

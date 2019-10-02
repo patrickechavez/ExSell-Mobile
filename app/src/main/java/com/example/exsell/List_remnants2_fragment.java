@@ -74,6 +74,8 @@ import java.util.Map;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+import static com.example.exsell.R.color.buttonDisabled;
+import static com.example.exsell.R.color.colorPrimaryDark;
 
 
 public class List_remnants2_fragment extends Fragment implements View.OnClickListener {
@@ -134,6 +136,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
         firebaseStorage = FirebaseStorage.getInstance();
         mAuth = FirebaseAuth.getInstance();
         user_id = mAuth.getCurrentUser().getUid();
+
         linearPrice =  view.findViewById(R.id.linearPrice);
         linearAuction =  view.findViewById(R.id.linearAuction);
 
@@ -218,6 +221,8 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
 
         });
+
+
         //DURATION
         AutoCompleteTextView editTextFilledExposedDropdownDuration = view.findViewById(R.id.filled_exposed_dropdownDuration);
         editTextFilledExposedDropdownDuration.setText("3 days");
@@ -322,7 +327,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
         Places.initialize(getActivity().getApplicationContext(), "AIzaSyCtPPdDFjHfJ0FWCSpm1OBKWq2HA_UtQLg");
         PlacesClient placesClient  = Places.createClient(getActivity());
 
-        Toast.makeText(getContext(), ""+title, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(getContext(), ""+title, Toast.LENGTH_SHORT).show();
         //SELECT CATEGORY EDITTEXT
         editTextSelectCategory = view.findViewById(R.id.lm_select_category);
         editTextSelectCategory.setOnClickListener(this);
@@ -362,9 +367,13 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
     private void disclaimerDialog() {
 
         new MaterialAlertDialogBuilder(getContext(), R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog)
-                .setTitle("Disclaimer")
-                .setMessage("Items must be collectors items and relationship remnants")
-                .setPositiveButton("OK", null)
+                .setTitle("Terms and Conditions")
+                .setMessage("1. Once the bid has started and there are at least 3 bidders, you may no longer stop the auction nor update the auction and remnant details. \n" +
+                        "\n" +
+                        "2. After the auction and the awarding of the auction winner, the auctioneer will automatically pay Php 25.00 for the auction fee. \n" +
+                        "\n" +
+                        "3. Users may report auctioneers for auctioning inappropriate or bogus remnants or improper auctioneer behavior. ")
+                .setPositiveButton("I AGREE", null)
                 .show();
     }
 
@@ -387,14 +396,13 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                 Log.i(TAG, status.getStatusMessage());
 
             } else if (resultCode == RESULT_CANCELED) {
+
+
             }
         }else if(requestCode == 1023){
 
             if (resultCode == RESULT_OK){
 
-                /*categoryId = data.getStringExtra("categoryId");
-                categoryName = data.getStringExtra("categoryName");
-                editTextSelectCategory.setText(categoryName);*/
 
                 subCategoryId = data.getStringExtra("subCategoryId");
                 subCategoryName = data.getStringExtra("subCategoryName");
@@ -487,7 +495,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                         fixedPriceRemnants.put("price", price);
                                         fixedPriceRemnants.put("quantity", quantity);
                                         fixedPriceRemnants.put("meetup", meetup);
-                                        fixedPriceRemnants.put("categoryId", categoryId);
+                                        fixedPriceRemnants.put("categoryId", subCategoryId);
                                         fixedPriceRemnants.put("userId", user_id);
                                         fixedPriceRemnants.put("report", 0);
                                         fixedPriceRemnants.put("type", "Fixed Price");
@@ -495,6 +503,8 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                         fixedPriceRemnants.put("isDeleted", false);
                                         fixedPriceRemnants.put("isBanned", false);
                                         fixedPriceRemnants.put("isActive", true);
+                                        fixedPriceRemnants.put("featuredDuration", 0);
+                                        fixedPriceRemnants.put("isExpired",false);
                                         fixedPriceRemnants.put("isFeatured", false);
                                         fixedPriceRemnants.put("timeStamp", FieldValue.serverTimestamp());
 
@@ -506,7 +516,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
 
                                                         if(task.isSuccessful()){
 
-                                                            Toast.makeText(getContext(), "Fixed Price Added Successfully", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(getContext(), "Added Successfully", Toast.LENGTH_SHORT).show();
                                                             Intent fixedPrice = new Intent(getContext(), Dashboard.class);
                                                             startActivity(fixedPrice);
                                                         }
@@ -564,7 +574,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                 auctionRemnants.put("endTime", currentTimeMills);
                                // auctionRemnants.put("endTime", System.currentTimeMillis());
                                 auctionRemnants.put("meetup", meetup);
-                                auctionRemnants.put("categoryId", categoryId);
+                                auctionRemnants.put("categoryId", subCategoryId);
                                 auctionRemnants.put("userId", user_id);
                                 auctionRemnants.put("type","Auction");
                                 auctionRemnants.put("startTime", stringStartTime);
@@ -572,9 +582,9 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                 auctionRemnants.put("isSoldOut", false);
                                 auctionRemnants.put("isDeleted", false);
                                 auctionRemnants.put("isBanned", false);
+                                auctionRemnants.put("featuredDuration", 0);
                                 auctionRemnants.put("isActive", true);
                                 auctionRemnants.put("isFeatured", false);
-                                auctionRemnants.put("isFeatureDuration", 0);
                                 auctionRemnants.put("isExpired", false);
                                 auctionRemnants.put("idleDuration", idleDurationMills);
                                 auctionRemnants.put("timeStamp", FieldValue.serverTimestamp());
@@ -626,6 +636,7 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                                                             }
                                                         });
                                             }else{
+
                                             }
                                         });
                                 progressBar.setVisibility(View.INVISIBLE);
@@ -636,5 +647,36 @@ public class List_remnants2_fragment extends Fragment implements View.OnClickLis
                 break;
         }
     }
-}
 
+    private TextWatcher nextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+           /* String title = lm_remnantsTitle.getText().toString().trim();
+            String description = lm_remnantDescription.getText().toString().trim();*/
+           String category = editTextSelectCategory.getText().toString().trim();
+           String meetup = editTextMeetup.getText().toString().trim();
+
+            if(!category.isEmpty() &&!meetup.isEmpty()){
+
+
+                listitBtn.setEnabled(true);
+                listitBtn.setBackgroundColor(getResources().getColor(colorPrimaryDark));
+
+            }else{
+
+                listitBtn.setEnabled(false);
+                listitBtn .setBackgroundColor(getResources().getColor(buttonDisabled));
+            }
+
+
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+}

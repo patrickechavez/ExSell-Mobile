@@ -89,7 +89,7 @@ public class Notification extends AppCompatActivity {
 
             if(notificationModel.getNotificationType().equals("buyer")){
 
-                Toast.makeText(this, "buyer", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "buyer", Toast.LENGTH_SHORT).show();
                 String sender_id = notificationModel.getSender_id();
                 Intent chat = new Intent(Notification.this, Chat.class);
                 chat.putExtra("receiver_id", sender_id);
@@ -97,16 +97,44 @@ public class Notification extends AppCompatActivity {
 
             }else if(notificationModel.getNotificationType().equals("upcomingBid")){
 
-                Toast.makeText(this, "upcomingBid", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "upcomingBid", Toast.LENGTH_SHORT).show();
 
                 String remnant_id = notificationModel.getRemnants_id();
                 Intent auction = new Intent(Notification.this, Auction.class);
                 auction.putExtra("auctionId", remnant_id);
                 startActivity(auction);
 
-            }else{
+            }else if(notificationModel.getNotificationType().equals("awardBid")) {
 
-                String remnant_id = notificationModel.getRemnants_id();
+
+               // Toast.makeText(this, "awardBid", Toast.LENGTH_SHORT).show();
+
+                String sender_id1 = notificationModel.getSender_id();
+                Intent chat1 = new Intent(Notification.this, Chat.class);
+                chat1.putExtra("receiver_id", sender_id1);
+                startActivity(chat1);
+
+            }else if(notificationModel.getNotificationType().equals("noticeOwner")){
+
+
+                //Toast.makeText(this, "noticeOwner", Toast.LENGTH_SHORT).show();
+
+                String sender_id2 = notificationModel.getSender_id();
+                Intent chat2 = new Intent(Notification.this, Chat.class);
+                chat2.putExtra("receiver_id", sender_id2);
+                startActivity(chat2);
+
+            }else if(notificationModel.getNotificationType().equals("noBidder")){
+
+
+              //  Toast.makeText(this, "noBidder", Toast.LENGTH_SHORT).show();
+
+                String remnant_id2 = notificationModel.getRemnants_id();
+                Intent auction2 = new Intent(Notification.this, Auction.class);
+                auction2.putExtra("auctionId", remnant_id2);
+                startActivity(auction2);
+            }
+                /*String remnant_id = notificationModel.getRemnants_id();
 
                 DocumentReference docRef1 = firebaseFirestore.collection("remnants").document(remnant_id);
                 docRef1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -134,8 +162,8 @@ public class Notification extends AppCompatActivity {
                         }
                     }
                 });
+*/
 
-            }
             
         });
     }

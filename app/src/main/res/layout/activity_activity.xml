@@ -21,6 +21,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/activity_tabs"
             app:tabGravity="center"
+            app:tabMode="scrollable"
             app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabSelectedTextColor="@color/colorPrimaryDark"
             android:layout_width="match_parent"

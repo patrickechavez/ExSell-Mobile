@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 
 import com.example.exsell.Adapter.UsersAdapter;
@@ -87,6 +88,8 @@ public class Message extends AppCompatActivity {
             //UsersModel usersModel = documentSnapshot.toObject(UsersModel.class);
             String id = documentSnapshot.getId();
 
+
+          //  Toast.makeText(this, ""+id, Toast.LENGTH_SHORT).show();
             Intent i = new Intent(Message.this, Chat.class);
             i.putExtra("receiver_id", id);
             startActivity(i);
@@ -97,7 +100,6 @@ public class Message extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
 
         usersAdapter.startListening();
 

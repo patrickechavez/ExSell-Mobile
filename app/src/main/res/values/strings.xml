@@ -36,4 +36,15 @@
     <string name="accountBan">
         Your account has been banned because of numerous reports from different users regarding your behaviour and recent activity. You may no longer use nor access your ExSell.
     </string>
+
+    <string name="Terms">
+        Terms and Conditions ang Header.
+
+1. Once the bid has started and there are at least 3 bidders, you may no longer stop the auction nor update the auction and remnant details.
+
+2. After the auction and the awarding of the auction winner, the auctioneer will automatically pay Php 25.00 for the auction fee.
+
+3. Users may report auctioneers for auctioning inappropriate or bogus remnants or improper auctioneer behavior.
+
+    </string>
 </resources>

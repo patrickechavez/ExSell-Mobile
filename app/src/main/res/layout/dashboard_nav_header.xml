@@ -10,11 +10,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-
     android:theme="@style/Theme.Shrine">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/navigation_imageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:contentDescription="@string/nav_header_desc"
@@ -27,6 +26,7 @@
         android:orientation="horizontal">
 
     <TextView
+        android:id="@+id/navigation_firstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -34,7 +34,7 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/navigation_lastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Adams"

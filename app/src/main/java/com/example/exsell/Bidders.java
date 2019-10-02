@@ -54,8 +54,12 @@ public class Bidders extends AppCompatActivity {
 
     private void setUpRecyclerView() {
 
-        Query query = firebaseFirestore.collection("remnants")
+        /*Query query = firebaseFirestore.collection("remnants")
                 .document(auctionId).collection("bidders")
+                .orderBy("bidAmount", Query.Direction.DESCENDING);*/
+
+        Query query = firebaseFirestore.collection("bidders")
+                .whereEqualTo("remnantId", auctionId)
                 .orderBy("bidAmount", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<BiddersModel> options = new FirestoreRecyclerOptions.Builder<BiddersModel>()
@@ -73,7 +77,6 @@ public class Bidders extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(itemDecoration);
         recyclerView.setAdapter(biddersAdapter);
-
 
     }
 

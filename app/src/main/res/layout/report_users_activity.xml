@@ -51,7 +51,7 @@
                         android:id="@+id/user_radioBtn_bogusBuyer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bogus Buyer"/>
+                        android:text="Bogus User"/>
 
                     <RadioButton
                         android:id="@+id/user_radioBtn_postingThings"

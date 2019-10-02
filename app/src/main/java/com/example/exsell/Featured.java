@@ -157,44 +157,41 @@ public class Featured extends AppCompatActivity implements View.OnClickListener 
 
         new MaterialAlertDialogBuilder(this, R.style.ShapeAppearance_MaterialComponents_LargeComponent)
                 .setTitle("Do you want to proceed?")
-                .setPositiveButton("PROCEED", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton("PROCEED", (dialog, which) -> {
 
-                        /*Calendar cal1 = Calendar.getInstance();
-                        cal1.add(Calendar.MINUTE, 1);
-                        String currentDate1 = df.format(cal1.getTime());*/
-                        long day1 = System.currentTimeMillis() + 86400000;
+                    /*Calendar cal1 = Calendar.getInstance();
+                    cal1.add(Calendar.MINUTE, 1);
+                    String currentDate1 = df.format(cal1.getTime());*/
+                    long day1 = System.currentTimeMillis() + 86400000;
 
-                        Map<String, Object> data = new HashMap<>();
-                        data.put("featuredDay", 1);
-                        data.put("featuredDuration", day1);
-                        data.put("isFeatured", true);
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("featuredDay", 1);
+                    data.put("featuredDuration", day1);
+                    data.put("isFeatured", true);
 
-                        firebaseFirestore.collection("remnants").document(remnantId).set(data, SetOptions.merge());
+                    firebaseFirestore.collection("remnants").document(remnantId).set(data, SetOptions.merge());
 
-                        DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
-                        docRef.update("wallet", FieldValue.increment(-40));
+                    DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
+                    docRef.update("wallet", FieldValue.increment(-40));
 
 
-                        Map<String, Object> data1 = new HashMap<>();
-                        data1.put("boostingFee", 40);
-                        data1.put("senderUser_id", mAuth.getCurrentUser().getUid());
-                        data1.put("type", "featuredRemnant");
+                    Map<String, Object> data1 = new HashMap<>();
+                    data1.put("boostingFee", 40);
+                    data1.put("senderUser_id", mAuth.getCurrentUser().getUid());
+                    data1.put("type", "featuredRemnant");
 
-                        firebaseFirestore.collection("generateReport").add(data1)
-                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                    @Override
-                                    public void onSuccess(DocumentReference documentReference) {
+                    firebaseFirestore.collection("generateReport").add(data1)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
 
-                                        Intent i = new Intent(Featured.this, Dashboard.class);
-                                        startActivity(i);
+                                    Intent i = new Intent(Featured.this, Dashboard.class);
+                                    startActivity(i);
 
-                                        Toast.makeText(Featured.this, "Success", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .addOnFailureListener(e -> Toast.makeText(Featured.this, "Failed", Toast.LENGTH_SHORT).show());
-                    }
+                                    Toast.makeText(Featured.this, "Success", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(e -> Toast.makeText(Featured.this, "Failed", Toast.LENGTH_SHORT).show());
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
@@ -231,7 +228,7 @@ public class Featured extends AppCompatActivity implements View.OnClickListener 
                     Map<String, Object> data1 = new HashMap<>();
                     data1.put("transactionFee", 100);
                     data1.put("senderUser_id", mAuth.getCurrentUser().getUid());
-                    data1.put("type", "featuredRemnant");
+                    data1.put("type", "Featured Remnant");
 
                     firebaseFirestore.collection("generateReport").add(data1)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

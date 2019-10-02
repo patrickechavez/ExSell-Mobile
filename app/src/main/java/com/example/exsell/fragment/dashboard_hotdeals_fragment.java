@@ -48,9 +48,14 @@ public class dashboard_hotdeals_fragment extends Fragment {
 
     private void setUpRecyclerView() {
 
-        Query query = firebaseFirestore.collection("remnants").whereEqualTo("isFeatured", true)
-                .orderBy("featuredDay", Query.Direction.ASCENDING)
+        Query query = firebaseFirestore.collection("remnants")
+                .whereEqualTo("isFeatured", true)
+                .whereEqualTo("isSoldOut", false)
+                .whereEqualTo("isDeleted", false)
+                .whereEqualTo("isBanned",false)
+                .whereEqualTo("isActive", true)
                 .orderBy("featuredDuration", Query.Direction.DESCENDING);
+
 
         FirestoreRecyclerOptions<FixedPriceModel> options = new FirestoreRecyclerOptions.Builder<FixedPriceModel>()
                 .setQuery(query, FixedPriceModel.class)

@@ -78,8 +78,6 @@ public class list_remnants1_fragment extends Fragment {
                 .textOnNothingSelected("Please select atleast 1")
                 .startAlbum();
 
-
-
         recyclerView = view.findViewById(R.id.list_remnants_recyclerview1);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
@@ -102,12 +100,10 @@ public class list_remnants1_fragment extends Fragment {
 
         nextBtn.setOnClickListener(v -> {
 
-
             String title = lm_remnantsTitle.getText().toString().trim();
             String description = lm_remnantDescription.getText().toString().trim();
             String backStory = lm_backStory.getText().toString().trim();
             String bounceBack = lm_bounceBack.getText().toString().trim();
-
 
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("listOfPic", (ArrayList<? extends Parcelable>) pathUri);
@@ -126,8 +122,6 @@ public class list_remnants1_fragment extends Fragment {
         });
         return view;
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -156,7 +150,6 @@ public class list_remnants1_fragment extends Fragment {
                             uploadPicModels.add(up);
 
                         }
-
                         recyclerView.setAdapter(new UploadPicAdapter(getActivity(), uploadPicModels));
                        // Toast.makeText(getActivity(), "Size: "+ uploadPicModels.size(), Toast.LENGTH_SHORT).show();
                     }catch (Exception e){

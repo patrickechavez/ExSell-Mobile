@@ -102,7 +102,7 @@
                     android:layout_margin="16dp"
                     android:textAppearance="?attr/textAppearanceCaption"
                     android:textSize="16sp"
-                    android:text="@string/quickbrownfox"/>
+                    android:text="Loading.."/>
 
                 <TextView
                     android:id="@+id/auction_moreDetailsTextView"
@@ -160,7 +160,7 @@
                             android:textSize="14dp"
                             android:layout_marginLeft="16dp"
                             android:textAppearance="?attr/textAppearanceCaption"
-                            android:text="@string/quickbrownfox"
+                            android:text="Loading.."
                             android:layout_marginTop="8dp"/>
 
                         <TextView
@@ -184,7 +184,7 @@
                             android:textSize="14dp"
                             android:layout_marginLeft="16dp"
                             android:textAppearance="?attr/textAppearanceCaption"
-                            android:text="@string/quickbrownfox"
+                            android:text="Loading.."
                             android:layout_marginTop="8dp"/>
                     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
@@ -308,14 +308,22 @@
 
                 </RelativeLayout>
 
-
-
-
+                
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_margin="16dp"
                     android:background="@android:color/black"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik"
+                    android:layout_margin="12dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="The Auction Winner will pay Php 25.00 for the Transaction Fee."
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"

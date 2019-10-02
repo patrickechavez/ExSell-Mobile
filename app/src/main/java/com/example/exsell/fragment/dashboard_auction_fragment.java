@@ -56,6 +56,7 @@ public class dashboard_auction_fragment extends Fragment {
                 .whereEqualTo("isSoldOut", false)
                 .whereEqualTo("isBanned", false)
                 .whereEqualTo("isExpired", false)
+                .orderBy("featuredDuration", Query.Direction.DESCENDING)
                 .orderBy("timeStamp", Query.Direction.DESCENDING);
 
 

@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import com.example.exsell.Activity;
+
 public class Activity_tabPagerAdapter extends FragmentStatePagerAdapter {
 
     int countTab;
@@ -34,6 +36,16 @@ public class Activity_tabPagerAdapter extends FragmentStatePagerAdapter {
             case 2:
                 Activity_bid_fragment activity_bid_fragment = new Activity_bid_fragment();
                 return activity_bid_fragment;
+
+            case 3:
+                Activity_sold_fragment activity_sold_fragment = new Activity_sold_fragment();
+                return activity_sold_fragment;
+
+            case 4:
+                Activity_unavailable_fragment activity_unavailable_fragment = new Activity_unavailable_fragment();
+                return  activity_unavailable_fragment;
+
+
         }
         return null;
     }

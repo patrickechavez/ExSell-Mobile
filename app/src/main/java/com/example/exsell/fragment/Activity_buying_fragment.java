@@ -47,7 +47,8 @@ public class Activity_buying_fragment extends Fragment {
     private void setUpRecyclerView() {
 
         Query query = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid())
-                .collection("orders");
+                .collection("orders")
+                .orderBy("timeStamp", Query.Direction.DESCENDING);
 
 
         FirestoreRecyclerOptions<OrderHistoryModel> options = new FirestoreRecyclerOptions.Builder<OrderHistoryModel>()

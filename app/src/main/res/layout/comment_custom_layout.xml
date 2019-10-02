@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_marginRight="16dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginBottom="16dp">
+
+   <de.hdodenhof.circleimageview.CircleImageView
+       android:id="@+id/comment_imageView"
+       android:layout_width="40dp"
+       android:layout_height="40dp"
+       android:layout_marginRight="16dp"
+
+       android:src="@drawable/blog_angry"/>
+
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/comment_textViewFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
+                android:textColor="@android:color/holo_blue_light"
+                android:text="John Patrick"
+                android:layout_marginRight="4dp"
+                android:textAppearance="?attr/textAppearanceSubtitle1"/>
+
+            <TextView
+                android:id="@+id/comment_textLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik"
+                android:textColor="@android:color/holo_blue_light"
+                android:text="Echavez"
+                android:textAppearance="?attr/textAppearanceSubtitle1"/>
+
+            <ImageView
+                android:id="@+id/comment_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/comment_more"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/comment_textViewComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik"
+            android:text="The quick brown fox jump over the lazy dog."
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+
+
+        <TextView
+            android:id="@+id/comment_textViewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/rubik"
+            android:textColor="@android:color/darker_gray"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:text="16 minutes ago"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -31,6 +31,9 @@ public class Activity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Buying"));
         tabLayout.addTab(tabLayout.newTab().setText("Selling"));
         tabLayout.addTab(tabLayout.newTab().setText("Bids"));
+        tabLayout.addTab(tabLayout.newTab().setText("SOLD"));
+        tabLayout.addTab(tabLayout.newTab().setText("UNAVAILABLE"));
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = findViewById(R.id.activity_ViewPager);

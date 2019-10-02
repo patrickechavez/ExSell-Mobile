@@ -32,7 +32,7 @@ public class ReportUsers extends AppCompatActivity {
     private EditText editTextReportUsers;
     private TextInputLayout textInputLayoutUserGone;
     private Button buttonSendUserFeedback;
-    private String reasonData = "Bogus Buyer/Seller";
+    private String reasonData = "Bogus User";
     private String seller_id;
 
 
@@ -61,22 +61,22 @@ public class ReportUsers extends AppCompatActivity {
                     case R.id.user_radioBtn_bogusBuyer:
 
                         textInputLayoutUserGone.setVisibility(View.GONE);
-                        reasonData = "Bogus Buyer/Seller";
-                        Toast.makeText(ReportUsers.this, ""+reasonData, Toast.LENGTH_SHORT).show();
+                        reasonData = "Bogus User";
+                       // Toast.makeText(ReportUsers.this, ""+reasonData, Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.user_radioBtn_postingThings:
 
                         textInputLayoutUserGone.setVisibility(View.GONE);
                         reasonData = "Posting Inappropriate Things";
-                        Toast.makeText(ReportUsers.this, ""+reasonData, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ReportUsers.this, ""+reasonData, Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.user_radioBtn_others:
 
                         editTextReportUsers.setText("");
                         textInputLayoutUserGone.setVisibility(View.VISIBLE);
-                        Toast.makeText(ReportUsers.this, "Others", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ReportUsers.this, "Others", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -104,7 +104,7 @@ public class ReportUsers extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
 
-                                    Toast.makeText(ReportUsers.this, "REPORT LIST SUCCESSFUL1", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ReportUsers.this, "Reported Successfully", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -126,17 +126,20 @@ public class ReportUsers extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
 
-                                    Toast.makeText(ReportUsers.this, "REPORT LIST SUCCESSFUL2", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ReportUsers.this, "Reported Successfully", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
 
                 //SEND NOTIFICATION
                 Map<String, Object> notifData = new HashMap<>();
-                notifData.put("seller_id", seller_id);
+                notifData.put("imageUrl", "https://i.ibb.co/P1XBmJZ/report-Notification.png");
+
+                notifData.put("receiver_id", seller_id);
                 notifData.put("notificationType", "reportedUser");
                 notifData.put("message", "Someone has reported you");
-                notifData.put("buyer_id", mAuth.getCurrentUser().getUid());
+                notifData.put("sender_id", mAuth.getCurrentUser().getUid());
+                notifData.put("timeStamp", FieldValue.serverTimestamp());
 
                 firebaseFirestore.collection("notification")
                         .add(notifData)
@@ -144,7 +147,7 @@ public class ReportUsers extends AppCompatActivity {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
 
-                                Toast.makeText(ReportUsers.this, "Notif Data Successful", Toast.LENGTH_SHORT).show();
+                              //  Toast.makeText(ReportUsers.this, "Notif Data Successful", Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -155,7 +158,7 @@ public class ReportUsers extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
 
-                                Toast.makeText(ReportUsers.this, "Updated Report", Toast.LENGTH_SHORT).show();
+                             //   Toast.makeText(ReportUsers.this, "Updated Report", Toast.LENGTH_SHORT).show();
                             }
                         });
 

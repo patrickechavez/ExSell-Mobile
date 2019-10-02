@@ -61,7 +61,6 @@ public class OrderHistory_adapter extends FirestoreRecyclerAdapter<OrderHistoryM
                         String stringCurrentDate = sdf.format(currenDate).toString();
 
                         String remnantId = orderHistoryModel.getRemnantId();
-                        String ownerId = orderHistoryModel.getOwnerId();
 
                         //GET REMNANTS
                         DocumentReference docRef = firebaseFirestore.collection("remnants").document(remnantId);
@@ -75,14 +74,31 @@ public class OrderHistory_adapter extends FirestoreRecyclerAdapter<OrderHistoryM
                                     orderHistoryHolder.textViewTitle.setText(document.getString("title"));
                                     List<String> imageUrl = (List<String>) document.get("imageUrl");
                                     Picasso.get().load(imageUrl.get(0)).into(orderHistoryHolder.imageViewOrder);
-                                    //orderHistoryHolder.textViewOwnerName.(document.getS);
+
+
+                                    DocumentReference docRef1 = firebaseFirestore.collection("users").document(document.getString("userId"));
+                                    docRef1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                            if(task.isSuccessful()) {
+                                                DocumentSnapshot documentSnapshot = task.getResult();
+
+                                                String fname = documentSnapshot.getString("firstName");
+                                                String lname = documentSnapshot.getString("lastName");
+                                                orderHistoryHolder.textViewOwnerName.setText(fname + " " + lname);
+                                            }
+                                        }
+                                    });
+
+
                                 }
 
                             }
                         });
 
                         //GET USER INFO
-                        DocumentReference docRef1 = firebaseFirestore.collection("users").document(ownerId);
+                        /*DocumentReference docRef1 = firebaseFirestore.collection("users").document(ownerId);
                         docRef1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -95,8 +111,7 @@ public class OrderHistory_adapter extends FirestoreRecyclerAdapter<OrderHistoryM
                                     orderHistoryHolder.textViewOwnerName.setText(fname + " " + lname);
                                 }
                             }
-                        });
-
+                        });*/
 
                         orderHistoryHolder.textViewQuantity.setText(orderHistoryModel.getQuantity()+" pcs");
                         orderHistoryHolder.textViewSubTotal.setText("₱ "+orderHistoryModel.getSubTotal());

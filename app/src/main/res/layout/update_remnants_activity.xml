@@ -1,9 +1,441 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Update_Remnants">
+    android:orientation="vertical"
+    android:background="#f5eeed"
+    tools:context=".ListRemnants">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/update_app_bar"
+        layout="@layout/app_bar_layout"/>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--PAGE 1-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/update_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="@drawable/recycler_divider" />
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_width="330dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:hint="Remnant Title">
+
+                    <EditText
+                        android:id="@+id/update_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:hint="Remnant Description">
+
+
+                    <EditText
+                        android:id="@+id/update_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:hint="Remnants Back Story">
+
+
+                    <EditText
+                        android:id="@+id/update_backStory"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_margin="4dp"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:hint="My Bounce Back Plan">
+
+
+                    <EditText
+                        android:id="@+id/update_bounceBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+               <!-- <Button
+                    android:id="@+id/update_nextBtn"
+                    style="@style/Widget.Shrine.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="NEXT"
+                    android:backgroundTint="#d3d3d3"
+                    android:enabled="false" />-->
+
+            </LinearLayout>
+
+
+        <!--PAGE 2-->
+            <LinearLayout
+                android:layout_width="340dp"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_margin="8dp"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:text="Format" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="8dp"
+                    android:background="@android:color/black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <RadioGroup
+                        android:id="@+id/update_radigroup_format"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="8dp">
+
+                        <RadioButton
+                            android:id="@+id/update_fixedprice_radioBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Fixed Price"
+                            android:textSize="17sp" />
+
+                        <RadioButton
+                            android:id="@+id/update_auction_radioBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Auction"
+                            android:textSize="17sp" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+
+                <!--END OF FORMAT-->
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_margin="8dp"
+                    android:background="@android:color/black"/>
+
+                <!--PRICE-->
+
+                <!--FIXED PRICE-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceButton"
+                    android:text="PRICE" />
+
+
+                <LinearLayout
+                    android:id="@+id/update_linearPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black"/>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        app:startIconDrawable="@drawable/peso_icon"
+                        style="@style/Widget.Shrine.TextInputLayout"
+                        android:hint="Breakup Price">
+
+                        <EditText
+                            android:id="@+id/update_breakUpPrice"
+                            android:inputType="numberDecimal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        style="@style/Widget.Shrine.TextInputLayout"
+                        android:hint="Quantity">
+
+                        <EditText
+                            android:id="@+id/update_quantity"
+                            android:inputType="number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black"/>
+
+                </LinearLayout>
+                <!--END OF FIXED PRICE-->
+
+
+                <!--AUCTION-->
+                <LinearLayout
+                    android:id="@+id/update_linearAuction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black"/>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        app:startIconDrawable="@drawable/peso_icon"
+                        style="@style/Widget.Shrine.TextInputLayout"
+                        android:hint="Starting Price">
+
+                        <EditText
+                            android:id="@+id/update_auctionStartPrice"
+                            android:inputType="numberDecimal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        app:boxStrokeColor="@color/textInputOutlineColor"
+                        app:hintTextColor="@color/textColorPrimary"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:hint="Duration">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/update_filled_exposed_dropdownDuration"
+                            android:layout_width="match_parent"
+                            android:editable="false"
+                            android:textColor="#442C2E"
+                            android:layout_height="wrap_content"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        app:boxStrokeColor="@color/textInputOutlineColor"
+                        app:hintTextColor="@color/textColorPrimary"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:hint="Start Time">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/update_filled_exposed_dropdownStartTime"
+                            android:layout_width="match_parent"
+                            android:editable="false"
+                            android:text="Start Immediately"
+                            android:textColor="#442C2E"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                    <LinearLayout
+                        android:id="@+id/update_linearlayout_startTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:weightSum="2"
+                        android:orientation="horizontal">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="1.2"
+                            app:boxStrokeColor="@color/textInputOutlineColor"
+                            app:hintTextColor="@color/textColorPrimary"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                            android:hint="Idle Duration">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/update_filled_exposed_dropdownIdleDuration"
+                                android:layout_width="match_parent"
+                                android:editable="false"
+                                android:textColor="#442C2E"
+                                android:layout_height="wrap_content"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight=".8"
+                            style="@style/Widget.Shrine.TextInputLayout"
+                            android:hint="List Time">
+
+                            <EditText
+                                android:id="@+id/update_auctionListTime"
+                                android:layout_width="match_parent"
+                                android:editable="false"
+                                android:layout_height="wrap_content" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        style="@style/Widget.Shrine.TextInputLayout"
+                        android:hint="End Time">
+
+                        <EditText
+                            android:id="@+id/update_auctionEndTime"
+                            android:layout_width="match_parent"
+                            android:editable="false"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/black"/>
+                </LinearLayout>
+                <!--END OF AUCTION-->
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:hint="Select Category">
+
+                    <EditText
+                        android:id="@+id/update_select_category"
+                        android:layout_width="match_parent"
+                        android:focusableInTouchMode="false"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:focusableInTouchMode="false"
+                    style="@style/Widget.Shrine.TextInputLayout"
+                    android:hint="Meetup">
+
+                    <EditText
+                        android:id="@+id/update_meetup"
+                        android:layout_width="match_parent"
+                        android:focusableInTouchMode="false"
+                        android:layout_height="wrap_content"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/update_listit_btn"
+                    android:layout_marginTop="10dp"
+                    android:layout_margin="8dp"
+                    android:layout_width="340dp"
+                    style="@style/Widget.Shrine.Button"
+                    android:layout_height="wrap_content"
+                    android:text="UPDATE REMNANT"/>
+
+            </LinearLayout>//LINEARLAYOUT FROM PAGE 2
+
+    </LinearLayout>//END LINEARLAYOUT FROM TOP
+
+
+
+
+
+
+
+
+    </ScrollView>
+
+</LinearLayout>

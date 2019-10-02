@@ -2,6 +2,7 @@ package com.example.exsell;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -46,8 +47,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.exsell.R.id.custom_bar_image;
@@ -82,8 +81,11 @@ public class Chat extends AppCompatActivity {
         setContentView(R.layout.chat_activity);
 
         mAuth = FirebaseAuth.getInstance();
+
+
         currentUserId = mAuth.getCurrentUser().getUid();
         toolbar = findViewById(R.id.chat_app_bar);
+        user_id = getIntent().getStringExtra("receiver_id");
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -91,7 +93,10 @@ public class Chat extends AppCompatActivity {
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
-        user_id = getIntent().getStringExtra("receiver_id");
+
+       // Toast.makeText(this, ""+user_id, Toast.LENGTH_SHORT).show();
+
+
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View action_bar_view = inflater.inflate(R.layout.chat_custom_bar, null);
@@ -158,8 +163,6 @@ public class Chat extends AppCompatActivity {
     }
     private void loadMessages() {
 
-        Query query = FirebaseFirestore.getInstance().collection("chat")
-                .orderBy("time", Query.Direction.ASCENDING);
 
         firebaseFirestore.collection("chat").orderBy("time", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -169,13 +172,15 @@ public class Chat extends AppCompatActivity {
                         List<MessageModel> newMessageModel = new ArrayList<>();
 
                         if(e != null){
-                            Log.d(TAG, "Error: "+e.getMessage());
+                            Log.d(TAG, "haha Error: "+e.getMessage());
 
                         }else{}
 
                         for(QueryDocumentSnapshot doc: queryDocumentSnapshots){
 
-                            if(doc.get("receiver").equals(currentUserId) && doc.get("sender").equals(user_id) ||
+                           if(doc.getString("receiver") != null){
+
+                               if(doc.get("receiver").equals(currentUserId) && doc.get("sender").equals(user_id) ||
                                     doc.get("receiver").equals(user_id) && doc.get("sender").equals(currentUserId)){
 
                                 newMessageModel.add(new MessageModel(
@@ -187,12 +192,17 @@ public class Chat extends AppCompatActivity {
 
                                 ));
                             }
+
+                           }
+
+
                         }
 
                         messageAdapter = new MessageAdapter(newMessageModel);
                         recyclerView.setAdapter(messageAdapter);
                     }
                 });
+
     }
 
     private void sendMessage() {
@@ -221,6 +231,12 @@ public class Chat extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+
+    }
 }
 
 

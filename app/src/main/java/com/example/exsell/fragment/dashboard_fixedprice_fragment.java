@@ -61,7 +61,9 @@ public class dashboard_fixedprice_fragment extends Fragment {
                 .whereEqualTo("isDeleted", false)
                 .whereEqualTo("isSoldOut",false)
                 .whereEqualTo("isBanned", false)
+                .whereEqualTo("isExpired", false)
                 .whereEqualTo("isActive", true)
+                .orderBy("featuredDuration", Query.Direction.DESCENDING)
                 .orderBy("timeStamp", Query.Direction.DESCENDING);
 
 

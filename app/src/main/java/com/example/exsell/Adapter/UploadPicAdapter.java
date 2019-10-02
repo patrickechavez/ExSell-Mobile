@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.exsell.ListRemnants;
 import com.example.exsell.Models.UploadPicModel;
 import com.example.exsell.R;
+import com.example.exsell.Update_Remnants;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class UploadPicAdapter extends RecyclerView.Adapter<UploadPicAdapter.Uplo
         this.uploadPicModels = uploadPicModels;
         this.context = context;
     }
+
 
 
     @NonNull

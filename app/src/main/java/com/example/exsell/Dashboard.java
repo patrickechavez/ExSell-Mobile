@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -41,6 +44,8 @@ import androidx.viewpager.widget.ViewPager;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,12 +56,15 @@ public class Dashboard extends AppCompatActivity
     private ViewPager viewPager;
     private ImageView imageViewDashboard;
     private double wallet;
-    private TextView textViewFirstName, textViewLastName;
     private static final String TAG = "DASHBOARD";
     private DrawerLayout drawerLayout;
     private String remnant_id, seller_id, remnantName, owner_id, endTimeString;
     private long endTime;
     private SimpleDateFormat df = new SimpleDateFormat("h:mm a");
+    private Boolean isSuccess = false;
+    private CircleImageView circleImageView;
+    private TextView textViewFirstName, textViewLastName;
+
 
 
     @Override
@@ -69,6 +77,16 @@ public class Dashboard extends AppCompatActivity
 
         //BADGE
         BadgeDrawable badgeDrawable = BadgeDrawable.create(this);
+
+        mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+
+
+
+
+
+
 
 
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -100,172 +118,49 @@ public class Dashboard extends AppCompatActivity
             }
         });
 
+        getWalletValue();
 
-        mAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
+
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        getWalletValue();
-
-      //  startService(new Intent(this, MyService.class));
-
-
-       // sendNotiftoBidWinner();
+        View headerView = navigationView.getHeaderView(0);
+         circleImageView = headerView.findViewById(R.id.navigation_imageView);
+         textViewFirstName = headerView.findViewById(R.id.navigation_firstName);
+         textViewLastName = headerView.findViewById(R.id.navigation_lastName);
 
 
-        DocumentReference user_id = firebaseFirestore.collection("notification").document();
-        String user_ids = user_id.getId();
+         fetchUserInfo();
 
 
     }
 
-    private void sendNotiftoBidWinner() {
+    private void fetchUserInfo() {
 
-        Thread t = new Thread(){
-
+        firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void run() {
-                try {
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                    while (!isInterrupted()){
-                        Thread.sleep(1000);
-                        runOnUiThread(() -> firebaseFirestore.collection("remnants")
-                                .whereEqualTo("type", "Auction")
-                                .whereEqualTo("isSoldOut", false)
-                                .whereEqualTo("isDeleted", false)
-                                .whereEqualTo("isActive", true)
-                                .whereEqualTo("isExpired", false)
-                                .get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
 
-                                    if(task.isSuccessful()){
+                    DocumentSnapshot documentSnapshot = task.getResult();
 
-                                        for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()){
+                    Picasso.get().load(documentSnapshot.getString("imageUrl")).into(circleImageView);
+                    textViewFirstName.setText(documentSnapshot.getString("firstName"));
+                    textViewLastName.setText(documentSnapshot.getString("lastName"));
 
-                                             remnant_id = queryDocumentSnapshot.getId();
-                                             seller_id = queryDocumentSnapshot.getString("userId");
-                                             remnantName = queryDocumentSnapshot.getString("title");
-                                             endTime = queryDocumentSnapshot.getLong("endTime").intValue();
-
-
-                                            Log.d(TAG, "haha current Time: "+System.currentTimeMillis() / 1000);
-                                            Log.d(TAG,"haha end Time:     "+endTime);
-
-
-                                             if(endTime / 1000 == System.currentTimeMillis() / 1000){
-
-                                                 //CHECK IF AUCTION HAS BIDDER
-                                                 firebaseFirestore.collection("remnants").document(remnant_id)
-                                                         .collection("bidders")
-                                                         .get()
-                                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                             @Override
-                                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                                                 if(task.isSuccessful()){
-
-                                                                     if(task.getResult().size() > 0){
-
-                                                                         Log.d(TAG,"haha naay sud end Time: "+queryDocumentSnapshot.getLong("endTime").intValue());
-
-                                                                         firebaseFirestore.collection("remnants").document(remnant_id)
-                                                                                 .collection("bidders")
-                                                                                 .orderBy("bidAmount", Query.Direction.DESCENDING).limit(1)
-                                                                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                             @Override
-                                                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                                                                                 if(task.isSuccessful()){
-
-                                                                                     for(QueryDocumentSnapshot queryDocumentSnapshot1: task.getResult()){
-
-                                                                                         DocumentReference docRef10 = firebaseFirestore.collection("remnants").document(remnant_id);
-                                                                                         docRef10.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                                             @Override
-                                                                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                                                                                                 if(task.isSuccessful()){
-
-                                                                                                     DocumentSnapshot document = task.getResult();
-
-                                                                                                     if(!document.getBoolean("isSoldOut")){
-
-                                                                                                         //SEND NOTIFICATION TO WINNER
-                                                                                                         String message = "Congratulations, You are the new owner of "+remnantName;
-                                                                                                         Map<String, Object> notifData = new HashMap<>();
-                                                                                                         notifData.put("receiver_id", queryDocumentSnapshot1.getString("userId"));
-                                                                                                         notifData.put("message",message);
-                                                                                                         notifData.put("imageUrl", "https://i.ibb.co/wYKRnpK/bidItem.png");
-                                                                                                         notifData.put("message2", "");
-                                                                                                         notifData.put("remnants_id", remnant_id);
-                                                                                                         notifData.put("notificationType", "bidWinner");
-                                                                                                         notifData.put("sender_id", seller_id);
-                                                                                                         notifData.put("timeStamp", FieldValue.serverTimestamp());
-
-                                                                                                         firebaseFirestore.collection("notification")
-                                                                                                                 .add(notifData)
-                                                                                                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                                                                                     @Override
-                                                                                                                     public void onSuccess(DocumentReference documentReference) {
-
-                                                                                                                         Log.d(TAG,"HAHA NOTIFICATION SENT");
-
-
-                                                                                                                         //UPDATE TO SOLD AUCTION AND HAS BIDDER
-                                                                                                                         DocumentReference docRef = firebaseFirestore.collection("remnants").document(queryDocumentSnapshot.getId());
-                                                                                                                         docRef.update("isSoldOut", true).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                                             @Override
-                                                                                                                             public void onSuccess(Void aVoid) {
-
-
-                                                                                                                                 Log.d(TAG,"HAHA SOLD AUCTION SUCCESS");
-
-                                                                                                                             }
-                                                                                                                         });
-                                                                                                                     }
-                                                                                                                 });
-                                                                                                     }
-                                                                                                 }
-                                                                                             }
-                                                                                         });
-                                                                                     }
-                                                                                 }
-                                                                             }
-                                                                         });
-
-                                                                     }else{
-
-                                                                         Log.d(TAG,"haha way  sud end Time: "+queryDocumentSnapshot.getLong("endTime").intValue());
-
-                                                                         //DELETE AUCTION IF NO ONE BID
-                                                                         DocumentReference docRef = firebaseFirestore.collection("remnants").document(queryDocumentSnapshot.getId());
-                                                                         docRef.update("isExpired", true).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                             @Override
-                                                                             public void onSuccess(Void aVoid) {
-
-                                                                                 Log.d(TAG, "HAHA EXPIRED REMNANT SUCCESSFUL");
-                                                                             }
-                                                                         });
-                                                                     }
-                                                                 }
-                                                             }
-                                                         });
-                                             }
-                                        }
-                                    }
-                                }));
-                    }
-                }catch (InterruptedException e){}
+                }
             }
-        };
-        t.start();
+        });
     }
 
 
@@ -321,15 +216,12 @@ public class Dashboard extends AppCompatActivity
 
             case R.id.nav_listRemnant:
 
-
-
                 if(wallet < 25){
 
-                    Toast.makeText(this, "gamay rang wallet "+wallet, Toast.LENGTH_SHORT).show();
                     showSnackBar();
+
                 }else {
 
-                    Toast.makeText(this, "lapas 25 ang wallet "+wallet, Toast.LENGTH_SHORT).show();
                     Intent lm = new Intent(Dashboard.this   , ListRemnants.class);
                     startActivity(lm);
                 }
@@ -377,24 +269,20 @@ public class Dashboard extends AppCompatActivity
 
     private void getWalletValue() {
 
-        final DocumentReference docRef = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
-                docRef.addSnapshotListener((documentSnapshot, e) -> {
+       DocumentReference documentReference = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
+       documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+           @Override
+           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                    if (e != null) {
-                        Log.w(TAG, "Listen failed.", e);
-                        return;
-                    }
+               if(task.isSuccessful()){
+                   DocumentSnapshot documentSnapshot = task.getResult();
 
-                    if (documentSnapshot != null && documentSnapshot.exists()) {
-
-                        wallet = documentSnapshot.getDouble("wallet");
-                        Log.d(TAG, "Current data: " + documentSnapshot.getData());
-                    } else {
-                        Log.d(TAG, "Current data: null");
-                    }
-
-                });
-
+                   if(documentSnapshot.getDouble("wallet") > 24){
+                       wallet = documentSnapshot.getDouble("wallet");
+                   }
+               }
+           }
+       });
     }
 
     private void showSnackBar() {

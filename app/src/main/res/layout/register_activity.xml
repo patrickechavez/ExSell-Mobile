@@ -7,91 +7,97 @@
     android:orientation="vertical"
     tools:context=".Login">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_gravity="center"
-        android:layout_width="330dp"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp">
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="330dp"
+            android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            style="@style/Widget.Shrine.TextInputLayout"
-            android:hint="First Name">
+            android:layout_marginTop="100dp">
 
-            <EditText
-                android:id="@+id/register_fname"
-                android:maxLines="1"
-                android:inputType="textCapWords"
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                style="@style/Widget.Shrine.TextInputLayout"
+                android:hint="First Name">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            style="@style/Widget.Shrine.TextInputLayout"
-            android:hint="Last Name">
+                <EditText
+                    android:id="@+id/register_fname"
+                    android:maxLines="1"
+                    android:inputType="textCapWords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/register_lname"
-                android:maxLines="1"
-                android:inputType="textCapWords"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                style="@style/Widget.Shrine.TextInputLayout"
+                android:hint="Last Name">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            style="@style/Widget.Shrine.TextInputLayout"
-            android:hint="Email">
+                <EditText
+                    android:id="@+id/register_lname"
+                    android:maxLines="1"
+                    android:inputType="textCapWords"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/register_email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                style="@style/Widget.Shrine.TextInputLayout"
+                android:hint="Email">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
-            style="@style/Widget.Shrine.TextInputLayout"
-            android:layout_margin="4dp"
-            android:hint="Password">
+                <EditText
+                    android:id="@+id/register_email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/register_password"
-                android:maxLines="1"
-                android:inputType="textPassword"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                style="@style/Widget.Shrine.TextInputLayout"
+                android:layout_margin="4dp"
+                android:hint="Password">
 
-        <Button
-            android:id="@+id/register_registerbtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Shrine.Button"
-            android:text="CREATE ACCOUNT" />
+                <EditText
+                    android:id="@+id/register_password"
+                    android:maxLines="1"
+                    android:inputType="textPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/register_loginbtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Shrine.Button.TextButton"
-            android:text="ALREADY HAVE AN ACCOUNT?" />
+            <Button
+                android:id="@+id/register_registerbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Shrine.Button"
+                android:text="CREATE ACCOUNT" />
+
+            <Button
+                android:id="@+id/register_loginbtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Shrine.Button.TextButton"
+                android:text="ALREADY HAVE AN ACCOUNT?" />
 
 
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
 </LinearLayout>

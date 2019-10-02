@@ -56,8 +56,6 @@ public class ReportRemnants extends AppCompatActivity {
 
         fetchRemnantName();
 
-
-
         radioGroupReportRemnants.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -69,28 +67,28 @@ public class ReportRemnants extends AppCompatActivity {
 
                         reasonData = "This is spam";
                         textInputLayoutGone.setVisibility(View.GONE);
-                        Toast.makeText(ReportRemnants.this, ""+reasonData, Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(ReportRemnants.this, ""+reasonData, Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.radioBtn_notRealItem:
 
                         textInputLayoutGone.setVisibility(View.GONE);
                         reasonData = "This is not a real item for sale";
-                        Toast.makeText(ReportRemnants.this, ""+reasonData, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(ReportRemnants.this, ""+reasonData, Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.radioBtn_harmfulIllegal:
 
                         textInputLayoutGone.setVisibility(View.GONE);
                         reasonData = "This post is abusive, harmful or illegal";
-                        Toast.makeText(ReportRemnants.this, ""+reasonData, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(ReportRemnants.this, ""+reasonData, Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.radioBtn_fraudScam:
 
                         textInputLayoutGone.setVisibility(View.GONE);
                         reasonData = "This is fraud or scam";
-                        Toast.makeText(ReportRemnants.this, ""+reasonData, Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(ReportRemnants.this, ""+reasonData, Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.radioBtn_adultProduct:
@@ -121,7 +119,7 @@ public class ReportRemnants extends AppCompatActivity {
 
                     //STORE REPORTLIST DATA
                     Map<String, Object> reportData1 = new HashMap<>();
-                    reportData1.put("c", mAuth.getCurrentUser().getUid());
+                    reportData1.put("buyer_id", mAuth.getCurrentUser().getUid());
                     reportData1.put("reason", reason);
                     reportData1.put("type", "reportRemnant");
                     reportData1.put("remnant_id", remnant_id);
@@ -134,7 +132,7 @@ public class ReportRemnants extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
 
-                                    Toast.makeText(ReportRemnants.this, "Sending Report Successful", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ReportRemnants.this, "Reported Successfully", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
@@ -162,12 +160,12 @@ public class ReportRemnants extends AppCompatActivity {
                 }
 //SOMEONE MARK YOUR REMNANT AS INAPPROPRIATE AGAINST OUR COMMUNITY STANDARD
 
-                String message = "Someone mark your remnant as inappropriate against our Community Standard";
+                String message = "Someone marked your remnant as inappropriate against our Community Standard";
                 //SENDING REPORT REMNANT NOTIFICATION
                 Map<String, Object> notifData = new HashMap<>();
-                notifData.put("sender_id", seller_id);
+                notifData.put("sender_id", mAuth.getCurrentUser().getUid());
                 notifData.put("remnants_id", remnant_id);
-                notifData.put("receiver_id", mAuth.getCurrentUser().getUid());
+                notifData.put("receiver_id", seller_id);
                 notifData.put("message", message);
                 notifData.put("imageUrl", "https://i.ibb.co/P1XBmJZ/report-Notification.png");
                 notifData.put("notificationType", "reportRemnant");
@@ -179,7 +177,7 @@ public class ReportRemnants extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
-                                Toast.makeText(ReportRemnants.this, "Sending Notif SUccessful", Toast.LENGTH_SHORT).show();
+                      //          Toast.makeText(ReportRemnants.this, "Sending Notif SUccessful", Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -189,13 +187,12 @@ public class ReportRemnants extends AppCompatActivity {
                             @Override
                             public void onSuccess(DocumentReference documentReference) {
 
-                                Toast.makeText(ReportRemnants.this, "Sending ReportList Successfuls", Toast.LENGTH_SHORT).show();
+                          //      Toast.makeText(ReportRemnants.this, "Sending ReportList Successfuls", Toast.LENGTH_SHORT).show();
                             }
                         });
 
 
                 //UPDATE REMNANT REPORTS COUNT
-
                 DocumentReference docRef= firebaseFirestore.collection("remnants").document(remnant_id);
                 docRef.update("report", FieldValue.increment(1));
 

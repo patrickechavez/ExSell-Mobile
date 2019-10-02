@@ -14,7 +14,7 @@
             layout="@layout/app_bar_layout"/>
 
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -99,7 +99,7 @@
                     android:layout_margin="16dp"
                     android:textAppearance="?attr/textAppearanceCaption"
                     android:textSize="16sp"
-                    android:text="@string/quickbrownfox"/>
+                    android:text="Loading.."/>
 
                 <TextView
                     android:id="@+id/moreDetailsTextView"
@@ -157,7 +157,7 @@
                             android:textSize="14dp"
                             android:layout_marginLeft="16dp"
                             android:textAppearance="?attr/textAppearanceCaption"
-                            android:text="@string/quickbrownfox"
+                            android:text="Loading.."
                             android:layout_marginTop="8dp"/>
 
                         <TextView
@@ -181,7 +181,7 @@
                             android:textSize="14dp"
                             android:layout_marginLeft="16dp"
                             android:textAppearance="?attr/textAppearanceCaption"
-                            android:text="@string/quickbrownfox"
+                            android:text="Loading.."
                             android:layout_marginTop="8dp"/>
 
                         <TextView
@@ -278,7 +278,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:text="Featured End Time: "
+                        android:text="Featured End Date: "
                         android:textAppearance="?attr/textAppearanceBody2"/>
 
                     <TextView
@@ -342,8 +342,55 @@
                     android:textAppearance="?attr/textAppearanceButton"
                     android:text="VIEW ON CART" />
 
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/fp_linearlayoutblog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/fp_commentDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:layout_weight="2"
+                        android:hint="Write a comment"
+                        android:background="@drawable/edittext_button_style_rounded"
+                        android:ems="10"/>
+
+                    <Button
+                        android:id="@+id/fp_commentButton"
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:enabled="false"
+                        android:layout_marginBottom="30dp"
+                        android:backgroundTint="@color/buttonDisabled"
+                        android:background="@drawable/edittext_button_style_rounded"
+                        android:text="ADD"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fp_commentRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/fp_linearlayoutblog"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"/>
+
+            </RelativeLayout>
+
             </LinearLayout>
-        </ScrollView>
+
+        </androidx.core.widget.NestedScrollView>
 
 
     </LinearLayout>

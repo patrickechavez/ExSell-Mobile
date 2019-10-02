@@ -18,6 +18,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
+
 public class FixedPriceAdapter extends FirestoreRecyclerAdapter<FixedPriceModel, FixedPriceAdapter.FixedPriceHolder>{
 
     private OnItemClickListener listener;
@@ -31,9 +33,13 @@ public class FixedPriceAdapter extends FirestoreRecyclerAdapter<FixedPriceModel,
     @Override
     protected void onBindViewHolder(@NonNull FixedPriceHolder fixedPriceHolder, int i, @NonNull FixedPriceModel fixedPriceModel) {
 
+        BigDecimal bigDecimal = new BigDecimal(fixedPriceModel.getPrice());
+        bigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+
+
         Picasso.get().load(fixedPriceModel.getImageUrl().get(0)).into(fixedPriceHolder.imageURL);
         fixedPriceHolder.remnantTitle.setText(fixedPriceModel.getTitle());
-        fixedPriceHolder.remnantPrice.setText("₱ "+ fixedPriceModel.getPrice());
+        fixedPriceHolder.remnantPrice.setText("₱ "+ bigDecimal);
     }
 
     @NonNull
@@ -44,12 +50,6 @@ public class FixedPriceAdapter extends FirestoreRecyclerAdapter<FixedPriceModel,
 
         return new FixedPriceHolder(view);
     }
-
-
-
-
-
-
 
 
     class FixedPriceHolder extends RecyclerView.ViewHolder{

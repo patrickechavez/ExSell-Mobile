@@ -65,6 +65,7 @@ public class Select_Category extends AppCompatActivity {
                 String subCategoryName = documentSnapshot.get("categoryName").toString();
 
 
+              //  Toast.makeText(Select_Category.this, ""+id, Toast.LENGTH_SHORT).show();
                 /*Intent selectSub = new Intent(Select_Category.this, Select_Subcategory.class);
                 selectSub.putExtra("categoryId", id);
                 selectSub.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);

@@ -4,24 +4,21 @@ import java.util.Date;
 
 public class OrderHistoryModel {
 
-    private String ownerId, remnantId;
+    private String remnantId;
     private Integer subTotal, quantity;
     private Date timeStamp;
 
 
     public OrderHistoryModel(){}
 
-    public OrderHistoryModel(String ownerId, String remnantId, Integer subTotal, Integer quantity, Date timeStamp) {
-        this.ownerId = ownerId;
+    public OrderHistoryModel(String remnantId, Integer subTotal, Integer quantity, Date timeStamp) {
+
         this.remnantId = remnantId;
         this.subTotal = subTotal;
         this.quantity = quantity;
         this.timeStamp = timeStamp;
     }
 
-    public String getOwnerId() {
-        return ownerId;
-    }
 
     public String getRemnantId() {
         return remnantId;

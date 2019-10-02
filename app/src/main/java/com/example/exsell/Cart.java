@@ -71,7 +71,8 @@ public class Cart extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         textViewTotal = findViewById(R.id.cart_total);
         linearLayoutHiding = findViewById(R.id.cart_hiding);
-        relativeLayoutCheckOut = findViewById(R.id.relativelayout_Checkout);
+       // relativeLayoutCheckOut = findViewById(R.id.relativelayout_Checkout);
+        buttonProceedCheckOut = findViewById(R.id.cart_proceedCheckOut);
 
         Toolbar toolbar = findViewById(R.id.cart_app_bar);
         setSupportActionBar(toolbar);
@@ -95,13 +96,15 @@ public class Cart extends AppCompatActivity {
                 }
             });
 
-        setUpRecyclerView();
-      hideTheCart();
-        //hideTheCartDeleteFromCart();
-        getTotal();
+
+            setUpRecyclerView();
+            hideTheCart();
+            //hideTheCartDeleteFromCart();
+            getTotal();
 
 
-        relativeLayoutCheckOut.setOnClickListener(new View.OnClickListener() {
+
+        buttonProceedCheckOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -116,7 +119,7 @@ public class Cart extends AppCompatActivity {
 
                             if(documentSnapshot.getDouble("wallet") < 25){
 
-                                Toast.makeText(Cart.this, "You must have atleast 25 pesos in your wallet to proceed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Cart.this, "You must have at least 25 pesos in your wallet to proceed", Toast.LENGTH_SHORT).show();
 
                             }else{
 
@@ -133,216 +136,200 @@ public class Cart extends AppCompatActivity {
                                                     for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
 
                                                         String remnantId = documentSnapshot.getId();
-                                                        String imageUrl = documentSnapshot.getString("imageUrl");
-                                                        String ownerId = documentSnapshot.getString("owner_id");
-                                                        String ownerName = documentSnapshot.getString("ownerName");
-                                                        String title = documentSnapshot.getString("title");
+                                                        String buyerId = documentSnapshot.getString("buyerId");
                                                         Integer quantity = documentSnapshot.getLong("quantity").intValue();
                                                         Double subTotal = documentSnapshot.getDouble("subTotal");
 
+
                                                         Map<String, Object> orders = new HashMap<>();
                                                         orders.put("remnantId", remnantId);
-                                                        orders.put("ownerId", ownerId);
                                                         orders.put("quantity", quantity);
                                                         orders.put("subTotal", subTotal);
                                                         orders.put("timeStamp", FieldValue.serverTimestamp());
 
-
                                                         //ADD TO ORDER USER ORDER
                                                         firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid())
                                                                 .collection("orders").add(orders)
-                                                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                .addOnCompleteListener(task1 -> {
+
+
+                                                                    firebaseFirestore.collection("remnants").document(remnantId)
+                                                                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                                                            if(task.isSuccessful()){
+
+                                                                                DocumentSnapshot documentSnapshot1 = task.getResult();
+
+                                                                                //SEND MESSAGE TO SELLER
+                                                                                Map<String, Object> sendMessage = new HashMap<>();
+                                                                                String message = "Hi, I want to buy your ["+quantity+"] "+documentSnapshot1.getString("title");
+                                                                                sendMessage.put("receiver", documentSnapshot1.getString("userId"));
+                                                                                sendMessage.put("sender", mAuth.getCurrentUser().getUid());
+                                                                                sendMessage.put("message", message);
+                                                                                sendMessage.put("time", FieldValue.serverTimestamp());
+                                                                                sendMessage.put("type", "text");
+
+
+                                                                                firebaseFirestore.collection("chat").add(sendMessage)
+                                                                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                                            @Override
+                                                                                            public void onSuccess(DocumentReference documentReference) {
+
+                                                                                                Log.d(TAG, "HAHA SEND MESSAGE SUCCESSFULLY");
+                                                                                            }
+                                                                                        });
+                                                                                //END SEND MESSAGE TO SELLER
 
 
 
+                                                                                //SEND NOTIFICATION TO SELLER
+                                                                                String message1 = currentUserFirstName+" "+currentUserLastName+" wants to buy your "+documentSnapshot1.getString("title");
+                                                                                String message2 = "Quantity: "+quantity;
 
-                                                                        // SEND MESSAGE TO SELLER
-                                                                        Map<String, Object> sendMessage = new HashMap<>();
-                                                                        String message3 = "Hi, I want to buy  your ["+quantity+"] "+title;
-                                                                        sendMessage.put("receiver", ownerId);
-                                                                        sendMessage.put("sender", mAuth.getCurrentUser().getUid());
-                                                                        sendMessage.put("message", message3);
-                                                                        sendMessage.put("time",FieldValue.serverTimestamp());
-                                                                        sendMessage.put("type", "text");
+                                                                                Map<String, Object> notifications = new HashMap<>();
+                                                                                notifications.put("sender_id", mAuth.getCurrentUser().getUid());
+                                                                                notifications.put("receiver_id", documentSnapshot1.getString("userId"));
+                                                                                notifications.put("remnants_id", remnantId);
+                                                                                notifications.put("message", message1);
+                                                                                notifications.put("message2", message2);
+                                                                                notifications.put("imageUrl", "https://i.ibb.co/XyCn3Gb/buy-icon.png");
+                                                                                notifications.put("notificationType", "buyer");
+                                                                                notifications.put("timeStamp", FieldValue.serverTimestamp());
 
-                                                                        firebaseFirestore.collection("chat")
-                                                                                .add(sendMessage)
-                                                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+
+                                                                                firebaseFirestore.collection("notification").add(notifications)
+                                                                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                                            @Override
+                                                                                            public void onSuccess(DocumentReference documentReference) {
+
+                                                                                                Log.d(TAG, "HAHA SUD SA NOTIFICATION");
+                                                                                            }
+                                                                                        });
+                                                                                //END SEND NOTIFICATION TO SELLER
+
+                                                                                //-25 FOR EACH SELLER
+
+                                                                                firebaseFirestore.collection("users").document(documentSnapshot1.getString("userId"))
+                                                                                        .update("wallet", FieldValue.increment(-25)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                     @Override
-                                                                                    public void onSuccess(DocumentReference documentReference) {
+                                                                                    public void onSuccess(Void aVoid) {
 
-                                                                                        Log.d(TAG, "hahaho SEND MESSAGE SUCCESSFUL");
+                                                                                        Log.d(TAG, "haha -25 for each seller");
                                                                                     }
                                                                                 });
 
-                                                                        //
+                                                                                //END -25 FOR EACH SELLER
 
-                                                                        //SEND NOTIFICATION TO SELLER
-                                                                        String message = currentUserFirstName+" "+currentUserLastName+" want to buy your "+title;
-                                                                        String message2 = "Quantity: "+quantity;
+                                                                                //SEND +25 FROM SELLER TO GENERATE REPORT
+                                                                                Map<String, Object> gReport = new HashMap<>();
+                                                                                gReport.put("senderUser_id", documentSnapshot1.getString("userId"));
+                                                                                gReport.put("transactionFee", 25);
+                                                                                gReport.put("type", "Cart Fee");
+                                                                                gReport.put("timeStamp", FieldValue.serverTimestamp());
 
-                                                                        Map<String, Object> notifications = new HashMap<>();
-                                                                        notifications.put("sender_id", mAuth.getCurrentUser().getUid());
-                                                                        notifications.put("receiver_id", ownerId);
-                                                                        notifications.put("remnants_id", remnantId);
-                                                                        notifications.put("message", message);
-                                                                        notifications.put("message2", message2);
-                                                                        notifications.put("imageUrl", "https://i.ibb.co/XyCn3Gb/buy-icon.png");
-                                                                        notifications.put("notificationType", "buyer");
-                                                                        notifications.put("timeStamp", FieldValue.serverTimestamp());
+                                                                                firebaseFirestore.collection("generateReport")
+                                                                                        .add(gReport).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                                                    @Override
+                                                                                    public void onSuccess(DocumentReference documentReference) {
 
-
-                                                                        firebaseFirestore.collection("notification").add(notifications)
-                                                                                .addOnSuccessListener(documentReference -> {
-
-                                                                                    Log.d(TAG, "hahaho SUD SA NA NOTIFICATION");
-
-                                                                                    //UPDATE QUANTITY
-                                                                                    DocumentReference documentReference1 = firebaseFirestore.collection("remnants").document(remnantId);
-                                                                                    documentReference1.update("quantity", FieldValue.increment(-quantity)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                        @Override
-                                                                                        public void onSuccess(Void aVoid) {
-
-                                                                                            Log.d(TAG, "hahaho MINUS QUANTITY");
-
-
-                                                                                            //DELETE REMNANT CART
-                                                                                            firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
-                                                                                                    .collection("remnants").document(remnantId)
-                                                                                                    .delete()
-                                                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                        @Override
-                                                                                                        public void onSuccess(Void aVoid) {
-
-                                                                                                            Log.d(TAG, "hahaho DELETE USER REMNANT CART");
-                                                                                                        }
-                                                                                                    });
-
-                                                                                            //DELETE USER ID CART
-                                                                                            firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
-                                                                                                    .delete()
-                                                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                        @Override
-                                                                                                        public void onSuccess(Void aVoid) {
-
-                                                                                                            Log.d(TAG, "hahaho DELETE USER ID CART");
-                                                                                                        }
-                                                                                                    });
-
-
-                                                                                            //UPDATE THE 0 QUANTITY TO ISSOLD
-                                                                                            DocumentReference docRef1 = firebaseFirestore.collection("remnants").document(remnantId);
-                                                                                            docRef1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                                                @Override
-                                                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task1) {
-
-                                                                                                    if(task1.isSuccessful()){
-
-                                                                                                        DocumentSnapshot documentSnapshot1 = task1.getResult();
-                                                                                                        if(documentSnapshot1.getLong("quantity").intValue() == 0){
-
-
-                                                                                                            DocumentReference docref2 = firebaseFirestore.collection("remnants").document(remnantId);
-                                                                                                            docref2.update("isSoldOut", true)
-                                                                                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                                                                        @Override
-                                                                                                                        public void onSuccess(Void aVoid) {
-
-                                                                                                                            Log.d(TAG, "hahaho 0 QUANTITY UPDATE");
-                                                                                                                        }
-                                                                                                                    });
-                                                                                                        }
-                                                                                                    }
-                                                                                                }
-                                                                                            });
-                                                                                        }
-                                                                                    });
-
+                                                                                        Log.d(TAG, "HAHA SUD SA GENERATE REPORT");
+                                                                                    }
                                                                                 });
 
-                                                                        Intent i = new Intent(Cart.this, Message.class);
-                                                                        startActivity(i);
-                                                                        Toast.makeText(Cart.this, "Checkout Successful", Toast.LENGTH_SHORT).show();
-                                                                    }
+
+                                                                                //MINUS QUANTITY
+                                                                                firebaseFirestore.collection("remnants").document(remnantId)
+                                                                                        .update("quantity", FieldValue.increment(-quantity)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onSuccess(Void aVoid) {
+
+                                                                                        Log.d(TAG, "HAHA MINUS QUANTITY");
+                                                                                    }
+                                                                                });
+                                                                                //END MINUS QUANTITY
+
+
+                                                                                //DELETE REMNANT CART
+                                                                                firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
+                                                                                        .collection("remnants").document(remnantId)
+                                                                                        .delete()
+                                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onSuccess(Void aVoid) {
+
+                                                                                                Log.d(TAG, "HAHA DELETE USER REMNANT CART");
+                                                                                            }
+                                                                                        });
+
+
+                                                                                //DELETE USER ID CART
+                                                                                firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
+                                                                                        .delete()
+                                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onSuccess(Void aVoid) {
+
+                                                                                                Log.d(TAG, "hahaho DELETE USER ID CART");
+                                                                                            }
+                                                                                        });
+
+
+                                                                                //UPDATE IF NO 0 QUANTITY
+                                                                                DocumentReference docRef1 = firebaseFirestore.collection("remnants").document(remnantId);
+                                                                                docRef1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task1) {
+
+                                                                                        if(task1.isSuccessful()){
+
+                                                                                            DocumentSnapshot documentSnapshot1 = task1.getResult();
+                                                                                            if(documentSnapshot1.getLong("quantity").intValue() == 0){
+
+
+                                                                                                DocumentReference docref2 = firebaseFirestore.collection("remnants").document(remnantId);
+                                                                                                docref2.update("isExpired", true)
+                                                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                                            @Override
+                                                                                                            public void onSuccess(Void aVoid) {
+
+                                                                                                                Log.d(TAG, "hahaho 0 QUANTITY UPDATE");
+                                                                                                            }
+                                                                                                        });
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                                //END UPDATE IF NO 0 QUANTITY
+
+                                                                            }
+                                                                        }
+                                                                    });
+
+
+                                                                    Intent i = new Intent(Cart.this, Message.class);
+                                                                    startActivity(i);
+                                                                    Toast.makeText(Cart.this, "Checkout Successful", Toast.LENGTH_SHORT).show();
                                                                 });
                                                     }
                                                 }
                                             }
                                         });
 
-
                                 //-25 FOR CURRENT USER
-                                DocumentReference docRefCurrentUser = firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid());
-                                docRefCurrentUser.update("wallet", FieldValue.increment(-25));
-
-
-                                ArrayList<String> str = new ArrayList<String>();
-
-                                //-25 WALLET FOR SELLER
-                                firebaseFirestore.collection("cart").document(mAuth.getCurrentUser().getUid())
-                                        .collection("remnants")
-                                        .orderBy("owner_id")
-                                        .get().addOnCompleteListener(task12 -> {
-                                            if(task12.isSuccessful()){
-
-                                                for(QueryDocumentSnapshot queryDocumentSnapshot : task12.getResult()){
-
-                                                    if(str.equals("")) {
-
-                                                        str.add(queryDocumentSnapshot.getString("owner_id"));
-
-                                                    }else if(!str.contains(queryDocumentSnapshot.getString("owner_id"))){
-
-                                                        str.add(queryDocumentSnapshot.getString("owner_id"));
-
-                                                    }
-
-                                                    Log.d(TAG, "OWNER_ID: "+str);
-
-                                                }
-
-                                                for(String owner_ids: str){
-
-
-                                                    Log.d(TAG, "USER_ID"+ owner_ids);
-                                                    DocumentReference docRef2 = firebaseFirestore.collection("users").document(owner_ids);
-                                                    docRef2.update("wallet", FieldValue.increment(-25));
-
-
-                                                    //SEND 25 GENERATE REPORT
-                                                    Map<String, Object> gReport = new HashMap<>();
-                                                    gReport.put("senderUser_id", owner_ids);
-                                                    gReport.put("transactionFee", 25);
-                                                    gReport.put("type", "cartFee");
-                                                    gReport.put("timeStamp", FieldValue.serverTimestamp());
-
-                                                    firebaseFirestore.collection("generateReport")
-                                                            .add(gReport)
-                                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                                @Override
-                                                                public void onSuccess(DocumentReference documentReference) {
-
-                                                                    Log.d(TAG,"hahaho cartFee from Seller ID Successful ID:" + str);
-                                                                }
-                                                            });
-                                                }
-                                            }
-                                        });
-                                //END OF -25 WALLET USER
+                                firebaseFirestore.collection("users").document(mAuth.getCurrentUser().getUid())
+                                        .update("wallet", FieldValue.increment(-25));
 
                                 //SEND 25 PESOS TO GENERAL REPORT FOR CURRENT USER
-                                Map<String, Object> gReport = new HashMap<>();
-                                gReport.put("senderUser_id", mAuth.getCurrentUser().getUid());
-                                gReport.put("transactionFee", 25);
-                                gReport.put("type", "cartFee");
+                                Map<String, Object> gReport5 = new HashMap<>();
+                                gReport5.put("senderUser_id", mAuth.getCurrentUser().getUid());
+                                gReport5.put("transactionFee", 25);
+                                gReport5.put("type", "Cart Fee");
 
                                 firebaseFirestore.collection("generateReport")
-                                        .add(gReport)
+                                        .add(gReport5)
                                         .addOnSuccessListener(documentReference -> Log.d(TAG,"hahaho cartFee from Buyer ID Successful"));
-
-                                // END OF SEND 25 PESOS TO GENERAL REPORT FOR CURRENT USER
 
                             }
                         }
@@ -395,7 +382,7 @@ public class Cart extends AppCompatActivity {
 
 
                         Log.d(TAG, "Current data: " + documentSnapshot.getData());
-                        textViewTotal.setText("TOTAL:  ₱ "+bigDecimal);
+                        textViewTotal.setText("₱ "+bigDecimal);
                     } else {
                         Log.d(TAG, "Current data: null");
                     }
@@ -417,15 +404,15 @@ public class Cart extends AppCompatActivity {
                     if (documentSnapshot != null && documentSnapshot.exists() && documentSnapshot.getDouble("total") > 0){
 
 
-                        relativeLayoutCheckOut.setEnabled(true);
+                        buttonProceedCheckOut.setEnabled(true);
                         linearLayoutHiding.setVisibility(View.VISIBLE);
-                        relativeLayoutCheckOut.setBackgroundColor(getResources().getColor(colorPrimaryDark));
+                        buttonProceedCheckOut.setBackgroundColor(getResources().getColor(colorPrimaryDark));
 
                     }else {
 
                         linearLayoutHiding.setVisibility(View.GONE);
-                        relativeLayoutCheckOut.setEnabled(false);
-                        relativeLayoutCheckOut.setBackgroundColor(getResources().getColor(buttonDisabled));
+                        buttonProceedCheckOut.setEnabled(false);
+                        buttonProceedCheckOut.setBackgroundColor(getResources().getColor(buttonDisabled));
                     }
                 }
             });

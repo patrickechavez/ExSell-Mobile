@@ -12,13 +12,14 @@
         android:id="@+id/blogview_app_bar"
         layout="@layout/app_bar_layout"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+
+       <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <com.synnapps.carouselview.CarouselView
@@ -33,6 +34,34 @@
                 app:slideInterval="3000"
                 app:strokeColor="#FF777777"
                 app:strokeWidth="1dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/blogImageView"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/blog_angry"/>
+
+                <TextView
+                    android:id="@+id/blogTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:textColor="#442C2E"
+                    android:fontFamily="@font/rubik"
+                    android:text="John Patrick"
+                    android:textSize="16sp"
+                    android:textAppearance="?attr/textAppearanceOverline" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -79,7 +108,6 @@
                 android:fontFamily="@font/rubik"
                 android:textAppearance="?attr/textAppearanceHeadline6"/>
 
-
             <LinearLayout
                 android:layout_width="281dp"
                 android:layout_height="wrap_content"
@@ -103,11 +131,56 @@
                     android:text="Super Angry"
                     android:layout_gravity="center"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
+
             </LinearLayout>
+
+
+
+           <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <LinearLayout
+                   android:id="@+id/linearlayoutblog"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_margin="4dp"
+                   android:orientation="horizontal">
+
+                   <EditText
+                       android:id="@+id/blogView_commentDetail"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:inputType="textPersonName"
+                       android:layout_weight="2"
+                       android:hint="Write a comment"
+                       android:background="@drawable/edittext_button_style_rounded"
+                       android:ems="10"/>
+
+                   <Button
+                       android:id="@+id/blogView_commentButton"
+                       android:layout_width="65dp"
+                       android:layout_height="wrap_content"
+                       android:layout_marginLeft="16dp"
+                       android:enabled="false"
+                       android:backgroundTint="@color/buttonDisabled"
+                       android:background="@drawable/edittext_button_style_rounded"
+                       android:text="ADD"/>
+
+               </LinearLayout>
+
+               <androidx.recyclerview.widget.RecyclerView
+                   android:id="@+id/blog_commentRecyclerView"
+                   android:layout_width="match_parent"
+                   android:layout_below="@+id/linearlayoutblog"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentBottom="true"/>
+
+           </RelativeLayout>
+
 
         </LinearLayout>
 
-    </ScrollView>
-
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

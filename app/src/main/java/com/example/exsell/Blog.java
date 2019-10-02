@@ -51,6 +51,7 @@ import com.google.firebase.storage.UploadTask;
 import com.sangcomz.fishbun.FishBun;
 import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
 import com.sangcomz.fishbun.define.Define;
+import com.synnapps.carouselview.CarouselView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -58,6 +59,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.example.exsell.R.color.colorPrimaryDark;
 
@@ -99,6 +102,8 @@ public class Blog extends AppCompatActivity implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseStorage =  FirebaseStorage.getInstance();
+
+
 
         editTextTitle = findViewById(R.id.blog_title);
         editTextGist = findViewById(R.id.blog_theGist);

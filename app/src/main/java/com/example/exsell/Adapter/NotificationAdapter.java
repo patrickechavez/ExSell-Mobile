@@ -41,6 +41,7 @@ public class NotificationAdapter extends FirestoreRecyclerAdapter<NotificationMo
         notificationHolder.textViewMessage.setText(notificationModel.getMessage());
         notificationHolder.textViewMessage2.setText(notificationModel.getMessage2());
         notificationHolder.textViewDate.setText(stringCurrentDate);
+
     }
 
     @NonNull

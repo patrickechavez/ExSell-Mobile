@@ -15,4 +15,10 @@
         android:title="Delete Remnant"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/soldOut_remnant"
+        android:title="Mark as Sold"
+        app:showAsAction="never"/>
+
+
+
 </menu>
